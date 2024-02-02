@@ -43,6 +43,7 @@
  # Статьи по отдельным элементам сайта
  - https://russianblogs.com/article/79182166757/ - загрузка изображений, выбор файлов
  - https://ru.vuejs.org/v2/cookbook/client-side-storage.html - хранение данных а стороне клиента
+ - https://www.evogeek.ru/articles/112653/ - загрузка изображений base64
   
 
 ## Кулагинские чтения
