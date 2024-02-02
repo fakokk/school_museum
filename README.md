@@ -44,6 +44,7 @@
  - https://russianblogs.com/article/79182166757/ - загрузка изображений, выбор файлов
  - https://ru.vuejs.org/v2/cookbook/client-side-storage.html - хранение данных а стороне клиента
  - https://www.evogeek.ru/articles/112653/ - загрузка изображений base64
+ - https://www.youtube.com/watch?v=L77Uq93XXzk - Animating Vue Router Transitions in Vue 3
   
 
 ## Кулагинские чтения
