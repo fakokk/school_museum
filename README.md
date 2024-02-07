@@ -45,6 +45,7 @@
  - https://ru.vuejs.org/v2/cookbook/client-side-storage.html - хранение данных а стороне клиента
  - https://www.evogeek.ru/articles/112653/ - загрузка изображений base64
  - https://www.youtube.com/watch?v=L77Uq93XXzk - Animating Vue Router Transitions in Vue 3
+ - https://www.youtube.com/watch?v=NOurUvuXabA - ОЧЕНЬ ДУШНЫЙ но полезный видос про разграничение прав
   
 
 ## Кулагинские чтения
