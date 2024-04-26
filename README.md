@@ -47,6 +47,8 @@
  - https://www.evogeek.ru/articles/112653/ - загрузка изображений base64
  - https://www.youtube.com/watch?v=L77Uq93XXzk - Animating Vue Router Transitions in Vue 3
  - https://www.youtube.com/watch?v=NOurUvuXabA - ОЧЕНЬ ДУШНЫЙ но полезный видос про разграничение прав
+ - https://habr.com/ru/articles/349264/ - Готовый шаблон сайта с регистрацией, юзерами и админами на Flask с базами SQL или MongoDB
+ - https://habr.com/ru/articles/783574/ - Flask для начинающих
   
 
 ## Кулагинские чтения
