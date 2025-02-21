@@ -1,9 +1,51 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 YaBrowser/25.2.0.0 Safari/537.36" version="25.0.3">
   <diagram name="Страница — 1" id="qCeyYV9w085Zy-wuvrTr">
-    <mxGraphModel>
+    <mxGraphModel dx="1354" dy="548" grid="1" gridSize="23" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-5" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WAhqVwMLXRIKD7Pr0xvh-3" target="WAhqVwMLXRIKD7Pr0xvh-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-7" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WAhqVwMLXRIKD7Pr0xvh-3" target="WAhqVwMLXRIKD7Pr0xvh-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-9" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WAhqVwMLXRIKD7Pr0xvh-3" target="WAhqVwMLXRIKD7Pr0xvh-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-12" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WAhqVwMLXRIKD7Pr0xvh-3" target="WAhqVwMLXRIKD7Pr0xvh-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-3" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Виды экскурсий&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="203" y="115" width="142" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-4" value="Фото&lt;div&gt;(хранится на сервере)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="226" width="96" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-6" value="Текст" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="345" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-8" value="Видео&lt;div&gt;(подгружается из рутуба, вк видео, одноклассников и тд)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="391" y="89.5" width="116" height="83" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-11" value="3D-экскурсия&lt;div&gt;(хранится на стороннем сервере)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="69" width="134" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-19" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WAhqVwMLXRIKD7Pr0xvh-13" target="WAhqVwMLXRIKD7Pr0xvh-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-21" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WAhqVwMLXRIKD7Pr0xvh-13" target="WAhqVwMLXRIKD7Pr0xvh-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-13" value="Администратор&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-92" y="391" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-18" value="Индивидуальный личный кабинет" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry y="393.5" width="120" height="57.5" as="geometry" />
+        </mxCell>
+        <mxCell id="WAhqVwMLXRIKD7Pr0xvh-20" value="Дополнительный функционал сайта" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="-276" y="392.25" width="120" height="60" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
