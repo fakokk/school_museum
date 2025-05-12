@@ -8,13 +8,12 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            width: 100%; /*Шапка займёт всю ширину окна браузера */
-            z-index: 1000; /* Высокое значение, чтобы шапка была всегда на первом плане */
             margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
         }
         header {
-            background-color:rgb(21, 42, 78);
+            background-color: rgb(21, 42, 78);
             color: white;
             padding: 10px 20px;
             display: flex;
@@ -36,16 +35,13 @@
         }
         .menu li {
             margin: 0 15px;
-            position: relative;
             color: white;
         }
-        .menu li a{
+        .menu li a {
             color: white;
-            font-family: 'Inter', sans-serif;
             text-decoration: none;
             font-size: 24px;
         }
-
         .profile-menu {
             cursor: pointer;
         }
@@ -69,10 +65,52 @@
         .profile-menu:hover .dropdown {
             display: block;
         }
-        p{
-            font-size: 20px;
+        main {
+            padding: 20px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .featured-posts-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .blog-post {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+            width: calc(33.333% - 20px);
+        }
+        .blog-post:hover {
+            transform: scale(1.05);
+        }
+        .thumbnail-wrapper {
+            position: relative;
+        }
+        .thumbnail-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .blog-post-category {
+            background-color: rgb(21, 42, 78);
+            color: white;
+            padding: 5px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border-radius: 5px;
+        }
+        .blog-post-title {
+            font-size: 35px;
+            margin: 10px;
+            color: rgb(21, 42, 78);
             text-decoration: none;
-        }   
+        }
     </style>
 </head>
 <body>
@@ -83,7 +121,6 @@
         <ul class="menu">
             <li><a href="{{ route('welcome') }}">Главная</a></li>
             <li><a href="{{ route('excursions') }}">Экскурсии</a></li>
-            <!-- <li><a href="{{ route('create') }}">Создать материал</a></li> -->
             <li class="profile-menu">
                 <a href="#">Профиль</a>
                 <div class="dropdown">
@@ -97,7 +134,21 @@
 
 <main>
     <h1>Виртуальные экскурсии по залам музея</h1>
-    <p>Вывод постов из бд</p>
+    <section class="featured-posts-section">
+        @foreach($posts as $post)
+        <div class="blog-post" data-aos="fade-up"> 
+            <a class="blog-post-title"> 
+                {{ $post->title }} 
+            </a>
+
+            <div class="thumbnail-wrapper"> 
+                <img src="{{ $post->image_url }}" alt="{{ $post->title }}"> 
+                <p class="blog-post-category">{{ $post->category ? $post->category->title : 'Без категории' }}</p>
+            </div>
+            
+        </div>
+        @endforeach
+    </section>
 </main>
 
 </body>

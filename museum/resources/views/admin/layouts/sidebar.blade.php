@@ -27,7 +27,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./layout/unfixed-sidebar.html" class="nav-link">
+                            <a href="{{route('admin.post.index')}}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Пост</p>
                             </a>
@@ -55,12 +55,13 @@
                             Таблицы
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
+
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="./tables/simple.html" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Simple Tables</p>
+                                <p>Пользователи</p>
                             </a>
                         </li>
                     </ul>
@@ -71,7 +72,13 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.category.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-grip-horizontal"></i>
-                        <p>Категории, теги</p>
+                        <p>Категории</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.tag.index') }}" class="nav-link">
+                        <i class="nav-icon bi bi-grip-horizontal"></i>
+                        <p>Теги</p>
                     </a>
                 </li>
                 <li class="nav-item">

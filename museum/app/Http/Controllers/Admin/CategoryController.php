@@ -6,10 +6,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Route;
 use Illuminate\Auth\AuthenticationException;
 use App\Http\Controllers\Controller; // Correctly import the base Controller, обязательный пункт!
-use App\Http\Requests\Admin\Category\StoreRequest;
+use App\Http\Requests\Admin\StoreRequest;
 use App\Models\Category;
-
-
+use App\Models\Tag;
 
 //контроллер, который выполняет переход просто по страницам, которые доступны всем пользователям
 class CategoryController extends Controller
@@ -24,37 +23,38 @@ class CategoryController extends Controller
         //показ страницы создания поста
         return view('admin.main.create');
     }
+    //добавление новой категории
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
+        //если такой категории еще не существует
         Category::firstOrCreate($data);
 
         return redirect()->route('admin.category.index');
-        // dd($data);
-        // return view('admin.main.create');
     }
-
+    //вывод категорий
     public function get_category()
     {
-        // return view('create'); // Возвращает представление spa.blade.php
-        //return view('admin.main.index');
         $categories = Category::all();
         return view('admin.main.categories', compact('categories'));
-        // return view('admin.main.categories', compact('categories')); // Передаем переменную в представление
     }
-    public function update(UpdateRequest $request, Category $category)
+    public function update(Request $request, Category $category)
     {
-        $data = $request->validate();
-        $category->update($data);
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255'
+        ]);
 
-        // return redirect()->route('admin.category.index')->with('success', 'Категория успешно обновлена!');
-        return view('admin.main.categories', compact('category'));
+        $category->update($validatedData);
+
+        return redirect()->route('admin.category.index');
     }
+
+    //удаление категории
     public function delete(Category $category)
     {
         $category->delete();
         return redirect()->route('admin.category.index');
     }
-    
+
 
 }

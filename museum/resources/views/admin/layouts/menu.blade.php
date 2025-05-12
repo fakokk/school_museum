@@ -28,13 +28,14 @@
                     ></path>
                   </svg>
                   <a
-                    href="#"
+                    href="{{ route ('admin.post.create')}}"
                     class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
                   >
-                    More info <i class="bi bi-link-45deg"></i>
+                    Подробнее <i class="bi bi-link-45deg"></i>
                   </a>
                 </div>
                 <!--end::Small Box Widget 1-->
+
               </div>
               <!-- Новый пост -->
               <div class="col-lg-3 col-6">

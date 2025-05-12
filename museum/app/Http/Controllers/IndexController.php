@@ -1,9 +1,13 @@
 <?php
 namespace App\Http\Controllers;
+use App\Http\Controllers\Controller; // Correctly import the base Controller, обязательный пункт!
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Route;
+use App\Models\Post;
+use App\Models\Category;
+use App\Models\Tag;
 
 use Illuminate\Auth\AuthenticationException;
 
@@ -17,7 +21,8 @@ class IndexController extends Controller
     }
     public function excursions()
     {
-        return view('excursions'); // Возвращает представление spa.blade.php
+        $posts = Post::paginate(20);
+        return view('excursions', compact('posts')); // Возвращает представление spa.blade.php
     }
 
     public function auth()
