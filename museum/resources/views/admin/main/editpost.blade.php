@@ -59,13 +59,10 @@
                   </select>
                 </div>
                 <!-- /.form-group -->
-              </div>
                 <!-- кнопка добавления -->
                 <div class="form-group mt-3">
                     <input type="submit" class="btn btn-primary" value="Добавить">
                 </div>
-
-
             </form>
         </div>
 

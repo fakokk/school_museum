@@ -228,6 +228,8 @@
     ></script>
     <!-- jsvectormap -->
     <script>
+      
+    // Инициализация Select2
       const visitorsData = {
         US: 398, // USA
         SA: 400, // Saudi Arabia
@@ -332,7 +334,20 @@
 
       const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
       sparkline3.render();
-      $('.select2').select2()
+
+      $(document).ready(function() {
+    // Инициализация Summernote
+    $('#summernote').summernote({
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+
+
     </script>
     <!--end::Script-->
   </body>

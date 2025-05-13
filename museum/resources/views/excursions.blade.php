@@ -142,7 +142,11 @@
             </a>
 
             <div class="thumbnail-wrapper"> 
-                <img src="{{ $post->image_url }}" alt="{{ $post->title }}"> 
+                <!-- <img src="{{ $post->image_url }}" alt="{{ $post->title }}">  -->
+                 <img src="https://vki5.okcdn.ru/i?r=CFtAm_VFBkioSGBqh1IWSogGXWP4QaAtZL9tDSXUYRjNm8vTyRnT8qoBYw-MsvAdMUatGswsbK9rxvYVRPF2k9oz7ZbfBPqcqQMrjAHYo5st89B1tVjuUM_6hXMAAAAp&dpr=2" alt="">
+
+                <p class="blog-post-category">{{ $post->content ? $post->content : 'Без описания' }}</p>
+
                 <p class="blog-post-category">{{ $post->category ? $post->category->title : 'Без категории' }}</p>
             </div>
             
