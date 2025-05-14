@@ -13,6 +13,9 @@
 `git push origin master`
 `git status`
 
+### Добавление нового столбца в таблицу
+`php artisan make:migration add_preview_image_to_posts_table --table=posts`
+
 ### Что предстоит сделать:
 - Главная страница:
     - ~верстка~
