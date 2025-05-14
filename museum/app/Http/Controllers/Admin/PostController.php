@@ -37,14 +37,17 @@ class PostController extends Controller
         $tagIds = $data['tag_ids'];
         unset($data['tag_ids']);
  
-        // Create or retrieve the post instance
-        $post = Post::firstOrCreate($data);
- 
-        // Attach the tags to the post
+        // добавление тегов и категорий к постам
         $categoryId = $data['category_id'];
         $post->category_id = $categoryId; // Assign the category ID
         $post->save(); // Save the post with the assigned category
         $post->tags()->attach($tagIds);
+
+        $previewImage = $data['preview_image'];
+        Storage::put('/images', $previewImage);
+        
+        // Create or retrieve the post instance
+        $post = Post::firstOrCreate($data);
  
         return redirect()->route('admin.post.index');
     }

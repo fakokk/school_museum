@@ -48,6 +48,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Пост</th>                                    
                                     <th>Категория</th>
                                     <th>Просмотр</th>
                                     <th>Редактировать</th> 
@@ -66,7 +67,7 @@
                                 </tr>
                                     <td>{{$post->id}}</td>
                                     <td>{{$post->title}}</td>
-                                    <td>{{$post->category_id}}</td>
+                                    <td>{{$post->category_title}}</td>
                             
                                     <!-- просмотр поста с такой категорией -->
                                     <td style="width: 70px;" class="text-center">
