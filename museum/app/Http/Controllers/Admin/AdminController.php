@@ -15,7 +15,4 @@ class AdminController extends Controller
         // return view('create'); // Возвращает представление spa.blade.php
         return view('admin.main.index');
     }
-
-    
-
 }

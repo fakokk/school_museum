@@ -103,9 +103,6 @@
                                                 <img src="../../dist/assets/img/icons/delete.png"
                                                         width="20" height="20" style="margin-left: 35px;" role="button" type="submit"/>
                                                 </button>
-
-
-                                            
                                         </form>
                                     </td>
                                 </tr>

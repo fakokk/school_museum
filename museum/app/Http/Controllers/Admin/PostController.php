@@ -7,7 +7,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Auth\AuthenticationException;
 use App\Http\Controllers\Controller; // Correctly import the base Controller, обязательный пункт!
 use App\Http\Requests\Admin\Post\PostRequest;
-use App\Http\Requests\Admin\Category\UpdateRequest;
+use App\Http\Requests\Admin\Post\UpdateRequest;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
@@ -15,7 +15,7 @@ use App\Models\Tag;
 
 
 //контроллер, который выполняет переход просто по страницам, которые доступны всем пользователям
-class PostController extends Controller
+class PostController extends BaseController
 {
     public function post()
     {
@@ -29,26 +29,11 @@ class PostController extends Controller
         $tags = Tag::all();
         return view('admin.main.create', compact('categories', 'tags'));
     }
-    // //добавление нового поста
     public function store(PostRequest $request)
     {
         $data = $request->validated();
- 
-        $tagIds = $data['tag_ids'];
-        unset($data['tag_ids']);
- 
-        // добавление тегов и категорий к постам
-        $categoryId = $data['category_id'];
-        $post->category_id = $categoryId; // Assign the category ID
-        $post->save(); // Save the post with the assigned category
-        $post->tags()->attach($tagIds);
-
-        $previewImage = $data['preview_image'];
-        Storage::put('/images', $previewImage);
-        
-        // Create or retrieve the post instance
-        $post = Post::firstOrCreate($data);
- 
+        $this->service->store($data);
+    
         return redirect()->route('admin.post.index');
     }
     //вывод категорий
@@ -58,33 +43,38 @@ class PostController extends Controller
         return view('admin.main.posts', compact('posts'));
     }
 
-
-    //изменение поста
+    //редактирование поста
     public function edit(Post $post)
     {
+        $post = Post::findOrFail($post->id);
+
         $categories = Category::all();
         $tags = Tag::all();
 
         return view('admin.main.editpost', compact('post', 'categories', 'tags'));
     }
 
-    //изменение категории
-    public function update(UpdateRequest $request, Post $posts)
+    //изменение поста
+    public function update(UpdateRequest $request, $id)
     {
-        $data = $request->validate();
-        $posts->update($data);
+        // Находим пост по ID
+        $post = Post::findOrFail($id);
+        
+        // Получаем валидированные данные из запроса
+        $data = $request->validated();
 
-        // return redirect()->route('admin.category.index')->with('success', 'Категория успешно обновлена!');
-        return view('admin.main.posts', compact('post'));
+        // Обновляем пост с помощью сервиса
+        $post = $this->service->update($data, $post);
+
+        return redirect()->route('admin.post.index');
+        // return view('admin.main.posts', compact('post'));
     }
 
     //удаление категории
-    public function delete(Post $posts)
+    public function delete(Post $post)
     {
-        $posts->delete();
+        $post->delete();
         return redirect()->route('admin.post.index');
     }
-
-
 
 }

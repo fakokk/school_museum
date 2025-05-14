@@ -67,7 +67,7 @@
                                 </tr>
                                     <td>{{$post->id}}</td>
                                     <td>{{$post->title}}</td>
-                                    <td>{{$post->category_title}}</td>
+                                    <td>{{$post->category ? $post->category->title : 'Без категории'}}</td>
                             
                                     <!-- просмотр поста с такой категорией -->
                                     <td style="width: 70px;" class="text-center">
@@ -76,13 +76,12 @@
                                     </td>
                                     <!-- редактирование поста  -->
                                     <td style="width: 70px;" class="text-center">
-                                        <a href=""><img src="../../dist/assets/img/icons/pencil-solid.svg"
-                                                    width="20" height="20" style="margin-left: 35px;"/></a>
-                                    </td>   
-                                    
+                                        <a href="{{ route('admin.post.edit', $post->id) }}">
+                                            <img src="../../dist/assets/img/icons/pencil-solid.svg" width="20" height="20" style="margin-left: 35px;"/>
+                                        </a>
+                                    </td>
                                     <!-- удаление категорий -->
                                     <td style="width: 70px;" class="text-center">
-
                                         <form action="{{ route('admin.post.delete', $post->id) }}"
                                                 method="POST">
                                                 @csrf
@@ -91,9 +90,6 @@
                                                 <img src="../../dist/assets/img/icons/delete.png"
                                                         width="20" height="20" style="margin-left: 35px;" role="button" type="submit"/>
                                                 </button>
-
-
-                                            
                                         </form>
                                     </td>
                                 </tr>
