@@ -109,9 +109,10 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-              </div>
+              </div>  
             </li>
             <!--end::Messages Dropdown Menu-->
+
             <!--begin::Notifications Dropdown Menu-->
             <li class="nav-item dropdown">
               <a class="nav-link" data-bs-toggle="dropdown" href="#">
@@ -158,6 +159,14 @@
                 />
                 <span class="d-none d-md-inline">Администратор</span>
               </a>
+
+              <li class="nav-item dropdown">
+                <form action="{{ route('logout') }}" method="POST">
+                  @csrf
+                  <input type="submit" class="btn btn-block btn-dark" value="Выйти">
+                </form>
+              </li>
+              
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                 <!--begin::User Image-->
                 <li class="user-header text-bg-primary">
@@ -172,6 +181,7 @@
                   </p>
                 </li>
                 <!--end::User Image-->
+
                 <!--begin::Menu Body-->
                 <li class="user-body">
                   <!--begin::Row-->
@@ -189,6 +199,7 @@
                   <a href="#" class="btn btn-default btn-flat float-end">Выход</a>
                 </li>
                 <!--end::Menu Footer-->
+
               </ul>
             </li>
             <!--end::User Menu Dropdown-->
