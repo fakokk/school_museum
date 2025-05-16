@@ -28,6 +28,8 @@ class UpdateRequest extends FormRequest
             'username' => 'required|string',
             //добавить возможность перерегистрировать аккаунт на другую почту
             // 'email' => 'required|string|unique:users, . $this->user_id
+            //возможность изменять картинку пользователя
+            'user_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp'
         ];
     }
     public function messages()

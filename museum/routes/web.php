@@ -34,6 +34,11 @@ Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' =>
     Route::group(['namespace' => 'Main'], function(){
         Route::get('/', [PersonalController::class, 'personal'])->name('personal');
 
+        // Route::get('/editaccount', [PersonalController::class, 'editaccount'])->name('editaccount');
+        Route::get('/personal/edit', [PersonalController::class, 'editaccount'])->name('personal.edit');
+        Route::post('/personal/update', [PersonalController::class, 'updateaccount'])->name('personal.update');
+
+
         Route::group(['namespace' => 'Liked', 'prefix' => 'likes'], function(){
             Route::get('/', [PersonalController::class, 'likes'])->name('personal.likes');
             Route::delete('/{post}', [PersonalController::class, 'delete'])->name('personal.likes.delete');

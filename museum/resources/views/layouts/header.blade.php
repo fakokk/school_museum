@@ -138,40 +138,59 @@
                             <!-- кружочек аватара -->
                             <a class="rounded-circle" href="#" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                                 <div class="avatar avatar-md avatar-indicators avatar-online">
-                                    <img alt="avatar" src="" class="rounded-circle" />
+                                    @if(Auth::check())
+                                        <img alt="avatar" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('storage/images/default-avatar.png') }}" class="rounded-circle" style="width: 50px; height: 50px;"/>
+                                    @else
+                                        <img alt="avatar" src="{{ asset('storage/images/default-avatar.png') }}" class="rounded-circle" style="width: 50px; height: 50px;"/>
+                                    @endif    
                                 </div>
+                                
                             </a>
                             <!-- меню по нажатию на аватар справа - вход, профиль и тд -->
                             <div class="dropdown-menu dropdown-menu-end position-absolute mx-3 my-5">
                                 <div class="dropdown-item">
-                                    <div class="d-flex">
-                                        <div class="avatar avatar-md avatar-indicators avatar-online">
-                                            <img alt="avatar" src="" class="rounded-circle" />
+                                    @if(Auth::check()) <!-- Проверяем, авторизован ли пользователь -->
+                                        <div class="d-flex flex-column">
+                                            <div class="avatar avatar-md avatar-indicators avatar-online ">
+                                                <img alt="avatar" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('default-avatar.png') }}" class="rounded-circle"  style="width: 50px; height: 50px;"/> <!-- URL аватара -->
+                                            </div>
+                                            <div class="ms-3 lh-1">
+                                                <h5 class="mb-1">{{ Auth::user()->username }}</h5> <!-- Имя пользователя -->
+                                                <p class="mb-0">{{ Auth::user()->email }}</p> <!-- Адрес электронной почты -->
+                                            </div>
+                                            
+                                            <div class="dropdown-divider"></div>
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ route('personal')}}">
+                                                        <i class="fe fe-user me-2"></i>
+                                                        Профиль
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                                        @csrf <!-- CSRF-токен для защиты от подделки запросов -->
+                                                        <button type="submit" class="dropdown-item">
+                                                            <i class="fe fe-power me-2"></i>
+                                                            Выход
+                                                        </button>
+                                                    </form>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <div class="ms-3 lh-1">
-                                            <h5 class="mb-1">Имя пользователя</h5>
-                                            <p class="mb-0">annette@geeksui.com</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dropdown-divider"></div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('personal')}}">
-                                            <i class="fe fe-user me-2"></i>
-                                            Профиль
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="dropdown-divider"></div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a class="dropdown-item" href="../index.html">
+
+                                    @else
+                                        <a class="dropdown-item" href="{{ route('login') }}">
                                             <i class="fe fe-power me-2"></i>
-                                            Выход
+                                            Вход/Регистрация
                                         </a>
-                                    </li>
-                                </ul>
+                                    @endif
+                                </div>
+
+
                             </div>
                         </li>
                     </ul>

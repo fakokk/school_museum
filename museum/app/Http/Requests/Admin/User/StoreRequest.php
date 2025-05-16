@@ -28,7 +28,8 @@ class StoreRequest extends FormRequest
             'username' => 'required|string',
             'email' => 'required|string|unique:users',
             'password' => 'required|string',
-            'role' => 'required|integer'
+            'role' => 'required|integer',
+            'user_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp'
         ];
     }
 

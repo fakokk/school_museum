@@ -26,11 +26,11 @@ class IndexController extends Controller
     }
         public function login()
     {
-        return view('login'); // Возвращает представление spa.blade.php
+        return view('auth.login'); // Возвращает представление spa.blade.php
     }
         public function register()
     {
-        return view('register'); // Возвращает представление spa.blade.php
+        return view('auth.register'); // Возвращает представление spa.blade.php
     }
     
 }

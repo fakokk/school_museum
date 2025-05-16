@@ -16,7 +16,6 @@
 
         <section class="featured-posts-section d-flex flex-column align-items-center"> <!-- Центрируем ленту постов -->
 
-            @foreach($posts as $post)
             <div style="max-width: 60%;"> 
                 <div class="featured-post blog-post" data-aos="fade-up" style="margin-bottom: 20px; width: 100%; max-width: 90%;"> 
                     <a href="" style="text-decoration: none; color: inherit; max-width: 90%"> <!-- Ссылка на полный просмотр поста -->
@@ -44,7 +43,7 @@
                     <hr> <!-- Разделитель между постами -->
                 </div>
             </div>
-            @endforeach
+
         </section>
     </main>
 

@@ -24,9 +24,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Здесь можно добавить аутентификацию пользователя после регистрации
-        // Auth::login($user);
-
         return redirect()->route('login')->with('success', 'Регистрация прошла успешно!');
     }
 }

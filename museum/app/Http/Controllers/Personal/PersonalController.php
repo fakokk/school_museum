@@ -2,66 +2,74 @@
 namespace App\Http\Controllers\Personal;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\User\UpdateRequest;
 use Illuminate\Support\Facades\File;
-use Illuminate\Routing\Route;
-use Illuminate\Auth\AuthenticationException;
-use App\Http\Controllers\Controller; // Correctly import the base Controller, обязательный пункт!
 use App\Models\Post;
+use App\Models\User;
 
-
-// Контроллер, который выполняет переход просто по страницам, которые доступны всем пользователям
 class PersonalController extends Controller
 {
     public function personal()
     {
-    //     $data = [];
-    //     $data['usersCount'] = User::all()->count();
-    //     $data['postsCount'] = Post::all()->count();
-
-        // return view('create'); // Возвращает представление spa.blade.php
         return view('personal.main.index');
     }
 
-
-    //лайки пользователя 
+    // Лайки пользователя 
     public function likes()
     {
         $posts = auth()->user()->LikedPosts;
         return view('personal.main.likes', compact('posts'));
     }
 
-
-
     public function delete_like(Post $post)
     {
-        $posts = auth()->user()->LikedPosts()->detach($post->id);
-
+        auth()->user()->LikedPosts()->detach($post->id);
         return redirect()->route('personal.main.comments');
     }
 
-    // Route::get('/comments', [PersonalController::class, 'comments'])->name('personal.comments');
-    // Route::get('/{comments}/edit', [PersonalController::class, 'edit'])->name('personal.likes.edit');
-    // Route::patch('/{comments}', [PersonalController::class, 'update'])->name('personal.likes.update');
-    // Route::delete('/{comments}', [PersonalController::class, 'delete'])->name('personal.likes.delete');
-
-    // все комментарии, оставленные пользователем
+    // Все комментарии, оставленные пользователем
     public function comments() 
     {
         $comments = auth()->user()->comments;
         return view('personal.main.comments', compact('comments'));
     }
-    public function edit(Comment $comment) 
+
+    // Метод для редактирования профиля
+    public function editaccount()
     {
-        return view('personal.comments.edit', compact('comments'));
-    }
-    public function update(Comment $comment) 
-    {
-        return view('personal.comments.edit', compact('comments'));
-    }
-    public function delete(Comment $comment) 
-    {
-        $comment->delete();
-        return view('personal.comments.edit', compact('comments'));
+        $user = auth()->user(); // Получаем текущего авторизованного пользователя
+        return view('personal.main.editaccount', compact('user'));
     }
 
+    // Метод для обновления профиля
+    public function updateaccount(UpdateRequest $request)
+    {
+        $user = auth()->user(); // Получаем текущего авторизованного пользователя
+
+        // Обновляем данные пользователя
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+
+        // Обновление пароля, если он был введен
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
+        // Обновление изображения пользователя, если оно было загружено
+        if ($request->hasFile('user_image')) {
+            // Удаляем старое изображение, если оно существует
+            if ($user->user_image) {
+                File::delete(public_path($user->user_image));
+            }
+
+            // Сохраняем новое изображение
+            $path = $request->file('user_image')->store('user_images', 'public');
+            $user->user_image = $path;
+        }
+
+        $user->save(); // Сохраняем изменения в базе данных
+
+        return redirect()->route('personal')->with('success', 'Данные профиля успешно обновлены.');
+    }
 }
