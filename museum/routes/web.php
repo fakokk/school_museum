@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CreateController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Personal\PersonalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +21,37 @@ use App\Http\Controllers\Admin\UserController;
 |
 */
 Route::group(['namespace' => 'Main'], function(){
-    Route::get('/', function () {return view('welcome');});
+    Route::get('/',  [IndexController::class, 'welcome']);
     Route::get('/welcome', [IndexController::class, 'welcome'])->name('welcome');
     Route::get('/excursions', [IndexController::class, 'excursions'])->name('excursions');
-    Route::get('/auth', [IndexController::class, 'auth'])->name('auth');
-    Route::get('/create', [IndexController::class, 'create'])->name('create');
+    Route::get('/login', [IndexController::class, 'welcome'])->name('login');
+    Route::get('/register', [IndexController::class, 'welcome'])->name('register');
 });
+
+// мартруты администратора
+Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' => ['auth'] ], function(){
+
+    Route::group(['namespace' => 'Main'], function(){
+        Route::get('/', [PersonalController::class, 'personal'])->name('personal');
+
+        Route::group(['namespace' => 'Liked', 'prefix' => 'likes'], function(){
+            Route::get('/', [PersonalController::class, 'likes'])->name('personal.likes');
+            Route::delete('/{post}', [PersonalController::class, 'delete'])->name('personal.likes.delete');
+            });
+
+         Route::group(['namespace' => 'Comments', 'prefix' => 'comments'], function(){
+            Route::get('/comments', [PersonalController::class, 'comments'])->name('personal.comments');
+            Route::get('/{comments}/edit', [PersonalController::class, 'edit'])->name('personal.likes.edit');
+            Route::patch('/{comments}', [PersonalController::class, 'update'])->name('personal.likes.update');
+            Route::delete('/{comments}', [PersonalController::class, 'delete'])->name('personal.likes.delete');
+            });
+
+        
+
+    });
+
+});
+
 
 // мартруты администратора
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'admin', 'verified'] ], function(){
@@ -55,19 +81,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::post('/', [PostController::class, 'store'])->name('admin.post.store');
         Route::get('/', [PostController::class, 'get_post'])->name('admin.post.index');
         Route::get('/{post}', [PostController::class, 'delete'])->name('admin.post.show');
-        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('admin.post.edit');//
+        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('admin.post.edit');//кривое отображение формы редактирования
         Route::patch('/{post}', [PostController::class, 'update'])->name('admin.post.update');
-        Route::delete('/{post}', [PostController::class, 'delete'])->name('admin.post.delete');
-    });
-
-    Route::group(['namespace' => 'Post', 'prefix' => 'post'], function(){
-        Route::get('/', [PostController::class, 'post'])->name('admin.post.index');
-        Route::get('/create', [PostController::class, 'create'])->name('admin.post.create');
-        Route::post('/', [PostController::class, 'store'])->name('admin.post.store');
-        Route::get('/', [PostController::class, 'get_post'])->name('admin.post.index');
-        Route::get('/{post}', [PostController::class, 'delete'])->name('admin.post.show');
-        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('admin.post.edit');
-        Route::patch('/{post}', [PostController::class, 'update'])->name('admin.post.update');//
         Route::delete('/{post}', [PostController::class, 'delete'])->name('admin.post.delete');
     });
 

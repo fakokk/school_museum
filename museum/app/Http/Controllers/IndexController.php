@@ -24,20 +24,13 @@ class IndexController extends Controller
         $posts = Post::paginate(20);
         return view('excursions', compact('posts')); // Возвращает представление spa.blade.php
     }
-
-    public function auth()
+        public function login()
     {
-        return view('auth'); // Возвращает представление spa.blade.php
+        return view('login'); // Возвращает представление spa.blade.php
     }
-
-    public function create()
+        public function register()
     {
-        return view('admin.main.create'); // Возвращает представление spa.blade.php
-    }
-    public function admin()
-    {
-        //return view('create'); // Возвращает представление spa.blade.php
-        return view('admin.main.index');
+        return view('register'); // Возвращает представление spa.blade.php
     }
     
 }

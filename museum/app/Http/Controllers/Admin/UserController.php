@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller; // Correctly import the base Controller, обязательный пункт!
 use App\Http\Requests\Admin\User\StoreRequest;
 use App\Http\Requests\Admin\User\UpdateRequest;
+use Illuminate\Auth\Events\Registered;
+
 use App\Mail\User\PasswordMail;
 use App\Models\User;
 

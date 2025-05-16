@@ -4,14 +4,14 @@
   <!-- этот файл пока не менять  -->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Виртуальный музей | Администрирование</title>
+    <title>Виртуальный музей | Личный кабинет</title>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="title" content="Администрирование" />
+    <meta name="title" content="Лмчный кабинет" />
     <meta name="author" content="FrolovaAI" />
     <meta
       name="description"
-      content="AdminLTE."
+      content="AdminLTE.  "
     />
     <meta
       name="keywords"
@@ -145,27 +145,6 @@
     <!-- Подключение JS для Summernote -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 
-
-    <script>
-            $(document).ready(function() {
-        $('#summernote').summernote({
-          toolbar: [
-          ['style', ['style']],
-          ['font', ['bold','italic', 'underline', 'clear']],
-          ['color', ['color']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          ['insert', ['link', 'video']],
-          ['view', ['fullscreen', 'codeview', 'help']]
-        ]
-        });
-        $('.select2').select2();
-
-        bsCustomFileInput.init()
-            });
-
-            
-
-    </script>
     <!--end::Script-->
   </body>
   <!--end::Body-->

@@ -26,7 +26,7 @@ class PostRequest extends FormRequest
         return [
             'title' => 'required|string',
             'content' => 'required|string',
-            'preview_image' => 'nullable|file|mimes:jpeg,png,jpg,gif',
+            'preview_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp',
             'category_id' => 'required|integer|exists:categories,id',
             'tag_ids' => 'nullable|array',
             'tag_ids.*' => 'nullable|integer|exists:tags,id'

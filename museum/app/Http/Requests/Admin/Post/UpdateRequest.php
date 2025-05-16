@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
             // все поля nullable - означает что не обязательно вносить изменения
             'title' => 'nullable|string',
             'content' => 'nullable|string',
-            'preview_image' => 'nullable|file|mimes:jpeg,png,jpg,gif',
+            'preview_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp',
             'category_id' => 'nullable|integer|exists:categories,id',
             'tag_ids' => 'nullable|array',
             'tag_ids.*' => 'nullable|integer|exists:tags,id'
