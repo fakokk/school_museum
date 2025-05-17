@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf14086919a839fe740e00554e4baff6",
+    "content-hash": "e3c3b075c77d976a2985f10de291c941",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -957,6 +957,55 @@
                 }
             ],
             "time": "2025-03-27T12:30:47+00:00"
+        },
+        {
+            "name": "jinoantony/laravel-kanban",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jinoantony/laravel-kanban.git",
+                "reference": "7aff606dc0bbefe91de907b0d213d3630e6ceae5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jinoantony/laravel-kanban/zipball/7aff606dc0bbefe91de907b0d213d3630e6ceae5",
+                "reference": "7aff606dc0bbefe91de907b0d213d3630e6ceae5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/filesystem": "5.5.*|^6|^7|^8|^9|^10",
+                "illuminate/view": "5.5.*|^6|^7|^8|^9|^10",
+                "php": "^7.0|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JinoAntony\\Kanban\\LaravelKanbanServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JinoAntony\\Kanban\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jino Antony",
+                    "email": "jinoantony99@gmail.com"
+                }
+            ],
+            "description": "Kanban boards for laravel",
+            "support": {
+                "issues": "https://github.com/jinoantony/laravel-kanban/issues",
+                "source": "https://github.com/jinoantony/laravel-kanban/tree/v1.0.1"
+            },
+            "time": "2023-10-26T16:14:45+00:00"
         },
         {
             "name": "laravel/framework",

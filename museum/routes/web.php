@@ -57,7 +57,6 @@ Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' =>
 
 });
 
-
 // мартруты администратора
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'admin', 'verified'] ], function(){
 
