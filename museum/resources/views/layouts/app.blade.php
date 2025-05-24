@@ -3,7 +3,7 @@
   <!--begin::Head-->
   <!-- этот файл пока не менять  -->
   <head>    
-    <title>Виртуальный музей | Администрирование</title>
+    <title>Виртуальный музей</title>
       <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Index - Yummy Bootstrap Template</title>
@@ -26,9 +26,14 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+    
+    <link rel="stylesheet" href="../../dist/css/adminlte.css" />
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 
 
 
@@ -51,7 +56,11 @@
   <body class="">
     <!-- Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <script
+      src="{{ asset('plugins/summernote/summernote-bs4.min.js')}}"
+    ></script>
+    <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+    <script src="../../dist/js/adminlte.js"></script>
   <!-- выводим отображение main.index -->
   @yield('content')
 

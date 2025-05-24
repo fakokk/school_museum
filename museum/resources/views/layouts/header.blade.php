@@ -4,36 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-
         body {
-             font-family: "Noto Sans", sans-serif;
+            font-family: "Noto Sans", sans-serif;
             margin: 0;
             padding: 0;
-            background-color:rgba(249, 249, 249, 0.42);
-        }header {
+        }
+        header {
+            position: fixed;
             background-color: rgb(53, 73, 106);
             color: white;
-            padding: 10px 20px;
-            display: flex; /* Используем Flexbox */
+            display: flex;
             align-items: center;
-            justify-content: space-between; /* Распределяем элементы */
+            justify-content: space-between;
             height: 90px;
-        }.container-fluid {
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            z-index: 1000;
+        }
+        .container-fluid {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
         }
-
-        .navbar-collapse {
-            margin-left: auto;
+        .logo {
             display: flex;
             align-items: center;
         }
-
-
-        .logo {
-            font-size: 30px;
+        .logo img {
+            height: 70px;
+            width: auto;
+        }
+        .logo a {
+            margin-left: 15px;
+            font-size: 24px; /* Увеличьте размер шрифта для лучшей читаемости */
         }
         .menu {
             display: flex;
@@ -50,152 +56,93 @@
             text-decoration: none;
             font-size: 24px;
         }
-        .container-fluid{
-            float: right; /* Прижимает элемент к правому краю родителя */
-        }
-        .profile-menu {
-            cursor: pointer;
-        }
-        .profile-menu:hover .dropdown {
-            display: block;
+        .search-form {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
         }
         main {
             padding: 20px;
+            margin-top: 20px; /* Отступ сверху, равный высоте header */ 
         }
         h1 {
             font-size: 36px;
             margin-bottom: 20px;
         }
-        .featured-posts-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+
+        /* Адаптивные стили */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column; /* Изменяем направление на вертикальное */
+                height: auto; /* Автоматическая высота для адаптивности */
+                padding: 10px 5px; /* Уменьшаем отступы */
+            }
+            .container-fluid {
+                flex-direction: column; /* Вертикальное выравнивание элементов */
+                align-items: flex-start; /* Выравнивание по левому краю */
+            }
+            .menu {
+                flex-direction: column; /* Вертикальное расположение меню */
+                width: 100%; /* Ширина меню на всю ширину */
+                margin-top: 10px; /* Отступ сверху для меню */
+            }
+            .menu li {
+                margin: 5px 0; /* Уменьшаем отступы между элементами меню */
+            }
+            .logo a {
+                font-size: 20px; /* Уменьшаем размер шрифта для мобильных устройств */
+            }
+            .search-form {
+                width: 100%; /* Ширина формы поиска на всю ширину */
+                margin-top: 10px; /* Отступ сверху для формы поиска */
+            }
+            .search-form input {
+                width: 100%; /* Ширина поля ввода на всю ширину */
+            }
+            .avatar{
+                margin-left: 10px;
+            }
         }
-        .blog-post {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.2s;
-            width: calc(33.333% - 20px);
-        }
-        .blog-post:hover {
-            transform: scale(1.05);
-        }
-        .thumbnail-wrapper {
-            position: relative;
-        }
-        .thumbnail-wrapper img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .blog-post-category {
-            background-color: rgb(21, 42, 78);
-            color: white;
-            padding: 5px;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            border-radius: 5px;
-        }
-        .blog-post-title {
-            font-size: 35px;
-            margin: 10px;
-            color: rgb(21, 42, 78);
-            text-decoration: none;
-        } 
     </style>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
 <body>
-<header>
-
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid px-0 d-flex align-items-center"> <!-- Добавлено d-flex и justify-content-between -->
-            
-            <div class="logo">Виртуальный музей МБОУ "Верхне-Ульхунская СОШ"</div>
-
-            <div class="collapse navbar-collapse ms-auto" id="navbar-default"> <!-- Добавлен ms-auto для прижатия к правому краю -->
-
-                <ul class="menu">
-                    <li><a href="{{ route('welcome') }}">Главная</a></li>
-                    <li><a href="{{ route('excursions') }}">Новости</a></li>
-                </ul>
-
-                <form class="mt-3 mt-lg-0 ms-3 d-flex align-items-center">
-                    <span class="position-absolute ps-3 search-icon">
-                        <i class="fe fe-search"></i>
-                    </span>
-                    <input type="search" class="form-control ps-6" placeholder="Поиск" />
-                </form>
-
-                <div class="ms-auto d-flex align-items-center order-lg-3">
-                    <ul class="navbar-nav navbar-right-wrap mx-2 flex-row">
-                        <li class="dropdown d-inline-block position-static">
-                            <!-- кружочек аватара -->
-                            <a class="rounded-circle" href="#" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                                <div class="avatar avatar-md avatar-indicators avatar-online">
-                                    @if(Auth::check())
-                                        <img alt="avatar" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('storage/images/default-avatar.png') }}" class="rounded-circle" style="width: 50px; height: 50px;"/>
-                                    @else
-                                        <img alt="avatar" src="{{ asset('storage/images/default-avatar.png') }}" class="rounded-circle" style="width: 50px; height: 50px;"/>
-                                    @endif    
-                                </div>
-                                
-                            </a>
-                            <!-- меню по нажатию на аватар справа - вход, профиль и тд -->
-                            <div class="dropdown-menu dropdown-menu-end position-absolute mx-3 my-5">
-                                <div class="dropdown-item">
-                                    @if(Auth::check()) <!-- Проверяем, авторизован ли пользователь -->
-                                        <div class="d-flex flex-column">
-                                            <div class="avatar avatar-md avatar-indicators avatar-online ">
-                                                <img alt="avatar" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('default-avatar.png') }}" class="rounded-circle"  style="width: 50px; height: 50px;"/> <!-- URL аватара -->
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class="mb-1">{{ Auth::user()->username }}</h5> <!-- Имя пользователя -->
-                                                <p class="mb-0">{{ Auth::user()->email }}</p> <!-- Адрес электронной почты -->
-                                            </div>
-                                            
-                                            <div class="dropdown-divider"></div>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a class="dropdown-item" href="{{ route('personal')}}">
-                                                        <i class="fe fe-user me-2"></i>
-                                                        Профиль
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                                        @csrf <!-- CSRF-токен для защиты от подделки запросов -->
-                                                        <button type="submit" class="dropdown-item">
-                                                            <i class="fe fe-power me-2"></i>
-                                                            Выход
-                                                        </button>
-                                                    </form>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                    @else
-                                        <a class="dropdown-item" href="{{ route('login') }}">
-                                            <i class="fe fe-power me-2"></i>
-                                            Вход/Регистрация
-                                        </a>
-                                    @endif
-                                </div>
-
-
+<header class="header">
+    <div class="container-fluid">
+        <div class="logo">
+            <img alt="avatar" src="{{ asset('storage/images/logo.jpg') }}"/>
+            <a>Виртуальный музей МБОУ "Верхне-Ульхунская СОШ"</a>
+        </div>
+        <div class="navbar">
+            <ul class="menu">
+                <li><a href="{{ route('welcome') }}">Главная</a></li>
+                <li><a href="{{ route('excursions') }}">Новости</a></li>
+            </ul>
+            <form class="search-form">
+                <input type="search" class="form-control" placeholder="Поиск" />
+            </form>
+            <div class="ms-auto d-flex align-items-center">
+                <ul class="navbar-nav navbar-right-wrap mx-2 flex-row">
+                    <li class="dropdown d-inline-block position-static">
+                           <a class="rounded-circle" href="{{ Auth::check() ? route('personal') : route('login') }}" aria-expanded="false">
+                            <div class="avatar avatar-md avatar-indicators avatar-online ml-3">
+                                @if(Auth::check())
+                                    <img alt="avatar" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('storage/images/default-avatar.png') }}" class="rounded-circle" style="width: 50px; height: 50px;"/>
+                                @else
+                                    <img alt="avatar" src="{{ asset('storage/images/default-avatar.png') }}" class="rounded-circle" style="width: 50px; height: 50px;"/>
+                                @endif    
                             </div>
-                        </li>
-                    </ul>
-                </div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </nav>
+    </div>
 </header>
+<main>
+    <!-- Ваш основной контент -->
+</main>
+</body>
+</html>

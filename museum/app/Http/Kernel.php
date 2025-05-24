@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
         //назначение имен, которые можем потом использовать в роутинге
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        // 'auth.redirect' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,//
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,

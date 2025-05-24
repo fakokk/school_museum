@@ -7,15 +7,7 @@
 
 </div>
 <div class="app-wrapper">
-    <!--begin::Header-->
-    <nav class="app-header navbar navbar-expand bg-body">
-        <!-- Header content here -->
-    </nav>
-    <!--end::Header-->
-
-    @include('personal.layouts.sidebar') <!-- Include the sidebar template -->
-
-    <!--begin::App Main-->
+    @include('personal.layouts.sidebar') 
     <main class="app-main">
                     <div class="row">
                 <div class="col-12">

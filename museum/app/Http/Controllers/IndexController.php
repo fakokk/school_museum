@@ -19,18 +19,47 @@ class IndexController extends Controller
     {
         return view('welcome'); // Возвращает представление spa.blade.php
     }
+
     public function excursions()
     {
         $posts = Post::paginate(20);
         return view('excursions', compact('posts')); // Возвращает представление spa.blade.php
     }
-        public function login()
+
+    public function login()
     {
         return view('auth.login'); // Возвращает представление spa.blade.php
     }
-        public function register()
+
+    public function register()
     {
         return view('auth.register'); // Возвращает представление spa.blade.php
     }
+
+    public function show(Post $post)
+    {
+       if (!$post) {
+           abort(404); // если поста не существует
+       }
+
+       $categories = Category::all();
+       $tags = Tag::all();
+
+       return view('post', compact('post', 'categories', 'tags'));
+    }
+
+    // public function show_comments(Post $post)
+    // {
+    //    if (!$post) {
+    //        abort(404); // This will throw a 404 error if the post is not found
+    //    }
+
+    //    $categories = Category::all();
+    //    $tags = Tag::all();
+
+    //    return view('post', compact('post', 'categories', 'tags'));
+    // }
+
+
     
 }

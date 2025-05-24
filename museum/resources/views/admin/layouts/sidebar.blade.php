@@ -51,9 +51,9 @@
 
                 
                 <li class="nav-item">
-                    <a href="./docs/color-mode.html" class="nav-link">
-                        <i class="nav-icon bi bi-star-half"></i>
-                        <p>Избранное</p>
+                    <a href="{{ route('welcome')}}" class="nav-link">
+                        <i class="fa-solid fa-door-open"></i>
+                        <p>На сайт</p>
                     </a>
                 </li>
                 <li class="nav-item">

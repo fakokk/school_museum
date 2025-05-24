@@ -1,50 +1,67 @@
 @extends('layouts.app')
 @section('content')
 
+@include('layouts.header') <!-- Include the sidebar template -->
+
 <div>
-    @include('layouts.header') <!-- Include the sidebar template -->
+    
+    @include('layouts.sidebar') <!-- Include the sidebar template -->
 </div>
 <div class="app-wrapper">
-    <!--begin::Header-->
-    <nav class="app-header navbar navbar-expand bg-body">
-        <!-- Header content here -->
-    </nav>
-
+    
     <!--begin::App Main-->
     <main class="app-main">
-        <h1 class="text">Новости</h1> <!-- Заголовок по центру -->
-
         <section class="featured-posts-section d-flex flex-column align-items-center"> <!-- Центрируем ленту постов -->
 
             @foreach($posts as $post)
             <div style="max-width: 60%;"> 
                 <div class="featured-post blog-post" data-aos="fade-up" style="margin-bottom: 20px; width: 100%; max-width: 90%;"> 
-                    <a href="" style="text-decoration: none; color: inherit; max-width: 90%"> <!-- Ссылка на полный просмотр поста -->
+                       <a href="{{ route('posts.show', $post) }}" style="text-decoration: none; color: inherit; max-width: 90%">
+
                         <h2 class="blog-post-title">{{ $post->title }}</h2> <!-- Заголовок поста -->
                         <p class="post-date">{{ $post->created_at->format('d.m.Y') }}</p> <!-- Дата публикации -->
-                        <div class="blog-post-thumbnail-wrapper">
-                            <img src="{{ asset('storage/' . $post->preview_image) }}" alt="Изображение поста" class="img-fluid" style="width: 100%; height: auto;"> <!-- Изображение поста -->
+
+                        <div class="blog-post-thumbnail-wrapper text-center">
+                            <img src="{{ asset('storage/' . $post->preview_image) }}" alt="Изображение поста" class="img-fluid mx-auto" style="width: 90%; height: auto;"> <!-- Изображение поста -->
                         </div>
-                        <p class="blog-post-description">
+                        <p class="blog-post-description" style="margin-top: 20px;">
                             {{ Str::limit(strip_tags($post->content), 150, '...') }} <!-- Ограничиваем количество символов и убираем HTML-теги -->
                         </p>
 
+
                         <div class="post-actions">
-                            <div class="action-item">
-                                <i class="fa-solid fa-heart"></i>
-                                <span class="action-count">12</span> <!-- Количество лайков -->
-                            </div>
-                            <div class="action-item">
-                                <i class="fa-solid fa-comments"></i>
-                                <span class="action-count">5</span> <!-- Количество комментариев -->
-                            </div>
-                            <a href="" class="custom-button">Подробнее</a> <!-- Кнопка "Подробнее" -->
+                            <!-- @if($post->category)
+                                <span class="post-category">{{ $post->category->title }}</span> <!-- Category Name -->
+                            <!-- @endif -->
+                            @if($post->tags->count() > 0)
+                                <div class="post-tags">
+                                    @foreach($post->tags as $tag)
+                                        <span class="tag">{{ $tag->title }}</span> <!-- Tag Name -->
+                                    @endforeach
+                                </div>
+                            @endif
+                            
                         </div>
+
+                        <p style="margin-top: 20px;">
+                            <a href="#" class="link-black text-sm"><i class="fa-regular fa-heart icon-large"></i> Понравилось</a>
+                            <!-- <i class="fa-solid fa-heart"></i> -->
+                            <a href="#" class="link-black text-sm"><i class="far fa-comments mr-1 icon-large"></i> Комментарии</a>
+
+                            <span class="float-right">
+                                <a href="" class="custom-button">Подробнее</a> <!-- Кнопка "Подробнее" -->
+                            </span>
+                        </p>
+
+
                     </a>
                     <hr> <!-- Разделитель между постами -->
                 </div>
             </div>
             @endforeach
+
+        
+
         </section>
     </main>
 
@@ -54,40 +71,70 @@
 </div>
 
 <style>
+    
+        header{
+            position: fixed;
+        }
         .post-actions {
-    display: flex; /* Используем Flexbox для выравнивания элементов в строку */
-    align-items: center; /* Центрируем элементы по вертикали */
-    justify-content: space-between; /* Распределяем пространство между элементами */
-    margin-top: 10px; /* Отступ сверху */
-}
+            display: flex; /* Используем Flexbox для выравнивания элементов в строку */
+            align-items: center; /*Центрируем элементы по вертикали */
+            justify-content: space-between; /* Распределяем пространство между элементами */
+            margin-top: 10px; /* Отступ сверху */
+        }
 
-.action-item {
-    display: flex; /* Используем Flexbox для иконки и текста */
-    align-items: center; /* Центрируем по вертикали */
-    margin-right: 15px; /* Отступ между элементами */
-}
+        .action-item {
+            margin-right: 15px; /* Отступ между элементами */
+        }
 
-.action-icon {
-    width: 20px; /* Ширина иконки */
-    height: 20px; /* Высота иконки */
-    margin-right: 5px; /* Отступ между иконкой и текстом */
-}
+        .action-icon {
+            width: 20px; /* Ширина иконки */
+            height: 20px; /* Высота иконки */
+            margin-right: 5px; /* Отступ между иконкой и текстом */
+        }
+        .icon-large {
+            font-size: 30px; /* Set the desired icon size */
+            color: rgb(20, 3, 131);
+        }
 
-.custom-button {
-    background-color: #4CAF50; /* Зеленый цвет фона */
-    color: white; /* Цвет текста */
-    border: none; /* Убираем границу */
-    padding: 8px 15px; /* Отступы */
-    text-align: center; /* Выравнивание текста */
-    text-decoration: none; /* Убираем подчеркивание */
-    border-radius: 5px; /* Закругленные углы */
-    transition: background-color 0.3s; /* Плавный переход */
-}
 
-.custom-button:hover {
-    background-color: #45a049; /* Темнее при наведении */
-}
-</style>
+        .custom-button {
+            background-color:rgb(54, 112, 55); /* Зеленый цвет фона */
+            color: white; /* Цвет текста */
+            border: none; /* Убираем границу */
+            padding: 8px 15px; /* Отступы */
+            text-align: center; /* Выравнивание текста */
+            text-decoration: none; /* Убираем подчеркивание */
+            border-radius: 5px; /* Закругленные углы */
+            transition: background-color 0.3s; /* Плавный переход */
+        }
+
+        .blog-post-description{
+            
+            font-size: 20px; /* Увеличьте размер шрифта для лучшей читаемости */
+        }
+
+        .custom-button:hover {
+            background-color: #45a049; /* Темнее при наведении */
+        }
+
+        .post-category {
+            font-weight: bold; /* Make the category bold */
+            margin-right: 10px; /* Space between category and tags */
+        }
+
+        .post-tags {
+            display: inline-flex; /* Align tags in a row */
+            margin-right: 10px; /* Space between tags and other elements */
+        }
+
+        .tag {
+            background-color: #e0e0e0; /* Light gray background for tags */
+            border-radius: 5px; /* Rounded corners */
+            padding: 5px 10px; /* Padding for tags */
+            margin-right: 5px; /* Space between tags */
+        }
+
+        </style>
 
 <script>
     // Ваши скрипты

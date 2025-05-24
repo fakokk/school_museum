@@ -15,4 +15,5 @@ class Category extends Model
     protected $quarded = false;
     // Укажите поля, которые можно массово заполнять
     protected $fillable = ['title'];
+    
 }

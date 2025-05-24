@@ -1,21 +1,12 @@
 @extends('personal.layouts.main')
 @section('content')
 <div>
-    
-        @include('layouts.header') <!-- Подключение header из layouts -->
-        <!-- Main content here -->
-
+        @include('layouts.header')
 </div>
 <div class="app-wrapper">
-    <!--begin::Header-->
-    <nav class="app-header navbar navbar-expand bg-body">
-        <!-- Header content here -->
-    </nav>
-    <!--end::Header-->
 
-    @include('personal.layouts.sidebar') <!-- Include the sidebar template -->
+    @include('personal.layouts.sidebar')
 
-    <!--begin::App Main-->
     <main class="app-main">
         <h2>Комментарии</h2>
         <section class="content">

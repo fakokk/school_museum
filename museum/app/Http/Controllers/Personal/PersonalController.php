@@ -72,4 +72,18 @@ class PersonalController extends Controller
 
         return redirect()->route('personal')->with('success', 'Данные профиля успешно обновлены.');
     }
+
+    // public function store_comment(Request $request, $postId)
+    // {
+    //     $request->validate();
+
+    //     $comment = new Comment();
+    //     $comment->post_id = $postId;
+    //     $comment->user_id = auth()->id();;
+    //     $comment->message = $request->message;
+    //     $comment->save();
+
+    //     return redirect()->route('posts.show', $postId);
+    // }
+
 }
