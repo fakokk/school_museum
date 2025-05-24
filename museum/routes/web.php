@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CreateController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ShowpieceController;
 use App\Http\Controllers\Personal\PersonalController;
 
 /*
@@ -23,20 +24,35 @@ use App\Http\Controllers\Personal\PersonalController;
 Route::group(['namespace' => 'Main'], function(){
     Route::get('/',  [IndexController::class, 'welcome']);
     Route::get('/welcome', [IndexController::class, 'welcome'])->name('welcome');
+
     Route::get('/excursions', [IndexController::class, 'excursions'])->name('excursions');
+
     Route::get('/login', [IndexController::class, 'welcome'])->name('login');
     Route::get('/register', [IndexController::class, 'welcome'])->name('register');
+
+    Route::group(['namespace' => 'Post'], function(){
+        Route::get('/{post}', [IndexController::class, 'show'])->name('posts.show'); //просмотр конкретного поста
+    
+    });
+
+    Route::group(['namespace' => 'Comments'], function(){
+        // Route::get('/{comments}', [IndexController::class, 'show_comments'])->name('posts.comments'); //просмотр комментариев поста
+    
+    });
+    
 });
 
-// мартруты администратора
+
+// мартруты зарегистрированного пользователя
 Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' => ['auth'] ], function(){
+    
+    Route::get('/', [PersonalController::class, 'personal'])->name('personal');
 
     Route::group(['namespace' => 'Main'], function(){
-        Route::get('/', [PersonalController::class, 'personal'])->name('personal');
 
         // Route::get('/editaccount', [PersonalController::class, 'editaccount'])->name('editaccount');
-        Route::get('/personal/edit', [PersonalController::class, 'editaccount'])->name('personal.edit');
-        Route::post('/personal/update', [PersonalController::class, 'updateaccount'])->name('personal.update');
+        Route::get('/edit', [PersonalController::class, 'editaccount'])->name('personal.edit');
+        Route::post('/update', [PersonalController::class, 'updateaccount'])->name('personal.update');
 
 
         Route::group(['namespace' => 'Liked', 'prefix' => 'likes'], function(){
@@ -44,14 +60,13 @@ Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' =>
             Route::delete('/{post}', [PersonalController::class, 'delete'])->name('personal.likes.delete');
             });
 
-         Route::group(['namespace' => 'Comments', 'prefix' => 'comments'], function(){
-            Route::get('/comments', [PersonalController::class, 'comments'])->name('personal.comments');
-            Route::get('/{comments}/edit', [PersonalController::class, 'edit'])->name('personal.likes.edit');
-            Route::patch('/{comments}', [PersonalController::class, 'update'])->name('personal.likes.update');
-            Route::delete('/{comments}', [PersonalController::class, 'delete'])->name('personal.likes.delete');
-            });
-
-        
+        Route::group(['namespace' => 'Comments', 'prefix' => 'comments'], function(){
+            Route::get('/comments', [PersonalController::class, 'comments'])->name('personal.comments');//комментарии данного пользователя
+        //     // Route::get('/{post}', [PersonalController::class, 'store_comment'])->name('personal.comments.store');
+        //     // Route::get('/{comments}', [PersonalController::class, 'edit_comment'])->name('personal.comments.edit');
+        //     // Route::patch('/{comments}', [PersonalController::class, 'update_comment'])->name('personal.comments.update');
+        //     // Route::delete('/{comments}', [PersonalController::class, 'delete_comment'])->name('personal.comments.delete');
+        });
 
     });
 
@@ -88,6 +103,18 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('/{post}/edit', [PostController::class, 'edit'])->name('admin.post.edit');//кривое отображение формы редактирования
         Route::patch('/{post}', [PostController::class, 'update'])->name('admin.post.update');
         Route::delete('/{post}', [PostController::class, 'delete'])->name('admin.post.delete');
+        
+    });
+
+    Route::group(['namespace' => 'Showpiece', 'prefix' => 'showpiece'], function(){
+        Route::get('/', [ShowpieceController::class, 'post'])->name('admin.showpiece.index');
+        Route::get('/create', [ShowpieceController::class, 'create'])->name('admin.showpiece.create');
+        Route::post('/', [ShowpieceController::class, 'store'])->name('admin.showpiece.store');
+        // Route::get('/', [ShowpieceController::class, 'get_showpiece'])->name('admin.showpiece.index');
+        //Route::get('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.show');
+        //Route::get('/{showpiece}/edit', [ShowpieceController::class, 'edit'])->name('admin.showpiece.edit');
+        //Route::patch('/{showpiece}', [ShowpieceController::class, 'update'])->name('admin.showpiece.update');//
+        //Route::delete('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.delete');
     });
 
     Route::group(['namespace' => 'User', 'prefix' => 'user'], function(){
