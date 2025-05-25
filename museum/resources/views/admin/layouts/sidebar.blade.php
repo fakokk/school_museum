@@ -68,13 +68,19 @@
                         <li class="nav-item">
                             <a href="./docs/components/main-header.html" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Шапка сайта</p>
+                                <p>Контакты</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="./docs/components/main-sidebar.html" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Боковое меню</p>
+                                <p>Обратная связь</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./docs/components/main-sidebar.html" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Документы</p>
                             </a>
                         </li>
                     </ul>

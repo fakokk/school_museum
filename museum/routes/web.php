@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\Admin\AdminController;
@@ -8,8 +7,10 @@ use App\Http\Controllers\Admin\CreateController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ComponentsController;
 use App\Http\Controllers\Admin\ShowpieceController;
 use App\Http\Controllers\Personal\PersonalController;
+use App\Http\Controllers\Post\Comment\CommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,22 +31,14 @@ Route::group(['namespace' => 'Main'], function(){
     Route::get('/login', [IndexController::class, 'welcome'])->name('login');
     Route::get('/register', [IndexController::class, 'welcome'])->name('register');
 
-    Route::group(['namespace' => 'Post'], function(){
-        Route::get('/{post}', [IndexController::class, 'show'])->name('posts.show'); //просмотр конкретного поста
-    
-    });
+    // Route::get('{post}/comment', [IndexController::class, 'show_comments'])->name('posts.comment.store'); //просмотр комментариев поста
 
-    Route::group(['namespace' => 'Comments'], function(){
-        // Route::get('/{comments}', [IndexController::class, 'show_comments'])->name('posts.comments'); //просмотр комментариев поста
-    
-    });
-    
 });
 
 
 // мартруты зарегистрированного пользователя
 Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' => ['auth'] ], function(){
-    
+
     Route::get('/', [PersonalController::class, 'personal'])->name('personal');
 
     Route::group(['namespace' => 'Main'], function(){
@@ -62,19 +55,17 @@ Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' =>
 
         Route::group(['namespace' => 'Comments', 'prefix' => 'comments'], function(){
             Route::get('/comments', [PersonalController::class, 'comments'])->name('personal.comments');//комментарии данного пользователя
-        //     // Route::get('/{post}', [PersonalController::class, 'store_comment'])->name('personal.comments.store');
-        //     // Route::get('/{comments}', [PersonalController::class, 'edit_comment'])->name('personal.comments.edit');
-        //     // Route::patch('/{comments}', [PersonalController::class, 'update_comment'])->name('personal.comments.update');
-        //     // Route::delete('/{comments}', [PersonalController::class, 'delete_comment'])->name('personal.comments.delete');
-        });
+      });
 
     });
 
 });
 
-// мартруты администратора
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'admin', 'verified'] ], function(){
 
+
+// мартруты администратора
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'admin'] ], function(){
+    
     Route::get('/', [AdminController::class, 'admin'])->name('admin');
 
     Route::group(['namespace' => 'Category', 'prefix' => 'category'], function(){
@@ -84,14 +75,16 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::patch('/{category}', [CategoryController::class, 'update'])->name('admin.category.update');//
         Route::delete('/{category}', [CategoryController::class, 'delete'])->name('admin.category.delete');
     });
-
     Route::group(['namespace' => 'Tag', 'prefix' => 'tag'], function(){
         Route::get('/', [TagController::class, 'tag'])->name('admin.tag.index');
         Route::get('/create', [TagController::class, 'create_tag'])->name('admin.tag.create');
         Route::post('/', [TagController::class, 'store'])->name('admin.tag.store');
         Route::get('/', [TagController::class, 'get_tag'])->name('admin.tag.index');//
-        Route::patch('/{tag}', [TagController::class, 'update_tag'])->name('admin.tag.update');//
-        Route::delete('/{tag}', [TagController::class, 'delete_tag'])->name('admin.tag.delete');
+
+        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('admin.tag.edit');//кривое отображение формы редактирования
+        Route::patch('/{post}', [PostController::class, 'update'])->name('admin.tag.update');
+        Route::delete('/{post}', [PostController::class, 'delete'])->name('admin.tag.delete');
+
     });
 
     Route::group(['namespace' => 'Post', 'prefix' => 'post'], function(){
@@ -103,8 +96,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('/{post}/edit', [PostController::class, 'edit'])->name('admin.post.edit');//кривое отображение формы редактирования
         Route::patch('/{post}', [PostController::class, 'update'])->name('admin.post.update');
         Route::delete('/{post}', [PostController::class, 'delete'])->name('admin.post.delete');
-        
-    });
+     });
 
     Route::group(['namespace' => 'Showpiece', 'prefix' => 'showpiece'], function(){
         Route::get('/', [ShowpieceController::class, 'post'])->name('admin.showpiece.index');
@@ -128,8 +120,28 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::delete('/{user}', [UserController::class, 'delete'])->name('admin.user.delete');
     });
 
+    Route::group(['namespace' => 'Components', 'prefix' => 'components'], function(){
+        Route::get('/', [ComponentsController::class, 'components'])->name('admin.components.index');
+        Route::get('/{components}/edit', [ComponentsController::class, 'edit'])->name('admin.components.edit');
+        Route::patch('/{components}', [ComponentsController::class, 'update'])->name('admin.components.update');//
+        Route::delete('/{components}', [ComponentsController::class, 'delete'])->name('admin.components.delete');
+    });
+
+
 });
 
 Auth::routes(['verify' => true]);
+
+Route::group(['namespace' => 'Post', 'prefix' => 'posts'], function(){
+    Route::get('/{post}', [IndexController::class, 'show'])->name('post.show'); //просмотр конкретного поста
+    Route::post('/{post}', [IndexController::class, 'comment'])->name('post.comment.store'); //просмотр конкретного поста
+    
+    Route::group(['namespace' => 'Comment', 'prefix' => '{post}'], function(){
+        
+    });
+});
+
+//этот метод должен находиться здесь. костыль, иначе ломается доступ в личный кабинет
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

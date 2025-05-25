@@ -55,16 +55,17 @@
                                     <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
                                 </div>
 
-                                <form action="{{ route('personal.comments.store', $post->id) }}" method="POST">
+                                <form action="{{ route('post.comment.store', $post->id) }}" method="POST">
                                     @csrf
                                     <div class="input-group">
                                         <img class="direct-chat-img" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('default-avatar.png') }}" alt="message user image">
-                                        <input type="text" name="message" placeholder="Оставить комментарий ..." class="form-control" required style="margin-left: 20px;">
+                                        <input type="text" name="message" placeholder="Оставить комментарий ..." class="form-control" style="margin-left: 20px;">
                                         <span class="input-group-append">
                                             <button type="submit" class="btn btn-custom">Отправить</button>
                                         </span>
                                     </div>
                                 </form> 
+
                             </div>
                         @else
                             <div class="alert alert-warning" style="margin-top: 30px;">

@@ -16,8 +16,8 @@ class Post extends Model
     protected $quarded = false;
 
     protected $fillable = [
-        'title', // Добавьте другие поля, если необходимо
-        'content', // Например, если у вас есть поле content
+        'title',
+        'content',
         'preview_image',
         'category_id',
         'post_tags'
@@ -35,9 +35,12 @@ class Post extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
+    // public function likedUsers(){
+    //     return $this->belongsToMany(User::class, 'post_user_likes', 'post_id', 'user_id');
+    // }
+
+    public function commentS(){
+        return $this->hasMany(Comment::class, 'post_id', 'id');
     }
 
 }

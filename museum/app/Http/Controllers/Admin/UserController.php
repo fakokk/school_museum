@@ -34,16 +34,26 @@ class UserController extends Controller
     }
 
     //добавление нового пользователя
-    public function store(StoreRequest $request)
-    {
-        $data = $request->validated();
-        $password = Str::random(10);
-        $data['password'] = Hash::make($data['password']);
-        Mail::to($data['email'])->send(new PasswordMail($password));
-        User::firstOrCreate(['email'=> $data['email']], $data);
-        event(new Registered($user));
-        return redirect()->route('admin.user.index');
-    }
+public function store(StoreRequest $request)
+{
+    $data = $request->validated();
+
+    // Генерация случайного пароля
+    $password = Str::random(10);
+    $data['password'] = Hash::make($password); // Используем сгенерированный пароль
+
+    // Отправка письма с паролем
+    Mail::to($data['email'])->send(new PasswordMail($password));
+
+    // Создание нового пользователя
+    $user = User::firstOrCreate(['email' => $data['email']], $data);
+
+    // Генерация события регистрации
+    event(new Registered($user));
+
+    return redirect()->route('admin.user.index');
+}
+
     //вывод пользователей
     public function get_user()
     {

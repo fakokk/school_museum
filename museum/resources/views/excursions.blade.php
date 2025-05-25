@@ -16,7 +16,7 @@
             @foreach($posts as $post)
             <div style="max-width: 60%;"> 
                 <div class="featured-post blog-post" data-aos="fade-up" style="margin-bottom: 20px; width: 100%; max-width: 90%;"> 
-                       <a href="{{ route('posts.show', $post) }}" style="text-decoration: none; color: inherit; max-width: 90%">
+                       <a href="{{ route('post.show', $post) }}" style="text-decoration: none; color: inherit; max-width: 90%">
 
                         <h2 class="blog-post-title">{{ $post->title }}</h2> <!-- Заголовок поста -->
                         <p class="post-date">{{ $post->created_at->format('d.m.Y') }}</p> <!-- Дата публикации -->

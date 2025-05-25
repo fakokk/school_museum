@@ -3,11 +3,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller; // Correctly import the base Controller, обязательный пункт!
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Post\Comment\StoreRequest;
 use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Route;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\Comment;
 
 use Illuminate\Auth\AuthenticationException;
 
@@ -48,18 +50,18 @@ class IndexController extends Controller
        return view('post', compact('post', 'categories', 'tags'));
     }
 
-    // public function show_comments(Post $post)
-    // {
-    //    if (!$post) {
-    //        abort(404); // This will throw a 404 error if the post is not found
-    //    }
+    public function comment(Post $post, StoreRequest $request)
+{
+    $data = $request->validated();
 
-    //    $categories = Category::all();
-    //    $tags = Tag::all();
+    $data['user_id'] = auth()->user()->id;
+    $data['post_id'] = $post->id;
+        \Log::info('User ID: ' . $data['user_id']);
+    \Log::info('Post ID: ' . $data['post_id']);
 
-    //    return view('post', compact('post', 'categories', 'tags'));
-    // }
+    Comment::create($data);
 
-
+    return redirect()->route('post.show', $post->id);
+}
     
 }
