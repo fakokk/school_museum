@@ -57,7 +57,7 @@
                     ></path>
                   </svg>
                   <a
-                    href="{{ route ('admin.post.create')}}"
+                    href="{{ route ('admin.showpiece.create')}}"
                     class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
                   >
                     Подробнее <i class="bi bi-link-45deg"></i>

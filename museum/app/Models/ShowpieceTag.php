@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShowpiecePhoto extends Model
+class ShowpieceTag extends Model
 {
+    protected $table = 'showpiece_tags';
     use HasFactory;
-    protected $fillable = ['showpiece_id', 'url'];
 }

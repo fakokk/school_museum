@@ -14,8 +14,7 @@ class PostService
         try {
             
             $previewImage = $data['preview_image'];
-            // disk('public')->
-            // $data['preview_image'] = Storage::disk('public')->put('/images', $previewImage);
+            
             $data['preview_image'] = Storage::disk('public')->put('images', $data['preview_image']);
 
             $post = Post::firstOrCreate($data);

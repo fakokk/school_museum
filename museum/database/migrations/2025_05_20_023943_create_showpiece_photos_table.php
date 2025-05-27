@@ -18,16 +18,13 @@ class CreateShowpiecePhotosTable extends Migration
             $table->foreignId('showpiece_id')->constrained('showpiece'); // Связь с таблицей экспонатов
             $table->string('url'); // Поле для URL фото
             $table->timestamps();
+            $table->foreign('showpiece_id')->references('id')->on('showpiece')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('showpiece_photos');
     }
+
 }

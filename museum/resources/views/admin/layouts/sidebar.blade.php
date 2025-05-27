@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.post.index')}}" class="nav-link">
+                    <a href="{{route('admin.showpiece.index')}}" class="nav-link">
                         <i class="fa-solid fa-box-archive"></i>
                         <p>Экспонаты</p>
                     </a>

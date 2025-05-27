@@ -99,13 +99,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
      });
 
     Route::group(['namespace' => 'Showpiece', 'prefix' => 'showpiece'], function(){
-        Route::get('/', [ShowpieceController::class, 'post'])->name('admin.showpiece.index');
         Route::get('/create', [ShowpieceController::class, 'create'])->name('admin.showpiece.create');
-        Route::post('/', [ShowpieceController::class, 'store'])->name('admin.showpiece.store');
-        // Route::get('/', [ShowpieceController::class, 'get_showpiece'])->name('admin.showpiece.index');
-        //Route::get('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.show');
-        //Route::get('/{showpiece}/edit', [ShowpieceController::class, 'edit'])->name('admin.showpiece.edit');
-        //Route::patch('/{showpiece}', [ShowpieceController::class, 'update'])->name('admin.showpiece.update');//
+        Route::post('/', [ShowpieceController::class, 'new_showpiece'])->name('admin.showpiece.store');
+        Route::get('/', [ShowpieceController::class, 'get_showpiece'])->name('admin.showpiece.index');
+        Route::get('/{showpiece}/edit', [ShowpieceController::class, 'edit'])->name('admin.showpiece.edit');
+        Route::patch('/{showpiece}', [ShowpieceController::class, 'update'])->name('admin.showpiece.update');//
         //Route::delete('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.delete');
     });
 

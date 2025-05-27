@@ -1,31 +1,26 @@
 @extends('admin.layouts.main')
 @section('content')
 <div class="app-wrapper">
-    <!--begin::Header-->
-    <nav class="app-header navbar navbar-expand bg-body">
-        <!-- Header content here -->
-    </nav>
-    <!--end::Header-->
 
     @include('admin.layouts.sidebar') <!-- Include the sidebar template -->
 
-    <!--begin::App Main-->
     <main class="app-main ">
         @include('admin.layouts.header') <!-- Include the sidebar template -->
 
-        <h2>Создание нового экспоната</h2>
+        <h2>Редактирование экспоната</h2>
 
         <div class="col-12">
-            <form action="{{ route('admin.showpiece.store') }}" method="POST" enctype="multipart/form-data" class="mt-30">
+            <form action="{{ route('admin.showpiece.update', $showpiece->id) }}" method="POST" enctype="multipart/form-data" class="mt-30">
                 @csrf
+                @method('PUT') <!-- Используем метод PUT для обновления -->
                 <div class="form-group w-20">
-                    <input type="text" class="form-control w-50" name="title" placeholder="Название" value="{{ old('title') }}">
+                    <input type="text" class="form-control w-50" name="title" placeholder="Название" value="{{ old('title', $showpiece->title) }}">
                     @error('title')
                     <div class="text-danger">Это поле необходимо для заполнения</div>
                     @enderror
                 </div>
                 <div class="form-group mt-3">
-                    <textarea name="content" id="summernote" class="summernote">{{ old('content') }}</textarea>
+                    <textarea name="content" id="summernote" class="summernote">{{ old('content', $showpiece->content) }}</textarea>
                     @error('content')
                     <div class="text-danger">Это поле необходимо для заполнения</div>
                     @enderror
@@ -34,7 +29,7 @@
                     <h4>Выбор категории</h4>
                     <select name="category_id" class="form-control">
                         @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ $category->id == old('category_id') ? 'selected' : '' }}>
+                        <option value="{{ $category->id }}" {{ $category->id == old('category_id', $showpiece->category_id) ? 'selected' : '' }}>
                             {{ $category->title }}
                         </option>
                         @endforeach
@@ -45,7 +40,7 @@
                     <h4>Выбор тегов</h4>
                     <select class="select2" name="tag_ids[]" multiple="multiple" data-placeholder="Выберите теги" style="width: 100%;">
                         @foreach($tags as $tag)
-                        <option {{ is_array(old('tag_ids')) && in_array($tag->id, old('tag_ids')) ? 'selected' : '' }} value="{{ $tag->id }}">
+                        <option {{ (is_array(old('tag_ids')) && in_array($tag->id, old('tag_ids'))) || $showpiece->tags->contains($tag->id) ? 'selected' : '' }} value="{{ $tag->id }}">
                             {{ $tag->title }}
                         </option>
                         @endforeach                 
@@ -69,14 +64,20 @@
                     <input type="hidden" name="photos_data" id="photos-data">
                 </div>
 
-
                 <div class="form-group mt-3" id="image-preview-container">
                     <h4>Предпросмотр изображений</h4>
-                    <div id="image-preview" class="d-flex flex-wrap"></div>
+                    <div id="image-preview" class="d-flex flex-wrap">
+                        @foreach($showpiece->photos as $photo)
+                            <div class="img-container" style="position: relative; margin: 10px;">
+                                <img src="{{ Storage::url($photo->url) }}" class="img-thumbnail" alt="Фото экспоната" style="height: 100px; width: auto;">
+                                <span class="remove-photo" style="position: absolute; top: 0; right: 0; cursor: pointer; color: red; font-size: 20px;">&times;</span>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
                 <div class="form-group mt-3">
-                    <input type="submit" class="btn btn-primary" value="Добавить">
+                    <input type="submit" class="btn btn-primary" value="Сохранить изменения">
                 </div>
             </form>
         </div>
@@ -152,7 +153,5 @@
         }
     });
 </script>
-
-
 
 @endsection
