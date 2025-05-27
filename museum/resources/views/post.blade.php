@@ -40,12 +40,40 @@
 
 
                         <p style="margin-top: 20px;">
-                            <a href="#" class="link-black text-sm"><i class="fa-regular fa-heart icon-large"></i> Понравилось</a>
-                            <a href="#" class="link-black text-sm"><i class="far fa-comments mr-1 icon-large"></i> Комментарии</a>
+                            <a href="#" class="text" style="text-decoration: none; color: inherit; font-size: 20px;">
+                                <i class="fa-regular fa-heart icon-large"></i> {{ $post->comments()->count() }}
+                            </a>
+                            <a href="#" class="text" style="text-decoration: none; color: inherit; font-size: 20px; margin-left:20px;">
+                                <i class="far fa-comments mr-1 icon-large"></i> {{ $post->comments()->count() }}
+                            </a>
 
                         </p>
                     </a>
                     <hr> <!-- Разделитель между постами -->
+
+                    @foreach($comments as $comment)
+                        <!-- вывод всех комментариев к посту -->
+                        <div class="post" style="margin-top: 30px;">
+                            <div class="user-block">
+                                <img class="img-circle img-bordered-sm"src="{{ $comment->user->user_image ? asset('storage/' . $comment->user->user_image) : asset('default-avatar.png') }}" alt="user image">
+                                <span class="username">
+                                    <a href="#">{{ $comment->user->username }}</a> <!-- Имя пользователя -->
+                                    <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                                </span>
+                                <span class="description">Оставлено {{ $comment->created_at->diffForHumans() }}</span> 
+                            </div>
+
+                            <p>
+                                {{ $comment->message }} <!-- Содержимое комментария -->
+                            </p>
+
+                            <p>
+                                <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Ответить</a>
+                            </p>
+
+                        </div>
+                    @endforeach
+
 
                     <div class="row">
                         @if(auth()->check())
@@ -55,7 +83,7 @@
                                     <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
                                 </div>
 
-                                <form action="{{ route('post.comment.store', $post->id) }}" method="POST">
+                                <form action="{{ route('personal.comment.store', $post->id) }}" method="POST">
                                     @csrf
                                     <div class="input-group">
                                         <img class="direct-chat-img" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('default-avatar.png') }}" alt="message user image">

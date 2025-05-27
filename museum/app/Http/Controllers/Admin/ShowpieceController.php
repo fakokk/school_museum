@@ -42,22 +42,39 @@ class ShowpieceController extends BaseController
         // Фильтрация по тегу
         if ($request->filled('tag')) {
             $query->whereHas('tags', function($q) use ($request) {
-                $q->where('tags.id', $request->tag);
+                $q->where('tags.id', $request->tag); // Указываем, что это id из таблицы tags
             });
         }
 
-        $showpieces = $query->with(['photos', 'category'])->get();
-
-        if ($request->ajax()) {
-            return response()->json(['showpieces' => $showpieces]);
-        }
-
+        $showpieces = $query->get();
         $categories = Category::all(); // Получите все категории
         $tags = Tag::all(); // Получите все теги
 
         return view('admin.main.showpiece', compact('showpieces', 'categories', 'tags'));
     }
 
+
+    // показ экспоната во всплывающем окне
+    public function show($id)
+    {
+        $showpiece = Showpiece::with(['photos', 'category', 'tags'])->findOrFail($id);
+        
+        // Формируем массив с данными, включая полный URL для фотографий
+        $showpieceData = [
+            'id' => $showpiece->id,
+            'title' => $showpiece->title,
+            'content' => $showpiece->content,
+            'category' => $showpiece->category,
+            'tags' => $showpiece->tags,
+            'photos' => $showpiece->photos->map(function($photo) {
+                return [
+                    'url' => Storage::url($photo->url) // Убедитесь, что здесь возвращается полный URL
+                ];
+            }),
+        ];
+
+        return response()->json($showpieceData);
+    }
 
 
 

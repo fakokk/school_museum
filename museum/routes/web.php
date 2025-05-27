@@ -28,9 +28,13 @@ Route::group(['namespace' => 'Main'], function(){
 
     Route::get('/excursions', [IndexController::class, 'excursions'])->name('excursions');
      Route::get('/showpiece', [IndexController::class, 'showpiece'])->name('showpiece');
+     
+    Route::get('/showpiece/{id}', [IndexController::class, 'show_showpiece'])->name('showpiece.show');
 
     Route::get('/login', [IndexController::class, 'welcome'])->name('login');
     Route::get('/register', [IndexController::class, 'welcome'])->name('register');
+
+
 
 
 
@@ -58,7 +62,9 @@ Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' =>
 
         Route::group(['namespace' => 'Comments', 'prefix' => 'comments'], function(){
             Route::get('/comments', [PersonalController::class, 'comments'])->name('personal.comments');//комментарии данного пользователя
-      });
+            Route::post('/{post}', [PersonalController::class, 'comment'])->name('personal.comment.store'); //просмотр конкретного поста
+    
+        });
 
     });
 
@@ -111,6 +117,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('/{showpiece}/edit', [ShowpieceController::class, 'edit'])->name('admin.showpiece.edit');
         Route::patch('/{showpiece}', [ShowpieceController::class, 'update'])->name('admin.showpiece.update');//
         //Route::delete('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.delete');
+        Route::get('/{id}', [ShowpieceController::class, 'show'])->name('admin.showpiece.show');
+
 
         Route::delete('/admin/showpiece/photo/{id}', [ShowpieceController::class, 'destroyPhoto'])->name('admin.showpiece.photo.destroy');
 
@@ -141,9 +149,10 @@ Auth::routes(['verify' => true]);
 
 Route::group(['namespace' => 'Post', 'prefix' => 'posts'], function(){
     Route::get('/{post}', [IndexController::class, 'show'])->name('post.show'); //просмотр конкретного поста
-    Route::post('/{post}', [IndexController::class, 'comment'])->name('post.comment.store'); //просмотр конкретного поста
-    
+    // 
     Route::group(['namespace' => 'Comment', 'prefix' => '{post}'], function(){
+        
+        // Route::get('/comments', [CommentsController::class, 'comments'])->name('comments');
         
     });
 });

@@ -25,7 +25,7 @@
                             <img src="{{ asset('storage/' . $post->preview_image) }}" alt="Изображение поста" class="img-fluid mx-auto" style="width: 90%; height: auto;"> <!-- Изображение поста -->
                         </div>
                         <p class="blog-post-description" style="margin-top: 20px;">
-                            {{ Str::limit(strip_tags($post->content), 150, '...') }} <!-- Ограничиваем количество символов и убираем HTML-теги -->
+                            {{ Str::limit(strip_tags($post->content), 300, '...') }} <!-- Ограничиваем количество символов и убираем HTML-теги -->
                         </p>
 
 
@@ -59,8 +59,10 @@
                 </div>
             </div>
             @endforeach
-
-        
+            <!-- views/vendor/pagination/bootstrap-4blade.php -->
+            <div class="d-flex justify-content-center">
+                {{ $posts->links() }} 
+            </div>
 
         </section>
     </main>

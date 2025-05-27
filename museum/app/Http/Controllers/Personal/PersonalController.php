@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Personal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\UpdateRequest;
-use App\Http\Requests\Comment\StoreRequest;
+use App\Http\Requests\Post\Comment\StoreRequest;
 use Illuminate\Support\Facades\File;
 use App\Models\Post;
 use App\Models\User;
@@ -73,6 +73,20 @@ class PersonalController extends Controller
         $user->save(); // Сохраняем изменения в базе данных
 
         return redirect()->route('personal')->with('success', 'Данные профиля успешно обновлены.');
+    }
+
+    public function comment(Post $post, StoreRequest $request)
+    {
+        $data = $request->validated();
+
+        $data['user_id'] = auth()->user()->id;
+        $data['post_id'] = $post->id;
+            \Log::info('User ID: ' . $data['user_id']);
+        \Log::info('Post ID: ' . $data['post_id']);
+
+        Comment::create($data);
+
+        return redirect()->route('post.show', $post->id);
     }
 
 }

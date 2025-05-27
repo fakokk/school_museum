@@ -3,7 +3,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller; // Correctly import the base Controller, обязательный пункт!
 
 use Illuminate\Http\Request;
-use App\Http\Requests\Post\Comment\StoreRequest;
 use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Route;
 use App\Models\Post;
@@ -25,7 +24,7 @@ class IndexController extends Controller
 
     public function excursions()
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(20);
+        $posts = Post::orderBy('created_at', 'desc')->paginate(10);
         return view('excursions', compact('posts')); // Возвращает представление spa.blade.php
     }
     
@@ -45,30 +44,39 @@ class IndexController extends Controller
         return view('auth.register'); // Возвращает представление spa.blade.php
     }
 
-    public function show(Post $post)
+    public function show_showpiece(Post $post)
     {
-       if (!$post) {
-           abort(404); // если поста не существует
-       }
+        if (!$post) {
+            abort(404); // если поста не существует
+        }
 
-       $categories = Category::all();
-       $tags = Tag::all();
+        $categories = Category::all();
+        $tags = Tag::all();
+        // Получаем комментарии для данного поста
+        $comments = Comment::where('post_id', $post->id)->with('user')->get();
 
-       return view('post', compact('post', 'categories', 'tags'));
+        return view('post', compact('post', 'categories', 'tags', 'comments'));
     }
 
-    public function comment(Post $post, StoreRequest $request)
-{
-    $data = $request->validated();
+        public function show($id)
+    {
+        $showpiece = Showpiece::with(['photos', 'category', 'tags'])->findOrFail($id);
+        
+        // Формируем массив с данными, включая полный URL для фотографий
+        $showpieceData = [
+            'id' => $showpiece->id,
+            'title' => $showpiece->title,
+            'content' => $showpiece->content,
+            'category' => $showpiece->category,
+            'tags' => $showpiece->tags,
+            'photos' => $showpiece->photos->map(function($photo) {
+                return [
+                    'url' => Storage::url($photo->url) // Убедитесь, что здесь возвращается полный URL
+                ];
+            }),
+        ];
 
-    $data['user_id'] = auth()->user()->id;
-    $data['post_id'] = $post->id;
-        \Log::info('User ID: ' . $data['user_id']);
-    \Log::info('Post ID: ' . $data['post_id']);
-
-    Comment::create($data);
-
-    return redirect()->route('post.show', $post->id);
-}
+        return response()->json($showpieceData);
+    }
     
 }

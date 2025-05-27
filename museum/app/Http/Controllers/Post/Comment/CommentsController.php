@@ -12,19 +12,17 @@ use App\Models\Comment;
 class CommentsController extends Controller
 {
 
-public function comment(Post $post, StoreRequest $request)
-{
-    $data = $request->validated();
+    public function comment(Post $post, StoreRequest $request)
+    {
+        $data = $request->validated();
 
-    $data['user_id'] = auth()->user()->id;
-    $data['post_id'] = $post->id;
-        \Log::info('User ID: ' . $data['user_id']);
-    \Log::info('Post ID: ' . $data['post_id']);
+        $data['user_id'] = auth()->user()->id;
+        $data['post_id'] = $post->id;
 
-    Comment::create($data);
+        Comment::create($data);
 
-    return redirect()->route('post.show', $post->id);
-}
+        return redirect()->route('post.show', $post->id);
+    }
 
     
 
