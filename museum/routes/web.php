@@ -84,7 +84,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('/{post}/edit', [PostController::class, 'edit'])->name('admin.tag.edit');//кривое отображение формы редактирования
         Route::patch('/{post}', [PostController::class, 'update'])->name('admin.tag.update');
         Route::delete('/{post}', [PostController::class, 'delete'])->name('admin.tag.delete');
-
     });
 
     Route::group(['namespace' => 'Post', 'prefix' => 'post'], function(){
@@ -102,9 +101,13 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('/create', [ShowpieceController::class, 'create'])->name('admin.showpiece.create');
         Route::post('/', [ShowpieceController::class, 'new_showpiece'])->name('admin.showpiece.store');
         Route::get('/', [ShowpieceController::class, 'get_showpiece'])->name('admin.showpiece.index');
+        //Route::get('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.show');
         Route::get('/{showpiece}/edit', [ShowpieceController::class, 'edit'])->name('admin.showpiece.edit');
         Route::patch('/{showpiece}', [ShowpieceController::class, 'update'])->name('admin.showpiece.update');//
         //Route::delete('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.delete');
+
+        Route::delete('/admin/showpiece/photo/{id}', [ShowpieceController::class, 'destroyPhoto'])->name('admin.showpiece.photo.destroy');
+
     });
 
     Route::group(['namespace' => 'User', 'prefix' => 'user'], function(){

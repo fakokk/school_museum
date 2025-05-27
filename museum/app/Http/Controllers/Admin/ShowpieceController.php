@@ -8,7 +8,8 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller; // Correctly import the base Controller, обязательный пункт!
 use App\Http\Requests\Admin\Showpiece\ShowpieceRequest;
-use App\Http\Requests\Admin\Post\UpdateRequest;
+use App\Http\Requests\Admin\Showpiece\ShowpieceUpdate;
+
 
 use App\Models\Showpiece;
 use App\Models\ShowpiecePhoto;
@@ -18,11 +19,13 @@ use App\Models\Tag;
 
 class ShowpieceController extends BaseController
 {
-    public function post()
+        //вывод категорий
+    public function get_showpiece()
     {
-        //переход на страницы c постами
-        return view('admin.main.showpiece');
+        $showpieces = Showpiece::orderBy('created_at', 'asc')->get();
+        return view('admin.main.showpiece', compact('showpieces'));
     }
+
     public function create()
     {
         //показ страницы создания экспоната
@@ -30,12 +33,7 @@ class ShowpieceController extends BaseController
         $tags = Tag::all();
         return view('admin.main.create_showpiece', compact('categories', 'tags'));
     }
-        //вывод категорий
-    public function get_showpiece()
-    {
-        $showpieces = Showpiece::all();
-        return view('admin.main.showpiece', compact('showpieces'));
-    }
+
 
     public function new_showpiece(ShowpieceRequest $request)
     {
@@ -80,20 +78,60 @@ class ShowpieceController extends BaseController
     }
 
     //изменение поста
-    public function update(UpdateRequest $request, $id)
+    public function update(ShowpieceUpdate $request, $id)
     {
         // Находим пост по ID
-        $post = Post::findOrFail($id);
+        $showpiece = Showpiece::findOrFail($id);
         
         // Получаем валидированные данные из запроса
         $data = $request->validated();
 
-        // Обновляем пост с помощью сервиса
-        $post = $this->service->update($data, $post);
 
-        return redirect()->route('admin.post.index');
+        try {
+            $tagIds = $data['tag_ids'];
+            unset($data['tag_ids']);
+
+            //обработка изображения
+                    // Обработка загруженных изображений
+            if (isset($data['photos'])) {
+                foreach ($data['photos'] as $photo) {
+                    // Сохраняем изображение и получаем путь
+                    $imagePath = Storage::disk('public')->put('images', $photo);
+
+                    // Сохраняем путь к изображению в таблице showpiece_photos
+                    $showpiece->photos()->create([
+                        'url' => $imagePath
+                    ]);
+                }
+            }
+            $showpiece->fill($data);// Обновляем только те поля, которые были переданы
+            $showpiece->save(); // Сохраняем изменения
+
+
+            if (!empty($tagIds)) {
+                $showpiece->tags()->sync($tagIds);
+            }else {
+            // Если тегов нет, можно удалить все привязанные теги
+            $showpiece->tags()->detach();
+        }
+        } catch (Exception $exception){
+            abort(500);
+        } 
+
+
+        return redirect()->route('admin.showpiece.index');
         // return view('admin.main.posts', compact('post'));
     }
+
+    public function destroyPhoto($id)
+    {
+        $photo = ShowpiecePhoto::findOrFail($id); // Предполагается, что у вас есть модель ShowpiecePhoto
+        Storage::disk('public')->delete($photo->url); // Удаляем файл из хранилища
+        $photo->delete(); // Удаляем запись из базы данных
+
+        return response()->json(['success' => true]);
+    }
+
 
 
 }

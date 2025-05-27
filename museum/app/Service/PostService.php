@@ -13,9 +13,12 @@ class PostService
     {
         try {
             
-            $previewImage = $data['preview_image'];
+            if (isset($data['preview_image']))
+            {
+                $data['preview_image'] = Storage::disk('public')->put('/images', $data['preview_image']);
+            }
             
-            $data['preview_image'] = Storage::disk('public')->put('images', $data['preview_image']);
+            // $data['preview_image'] = Storage::disk('public')->put('images', $data['preview_image']);
 
             $post = Post::firstOrCreate($data);
             // Обработка тегов

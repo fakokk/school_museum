@@ -90,7 +90,6 @@
     </footer>
     <!--end::Footer-->
 </div>
-
 <script>
     const photosInput = document.getElementById('url');
     const imagePreviewContainer = document.getElementById('image-preview');
