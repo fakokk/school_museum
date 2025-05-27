@@ -25,6 +25,41 @@ class ShowpieceController extends BaseController
         $showpieces = Showpiece::orderBy('created_at', 'asc')->get();
         return view('admin.main.showpiece', compact('showpieces'));
     }
+    public function index(Request $request)
+    {
+        $query = Showpiece::query();
+
+        // Поиск по названию
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        // Фильтрация по категории
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        // Фильтрация по тегу
+        if ($request->filled('tag')) {
+            $query->whereHas('tags', function($q) use ($request) {
+                $q->where('tags.id', $request->tag);
+            });
+        }
+
+        $showpieces = $query->with(['photos', 'category'])->get();
+
+        if ($request->ajax()) {
+            return response()->json(['showpieces' => $showpieces]);
+        }
+
+        $categories = Category::all(); // Получите все категории
+        $tags = Tag::all(); // Получите все теги
+
+        return view('admin.main.showpiece', compact('showpieces', 'categories', 'tags'));
+    }
+
+
+
 
     public function create()
     {

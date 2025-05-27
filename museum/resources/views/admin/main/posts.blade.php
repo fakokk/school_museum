@@ -65,8 +65,22 @@
                                 </tr> -->
                                 @foreach($posts as $post)
                                 </tr>
-                                    <td>{{$post->id}}</td>
                                     <td>{{$post->title}}</td>
+                                    <td>
+                                        @if($post->preview_image)
+                                            <img src="{{ Storage::url($post->preview_image) }}" alt="Preview Image" style="width: 100px; height: auto;"/>
+                                        @else
+                                            <img/>
+                                        @endif
+                                    </td>
+
+                                    
+                                    <td>
+                                        <p class="blog-post-description" style="margin-top: 20px;">
+                                            {{ Str::limit(strip_tags($post->content), 30, '...') }} <!-- Ограничиваем количество символов и убираем HTML-теги -->
+                                        </p>
+                                    </td>
+
                                     <td>{{$post->category ? $post->category->title : 'Без категории'}}</td>
                             
                                     <!-- просмотр поста с такой категорией -->

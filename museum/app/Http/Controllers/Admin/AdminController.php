@@ -14,11 +14,23 @@ class AdminController extends Controller
 {
     public function admin()
     {
+        // return view('create'); // Возвращает представление spa.blade.php
+        return view('admin.main.index');
+    }
+
+    public function statist()
+    {
         $data = [];
         $data['usersCount'] = User::all()->count();
         $data['postsCount'] = Post::all()->count();
 
         // return view('create'); // Возвращает представление spa.blade.php
-        return view('admin.main.index', compact('data'));
+        return view('admin.main.statist', compact('data'));
+    }
+
+    public function comments()
+    {
+        // return view('create'); // Возвращает представление spa.blade.php
+        return view('admin.main.comments');
     }
 }

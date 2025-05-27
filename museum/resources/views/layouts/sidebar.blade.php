@@ -4,20 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        body {
+            margin: 0; /* Убираем отступы по умолчанию */
+            padding: 0; /* Убираем отступы по умолчанию */
+        }
+
+        .header {
+            z-index: 1200; /* Устанавливаем z-index выше, чем у бокового меню */
+        }
+
         .sidebar-menu {
             position: fixed;  
-            height: 100vh; 
+            height: calc(100vh - 70px); /* Высота бокового меню с учетом высоты заголовка */
             width: 280px; 
             left: 0; 
             background: rgb(63, 86, 123);
             overflow: hidden; 
             transition: all 0.3s linear; 
             z-index: 999; 
-            top: 40px;
+            top: 70px; /* Устанавливаем верхнюю границу на высоту заголовка */
         }
 
         .sidebar-menu .menu {
-            margin-top: 40px; 
+            margin-top: 20px; /* Уменьшаем отступ сверху для бокового меню */
         }
 
         .sidebar-menu .menu li {
@@ -67,7 +76,8 @@
         }
 
         main {
-            margin-left: 10px;
+            margin-left: 300px; /* Увеличиваем отступ слева, чтобы избежать наложения */
+            padding: 20px; /* Добавляем отступы для основного контента */
         }
 
         /* Адаптивные стили */
@@ -76,6 +86,7 @@
                 width: 100%; /* Ширина бокового меню на всю ширину экрана */
                 height: auto; /* Автоматическая высота для адаптивности */
                 position: relative; /* Изменяем позиционирование на относительное */
+                top: 0; /* Убираем отступ сверху для мобильных устройств */
             }
 
             .sidebar-menu .menu {
@@ -101,43 +112,48 @@
             .sidebar-menu .social_media i {
                 font-size: 18px; /* Уменьшаем размер шрифта для иконок социальных сетей */
             }
+
+            main {
+                margin-left: 0; /* Убираем отступ слева для мобильных устройств */
+                padding: 10px; /* Уменьшаем отступы для мобильных устройств */
+            }
         }
     </style>
 </head>
 
 <body>
-<div class="sidebar-menu">
-    <div class="menu">
-        <ul>
-            <li>
-                <a href="#">Экспонаты</a>
-            </li>
-            <li>
-                <a href="#">Экскурсии</a>
-            </li>
-            <li>
-                <a href="{{ route('excursions') }}">Новости</a>
-            </li>
-            <li>
-                <a href="#">Мероприятия</a>
-            </li>
-            <li>
-                <a href="#">Фотоархив</a>
-            </li>
-            <li>
-                <a href="#">Видеоклипы</a>
-            </li>
-            <li>
-                <a href="#">Контакты</a>
-            </li>
-            <li>
-                <a href="#">Обратная связь</a>
-            </li>
-            <li>
-                <a href="#">Документы</a>
-            </li>
-        </ul>
+    <div class="sidebar-menu">
+        <div class="menu">
+            <ul>
+                <li>
+                    <a href="{{ route('showpiece') }}">Экспонаты</a>
+                </li>
+                <li>
+                    <a href="#">Экскурсии</a>
+                </li>
+                <li>
+                    <a href="{{ route('excursions') }}">Новости</a>
+                </li>
+                <li>
+                    <a href="#">Мероприятия</a>
+                </li>
+                <li>
+                    <a href="#">Фотоархив</a>
+                </li>
+                <li>
+                    <a href="#">Видеоклипы</a>
+                </li>
+                <li>
+                    <a href="#">Контакты</a>
+                </li>
+                <li>
+                    <a href="#">Обратная связь</a>
+                </li>
+                <li>
+                    <a href="#">Документы</a>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </body>
 </html>

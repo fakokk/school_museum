@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Comment;
+use App\Models\Showpiece;
 
 use Illuminate\Auth\AuthenticationException;
 
@@ -24,8 +25,14 @@ class IndexController extends Controller
 
     public function excursions()
     {
-        $posts = Post::paginate(20);
+        $posts = Post::orderBy('created_at', 'desc')->paginate(20);
         return view('excursions', compact('posts')); // Возвращает представление spa.blade.php
+    }
+    
+    public function showpiece()
+    {
+        $showpieces = Showpiece::orderBy('created_at', 'desc')->paginate(20);
+        return view('showpiece', compact('showpieces')); // Возвращает представление spa.blade.php
     }
 
     public function login()

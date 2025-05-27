@@ -47,6 +47,22 @@
                     </a>
                 </li>
 
+                <li class="nav-header">АДМИНИСТРИРОВАНИЕ</li>
+
+                <li class="nav-item">
+                    <a href="{{ route('statist') }}" class="nav-link">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                        <p>Статистика</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('comments') }}" class="nav-link">
+                        <i class="fa-solid fa-comment"></i>
+                        <p>Комментарии</p>
+                    </a>
+                </li>
+
+
                 <li class="nav-header">НАВИГАЦИЯ ПО САЙТУ</li>
 
                 

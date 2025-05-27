@@ -27,9 +27,12 @@ Route::group(['namespace' => 'Main'], function(){
     Route::get('/welcome', [IndexController::class, 'welcome'])->name('welcome');
 
     Route::get('/excursions', [IndexController::class, 'excursions'])->name('excursions');
+     Route::get('/showpiece', [IndexController::class, 'showpiece'])->name('showpiece');
 
     Route::get('/login', [IndexController::class, 'welcome'])->name('login');
     Route::get('/register', [IndexController::class, 'welcome'])->name('register');
+
+
 
     // Route::get('{post}/comment', [IndexController::class, 'show_comments'])->name('posts.comment.store'); //просмотр комментариев поста
 
@@ -67,6 +70,8 @@ Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' =>
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'admin'] ], function(){
     
     Route::get('/', [AdminController::class, 'admin'])->name('admin');
+    Route::get('/statist', [AdminController::class, 'statist'])->name('statist');    
+    Route::get('/comments', [AdminController::class, 'comments'])->name('comments');
 
     Route::group(['namespace' => 'Category', 'prefix' => 'category'], function(){
         Route::get('/', [CategoryController::class, 'category'])->name('admin.category.index');
@@ -98,9 +103,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
      });
 
     Route::group(['namespace' => 'Showpiece', 'prefix' => 'showpiece'], function(){
+        
+        Route::get('/', [ShowpieceController::class, 'index'])->name('admin.showpiece.index');
         Route::get('/create', [ShowpieceController::class, 'create'])->name('admin.showpiece.create');
         Route::post('/', [ShowpieceController::class, 'new_showpiece'])->name('admin.showpiece.store');
-        Route::get('/', [ShowpieceController::class, 'get_showpiece'])->name('admin.showpiece.index');
         //Route::get('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.show');
         Route::get('/{showpiece}/edit', [ShowpieceController::class, 'edit'])->name('admin.showpiece.edit');
         Route::patch('/{showpiece}', [ShowpieceController::class, 'update'])->name('admin.showpiece.update');//
