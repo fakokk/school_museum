@@ -32,8 +32,8 @@
 
                     <h2 style="text-align: center; margin-bottom: 20px;">Подборки экспонатов</h2>
 
-                        <div class="" style="width: 18rem; margin-left: 20px;">
-                            <a href="{{ route('admin.post.create') }}" style="text-decoration: none;">
+                        <div class="" style="width: 18rem; margin-left: 20px;" data-tag-id="10">
+                            <a style="text-decoration: none;">
                                 <div class="card-my" style="width: 18rem; background-image: url('../../dist/assets/img/news.jfif'); ">
                                     <div class="card-body-my text-center" style="">
                                         <h4>Караульскою тропою</h4>
@@ -42,8 +42,8 @@
                             </a>
                         </div>
 
-                        <div class="" style="width: 18rem; margin-left: 20px;">
-                            <a href="{{ route('admin.showpiece.create') }}" style="text-decoration: none;">
+                        <div class="" style="width: 18rem; margin-left: 20px;" data-tag-id="6">
+                            <a style="text-decoration: none;">
                                 <div class="card-my" style="background-image: url('../../dist/assets/img/byt.jfif'); ">
                                     <div class="card-body-my text-center" style="">
                                         <h4>Предметы быта</h4>
@@ -52,8 +52,8 @@
                             </a>
                         </div>
 
-                        <div class="" style="width: 18rem; margin-left: 20px;">
-                            <a href="{{ route('admin.showpiece.create') }}" style="text-decoration: none;">
+                        <div class="" style="width: 18rem; margin-left: 20px;" data-tag-id="4">
+                            <a style="text-decoration: none;">
                                 <div class="card-my" style="background-image: url('../../dist/assets/img/arhive.jfif'); ">
                                     <div class="card-body-my text-center" style="">
                                         <h4>Фотоархивы</h4>
@@ -62,8 +62,8 @@
                             </a>
                         </div>
 
-                        <div class="" style="width: 18rem; margin-left: 20px;">
-                            <a href="{{ route('admin.showpiece.create') }}" style="text-decoration: none;">
+                        <div class="" style="width: 18rem; margin-left: 20px;" data-tag-id="9">
+                            <a style="text-decoration: none;">
                                 <div class="card-my" style="background-image: url('../../dist/assets/img/school.jpg'); ">
                                     <div class="card-body-my text-center" style="">
                                         <h4>История школы</h4>
@@ -72,8 +72,8 @@
                             </a>
                         </div>
 
-                        <div class="" style="width: 18rem; margin-left: 20px;">
-                            <a href="{{ route('admin.showpiece.create') }}" style="text-decoration: none;">
+                        <div class="" style="width: 18rem; margin-left: 20px;" data-tag-id="3">
+                            <a style="text-decoration: none;">
                                 <div class="card-my" style="background-image: url('../../dist/assets/img/priroda.jfif'); ">
                                     <div class="card-body-my text-center" style="">
                                         <h4>Природа</h4>
@@ -214,6 +214,64 @@
         };
     });
 </script>
+
+<script>
+document.querySelectorAll('.card-my').forEach(function(card) {
+    card.addEventListener('click', function() {
+        const tagId = this.getAttribute('data-tag-id'); // Получаем ID тега
+
+        // Выполните AJAX-запрос для получения отфильтрованных данных по тегу
+        fetch(`/filter?tag_id=${tagId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Обновите содержимое страницы с отфильтрованными данными
+                updateShowpieces(data);
+            })
+            .catch(error => console.error('Ошибка:', error));
+    });
+});
+
+function updateShowpieces(data) {
+    const container = document.querySelector('.row'); // Предполагается, что это контейнер для карточек
+    container.innerHTML = ''; // Очистите контейнер
+
+    data.forEach(showpiece => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.width = 'auto';
+        card.style.backgroundImage = `url('../../dist/assets/img/stolb.jfif')`;
+        card.style.backgroundSize = 'cover';
+        card.style.backgroundPosition = 'center';
+        card.style.color = 'white';
+        card.style.border = 'none';
+        card.style.display = 'flex';
+        card.style.flexDirection = 'column';
+        card.style.margin = '10px';
+        card.style.maxHeight = '500px';
+
+        card.innerHTML = `
+            <div id="carousel-${showpiece.id}" class="carousel slide" data-ride="carousel" data-interval="false">
+                <div class="carousel-inner">
+                    ${showpiece.photos.map((photo, index) => `
+                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                            <div class="photo-container">
+                                <img src="${photo.url}" class="d-block img-thumbnail photo" alt="Фото экспоната">
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="card-body text-center" style="padding: 10px; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px; flex-grow: 0; display: flex; flex-direction: column; justify-content: center; height: 80px; margin-bottom: 5px">
+                <h5 class="card-title" style="margin: 0;">${showpiece.title}</h5>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+</script>
+
 <script>
     // для карусели 
     document.addEventListener('DOMContentLoaded', function() {

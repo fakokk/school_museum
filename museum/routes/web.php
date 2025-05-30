@@ -30,13 +30,11 @@ Route::group(['namespace' => 'Main'], function(){
      Route::get('/showpiece', [IndexController::class, 'showpiece'])->name('showpiece');
      
     Route::get('/showpiece/{id}', [IndexController::class, 'show_showpiece'])->name('showpiece.show');
+    
+    Route::get('/filter', [IndexController::class, 'filter']);
 
     Route::get('/login', [IndexController::class, 'welcome'])->name('login');
     Route::get('/register', [IndexController::class, 'welcome'])->name('register');
-
-
-
-
 
     // Route::get('{post}/comment', [IndexController::class, 'show_comments'])->name('posts.comment.store'); //просмотр комментариев поста
 

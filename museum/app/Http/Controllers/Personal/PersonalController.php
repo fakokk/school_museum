@@ -24,6 +24,7 @@ class PersonalController extends Controller
         return view('personal.main.likes', compact('posts'));
     }
 
+    //функция удаления лайка с поста
     public function delete_like(Post $post)
     {
         auth()->user()->LikedPosts()->detach($post->id);
@@ -31,11 +32,12 @@ class PersonalController extends Controller
     }
 
     // Все комментарии, оставленные пользователем
-    public function comments() 
+    public function comments()
     {
-        $comments = auth()->user()->comments;
+        $comments = Comment::where('user_id', auth()->id())->with('post')->get();
         return view('personal.main.comments', compact('comments'));
     }
+
 
     // Метод для редактирования профиля
     public function editaccount()

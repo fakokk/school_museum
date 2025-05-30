@@ -44,6 +44,17 @@ class IndexController extends Controller
         return view('auth.register'); // Возвращает представление spa.blade.php
     }
 
+    public function filter(Request $request)
+    {
+        $tagId = $request->input('tag_id'); // Получаем ID тега
+        $showpieces = Showpiece::whereHas('tags', function($query) use ($tagId) {
+            $query->where('id', $tagId); // Фильтруем по ID тега
+        })->with('photos')->get();
+
+        return response()->json($showpieces);
+    }
+
+
     public function show_showpiece(Post $post)
     {
         if (!$post) {
