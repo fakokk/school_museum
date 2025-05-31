@@ -83,17 +83,14 @@
                         </div>
                         </div>
                     <hr>
-                    <form action="/search" method="GET" class="search-form" style="display: flex; justify-content: flex-end; align-items: center; margin-top: 30px;">
-                        <input type="search" name="query" placeholder="Найти экспонат..." class="form-control" style="width: 400px;">
-                        <button type="submit" class="btn btn-block btn-dark btn-lg" style="margin-left: 20px; width: 150px; height: 40px; display: flex; justify-content: center; align-items: center;">Поиск</button>
-                    </form>
-
-
 
                     <div class="container-fluid" style="margin-top: 50px">
                         <div class="row justify-content-center">
+                        @if($showpieces->isEmpty())
+                            <p>Не найдено.</p>
+                        @else
                             @foreach($showpieces as $showpiece)
-                            <div class="card" style="background-image: url('../../dist/assets/img/stolb.jfif'); background-size: cover; background-position: center; color: white; border: none; display: flex; flex-direction: column; margin: 10px; max-height: 500px;" >    
+                                <div class="card" style="background-image: url('../../dist/assets/img/stolb.jfif'); background-size: cover; background-position: center; color: white; border: none; display: flex; flex-direction: column; margin: 10px; max-height: 500px;" >    
                                 
                                 <div id="carousel-{{ $showpiece->id }}" class="carousel slide" data-ride="carousel" data-interval="false">
                                     <div class="carousel-inner">
@@ -114,6 +111,7 @@
                                 </div>
                             </div>
                             @endforeach
+                        @endif
                         </div>
                     </div>
                 </div>
@@ -136,11 +134,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- views/vendor/pagination/bootstrap-4blade.php -->
-            <div class="d-flex justify-content-center">
-                {{ $showpieces->links() }} 
             </div>
             
 

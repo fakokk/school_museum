@@ -2,10 +2,8 @@
 @section('content')
 <div class="app-wrapper">
 
-    <main class="app-main ml-3">
-        @include('admin.layouts.header')
-
-        <h2>Редактирование экспоната</h2>
+<main class="app-main " style="margin-left: 30px; margin-top: 30px;">
+        <h2 style="margin-bottom: 30px;">Редактирование экспоната</h2>
 
         <div class="col-12">
             <form action="{{ route('admin.showpiece.update', $showpiece->id) }}" method="POST" enctype="multipart/form-data" class="mt-30">

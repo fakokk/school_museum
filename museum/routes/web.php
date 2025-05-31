@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CreateController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\ComponentsController;
 use App\Http\Controllers\Admin\ShowpieceController;
 use App\Http\Controllers\Personal\PersonalController;
 use App\Http\Controllers\Post\Comment\CommentsController;
+use App\Http\Controllers\Post\Likes\LikesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,12 +31,14 @@ Route::group(['namespace' => 'Main'], function(){
     Route::get('/excursions', [IndexController::class, 'excursions'])->name('excursions');
      Route::get('/showpiece', [IndexController::class, 'showpiece'])->name('showpiece');
      
-    Route::get('/showpiece/{id}', [IndexController::class, 'show_showpiece'])->name('showpiece.show');
+    Route::get('/showpiece/{id}', [IndexController::class, 'show_piece'])->name('showpiece.show');
     
     Route::get('/filter', [IndexController::class, 'filter']);
 
     Route::get('/login', [IndexController::class, 'welcome'])->name('login');
     Route::get('/register', [IndexController::class, 'welcome'])->name('register');
+
+    Route::get('/search', [SearchController::class, 'index']);
 
     // Route::get('{post}/comment', [IndexController::class, 'show_comments'])->name('posts.comment.store'); //просмотр комментариев поста
 
@@ -116,8 +120,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::patch('/{showpiece}', [ShowpieceController::class, 'update'])->name('admin.showpiece.update');//
         //Route::delete('/{showpiece}', [ShowpieceController::class, 'delete'])->name('admin.showpiece.delete');
         Route::get('/{id}', [ShowpieceController::class, 'show'])->name('admin.showpiece.show');
-
-
         Route::delete('/admin/showpiece/photo/{id}', [ShowpieceController::class, 'destroyPhoto'])->name('admin.showpiece.photo.destroy');
 
     });
@@ -144,17 +146,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 });
 
 Auth::routes(['verify' => true]);
+Route::post('/posts/{post}/like', [LikesController::class, 'likePost'])->name('posts.like.store');
+
 
 Route::group(['namespace' => 'Post', 'prefix' => 'posts'], function(){
     Route::get('/{post}', [IndexController::class, 'show'])->name('post.show'); //просмотр конкретного поста
-    // 
-    Route::group(['namespace' => 'Comment', 'prefix' => '{post}'], function(){
-        
-        // Route::get('/comments', [CommentsController::class, 'comments'])->name('comments');
-        
-    });
-});
+    //
 
+});
 //этот метод должен находиться здесь. костыль, иначе ломается доступ в личный кабинет
 
 

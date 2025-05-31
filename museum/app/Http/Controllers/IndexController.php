@@ -11,6 +11,8 @@ use App\Models\Tag;
 use App\Models\Comment;
 use App\Models\Showpiece;
 
+use Illuminate\Support\Facades\Storage; // Добавьте этот импорт 
+
 use Illuminate\Auth\AuthenticationException;
 
 
@@ -55,7 +57,7 @@ class IndexController extends Controller
     }
 
 
-    public function show_showpiece(Post $post)
+    public function show(Post $post)
     {
         if (!$post) {
             abort(404); // если поста не существует
@@ -69,7 +71,8 @@ class IndexController extends Controller
         return view('post', compact('post', 'categories', 'tags', 'comments'));
     }
 
-        public function show($id)
+
+    public function show_piece($id)
     {
         $showpiece = Showpiece::with(['photos', 'category', 'tags'])->findOrFail($id);
         
@@ -89,5 +92,6 @@ class IndexController extends Controller
 
         return response()->json($showpieceData);
     }
+
     
 }

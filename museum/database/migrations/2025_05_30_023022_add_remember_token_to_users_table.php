@@ -6,27 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRememberTokenToUsersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->string('remember_token')->nullable()->after('password');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
-    {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
-    }
+   {
+       Schema::table('users', function (Blueprint $table) {
+           $table->dropColumn('remember_token');
+       });
+   }
+
 }

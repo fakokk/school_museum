@@ -123,6 +123,7 @@
             <form class="search-form">
                 <input type="search" class="form-control" placeholder="Поиск" />
             </form>
+
             <div class="ms-auto d-flex align-items-center">
                 <ul class="navbar-nav navbar-right-wrap mx-2 flex-row">
                     <li class="dropdown d-inline-block position-static">

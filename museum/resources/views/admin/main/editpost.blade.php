@@ -1,19 +1,8 @@
 @extends('admin.layouts.main')
 @section('content')
 <div class="app-wrapper">
-    <!--begin::Header-->
-    <nav class="app-header navbar navbar-expand bg-body">
-        <!-- Header content here -->
-    </nav>
-    <!--end::Header-->
-
-    @include('admin.layouts.sidebar') <!-- Include the sidebar template -->
-
-    <!--begin::App Main-->
-    <main class="app-main ">
-        @include('admin.layouts.header') <!-- Include the sidebar template -->
-
-        <h2>Редактирование поста</h2>
+<main class="app-main " style="margin-left: 30px; margin-top: 30px;">
+        <h2 style="margin-bottom: 30px;">Редактирование поста</h2>
 
         <div class="col-12">
             <form action="{{ route('admin.post.update', $post->id) }}" method="POST" enctype="multipart/form-data" class="mt-30">

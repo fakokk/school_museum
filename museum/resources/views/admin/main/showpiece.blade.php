@@ -94,7 +94,7 @@
                                     </div>
                                     <ul class="list-group ">
                                         <div>
-                                            <li class="list-group-item">{{ Str::limit(strip_tags($showpiece->content), 150, '...') }}</li>
+                                            <li class="list-group-item">{!!Str::limit(strip_tags($showpiece->content), 150, '...') !!}</li>
                                         </div>
                                           
                                     </ul>
@@ -226,4 +226,3 @@
         });
     });
 </script>
-
