@@ -3,9 +3,6 @@
 
 @include('layouts.header')
 
-<div>
-    @include('layouts.sidebar')
-</div>
 <div class="app-wrapper">
     <main class="app-main">
         <section class="featured-posts-section d-flex flex-column align-items-center">

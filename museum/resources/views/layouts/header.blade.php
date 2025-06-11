@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: "Noto Sans", sans-serif;
-            margin: 0;
-            padding: 0;
-        }
         header {
             position: fixed;
             background-color: rgb(53, 73, 106);
@@ -48,6 +43,7 @@
             margin: 0;
         }
         .menu li {
+            position: relative; /* Для выпадающего меню */
             margin: 0 15px;
             color: white;
         }
@@ -56,14 +52,31 @@
             text-decoration: none;
             font-size: 24px;
         }
+        .dropdown {
+            display: none; /* Скрываем выпадающее меню по умолчанию */
+            position: absolute;
+            background-color: rgb(63, 86, 123);
+            top: 100%; /* Позиционируем под родительским элементом */
+            left: 0;
+            z-index: 1000;
+            min-width: 200px; /* Минимальная ширина выпадающего меню */
+        }
+        .menu li:hover .dropdown {
+            display: block; /* Показываем выпадающее меню при наведении */
+        }
+        .dropdown li {
+            padding: 10px;
+            list-style: none;
+        }
+        .dropdown li a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+        }
         .search-form {
             display: flex;
             align-items: center;
             margin-left: 15px;
-        }
-        main {
-            padding: 20px;
-            margin-top: 20px; /* Отступ сверху, равный высоте header */ 
         }
         h1 {
             font-size: 36px;
@@ -99,9 +112,6 @@
             .search-form input {
                 width: 100%; /* Ширина поля ввода на всю ширину */
             }
-            .avatar{
-                margin-left: 10px;
-            }
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,15 +129,30 @@
             <ul class="menu">
                 <li><a href="{{ route('welcome') }}">Главная</a></li>
                 <li><a href="{{ route('excursions') }}">Новости</a></li>
+                <li>
+                    <a href="#">Музей</a>
+                    <ul class="dropdown">
+                        <li><a href="{{ route('showpiece') }}">Экспонаты</a></li>
+                        <li><a href="#">Экскурсии</a></li>
+                        <li><a href="#">Фотоархив</a></li>
+                        <li><a href="#">Видеоматериалы</a></li>
+                        <li><a href="#">Документы</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Контакты</a>
+                    <ul class="dropdown">
+                        <li><a href="#">Обратная связь</a></li>
+                        <li><a href="#">Социальные сети</a></li>
+                    </ul>
+                </li>
             </ul>
             <form class="search-form">
                 <input type="search" class="form-control" placeholder="Поиск" />
             </form>
-
             <div class="ms-auto d-flex align-items-center">
                 <ul class="navbar-nav navbar-right-wrap mx-2 flex-row">
-                    <li class="dropdown d-inline-block position-static">
-                           <a class="rounded-circle" href="{{ Auth::check() ? route('personal') : route('login') }}" aria-expanded="false">
+                    <a class="rounded-circle" href="{{ Auth::check() ? route('personal') : route('login') }}" aria-expanded="false">
                             <div class="avatar avatar-md avatar-indicators avatar-online ml-3">
                                 @if(Auth::check())
                                     <img alt="avatar" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('storage/images/default-avatar.png') }}" class="rounded-circle" style="width: 50px; height: 50px;"/>
@@ -136,14 +161,11 @@
                                 @endif    
                             </div>
                         </a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </header>
-<main>
-    <!-- Ваш основной контент -->
-</main>
+
 </body>
 </html>

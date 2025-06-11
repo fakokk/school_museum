@@ -19,12 +19,13 @@ use App\Models\Tag;
 
 class ShowpieceController extends BaseController
 {
-        //вывод категорий
+    //вывод экспонатов
     public function get_showpiece()
     {
         $showpieces = Showpiece::orderBy('created_at', 'asc')->get();
         return view('admin.main.showpiece', compact('showpieces'));
     }
+    //поиск экспонатов
     public function index(Request $request)
     {
         $query = Showpiece::query();
@@ -47,8 +48,8 @@ class ShowpieceController extends BaseController
         }
 
         $showpieces = $query->get();
-        $categories = Category::all(); // Получите все категории
-        $tags = Tag::all(); // Получите все теги
+        $categories = Category::all(); // Получить все категории
+        $tags = Tag::all(); // Получить все теги
 
         return view('admin.main.showpiece', compact('showpieces', 'categories', 'tags'));
     }
@@ -68,15 +69,13 @@ class ShowpieceController extends BaseController
             'tags' => $showpiece->tags,
             'photos' => $showpiece->photos->map(function($photo) {
                 return [
-                    'url' => Storage::url($photo->url) // Убедитесь, что здесь возвращается полный URL
+                    'url' => Storage::url($photo->url)
                 ];
             }),
         ];
 
         return response()->json($showpieceData);
     }
-
-
 
     public function create()
     {
@@ -87,6 +86,7 @@ class ShowpieceController extends BaseController
     }
 
 
+    // создание нового экспоната
     public function new_showpiece(ShowpieceRequest $request)
     {
         $data = $request->validated();
@@ -118,6 +118,7 @@ class ShowpieceController extends BaseController
         return redirect()->route('admin.showpiece.index')->with('success', 'Showpiece created successfully!');
     }
 
+    // редактирование экспоната
     public function edit(Showpiece $showpiece)
     {
         $showpiece = Showpiece::findOrFail($showpiece->id);
@@ -138,13 +139,11 @@ class ShowpieceController extends BaseController
         // Получаем валидированные данные из запроса
         $data = $request->validated();
 
-
         try {
             $tagIds = $data['tag_ids'];
             unset($data['tag_ids']);
 
-            //обработка изображения
-                    // Обработка загруженных изображений
+            // Обработка загруженных изображений
             if (isset($data['photos'])) {
                 foreach ($data['photos'] as $photo) {
                     // Сохраняем изображение и получаем путь
@@ -170,20 +169,18 @@ class ShowpieceController extends BaseController
             abort(500);
         } 
 
-
         return redirect()->route('admin.showpiece.index');
         // return view('admin.main.posts', compact('post'));
     }
 
+    // удаление фотографий экспонатов
     public function destroyPhoto($id)
     {
-        $photo = ShowpiecePhoto::findOrFail($id); // Предполагается, что у вас есть модель ShowpiecePhoto
+        $photo = ShowpiecePhoto::findOrFail($id); 
         Storage::disk('public')->delete($photo->url); // Удаляем файл из хранилища
         $photo->delete(); // Удаляем запись из базы данных
 
         return response()->json(['success' => true]);
     }
-
-
 
 }

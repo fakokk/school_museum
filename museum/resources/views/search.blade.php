@@ -3,9 +3,7 @@
 @section('content')
 <!-- Экспонаты, отображаемые на сайте -->
 @include('layouts.header') <!-- Include the sidebar template -->
-<div>
-    @include('layouts.sidebar') <!-- Include the sidebar template -->
-</div>
+
 
 <div class="app-wrapper">
     <!--begin::App Main-->
@@ -88,6 +86,7 @@
                         <div class="row justify-content-center">
                         @if($showpieces->isEmpty())
                             <p>Не найдено.</p>
+                            <p href="{{ route('showpiece') }}">Вернуться</p>
                         @else
                             @foreach($showpieces as $showpiece)
                                 <div class="card" style="background-image: url('../../dist/assets/img/stolb.jfif'); background-size: cover; background-position: center; color: white; border: none; display: flex; flex-direction: column; margin: 10px; max-height: 500px;" >    

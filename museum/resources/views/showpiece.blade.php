@@ -3,9 +3,7 @@
 @section('content')
 <!-- Экспонаты, отображаемые на сайте -->
 @include('layouts.header') <!-- Include the sidebar template -->
-<div>
-    @include('layouts.sidebar') <!-- Include the sidebar template -->
-</div>
+
 
 <div class="app-wrapper">
     <!--begin::App Main-->
