@@ -1,310 +1,186 @@
 @extends('layouts.app')
 @section('content')
 <div>
-    @include('layouts.header') <!-- Включить шаблон заголовка -->
+    @include('layouts.header')
 </div>
 
-<main class="app-main"> <!-- Центрирование как по горизонтали, так и по вертикали -->
-
-<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
-        <div class="section-overlay"></div>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3D405B" fill-opacity="1" d="M0,224L34.3,192C68.6,160,137,96,206,90.7C274.3,85,343,139,411,144C480,149,549,107,617,122.7C685.7,139,754,213,823,240C891.4,267,960,245,1029,224C1097.1,203,1166,181,1234,160C1302.9,139,1371,117,1406,106.7L1440,96L1440,0L1405.7,0C1371.4,0,1303,0,1234,0C1165.7,0,1097,0,1029,0C960,0,891,0,823,0C754.3,0,686,0,617,0C548.6,0,480,0,411,0C342.9,0,274,0,206,0C137.1,0,69,0,34,0L0,0Z"></path></svg>
+<main class="app-main">
+    <!-- Герой-секция с фоновым изображением -->
+    <section class="hero-section position-relative" id="section_1" 
+             style="background: url('{{ asset('storage/images/timofeev.webp') }}') no-repeat center center; background-size: cover; min-height: 100vh;">
         
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-12 mb-5 mb-lg-0">
-                    <h2 class="text-white">Историко-краеведческий музеи им. Тимофеева Ю.П.</h2>
-                    <h1 class="cd-headline rotate-1 text-white mb-4 pb-2">
-                        <span>Добро</span>
-                        <span class="cd-words-wrapper" style="width: 161px;">
-                            <b class="is-visible">
-                                пожаловать!
-                            </b>
-                            <b class="is-hidden">пожаловать!</b>
-                        </span>
-                    </h1>
-                </div>
-                <div class="col-lg-6 col-12">
-                    <div class="ratio ratio-16x9">
-                    <iframe width="560" height="315" src="//ok.ru/videoembed/6292160449220?nochat=1" frameborder="0" allow="autoplay" allowfullscreen></iframe>    </div>
+        <!-- Затемнение фона -->
+        <div class="section-overlay position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0, 0, 0, 0.02);"></div>
+        
+        <!-- Иконки соцсетей в левом верхнем углу -->
+        <div class="social-icons position-absolute z-3" style="top: 100px; left: 20px;">
+            <div>
+                <a href="https://ok.ru/group/59325617078468" target="_blank" rel="noopener noreferrer">
+                <img alt="Одноклассники" 
+                    src="{{ asset('storage/images/tg.webp') }}" 
+                    class="rounded-circle" 
+                    style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
+                    title="Мы в Телеграм">
+                </a>
+            </div>
+
+            <div style="margin-top: 14px;">
+                <a href="https://ok.ru/group/59325617078468" target="_blank" rel="noopener noreferrer">
+                    <img alt="Одноклассники" 
+                        src="{{ asset('storage/images/ok.png') }}" 
+                        class="rounded-circle" 
+                        style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
+                        title="Мы в Одноклассниках">
+                </a>
+            </div>
+        </div>
+
+        <!-- Эпиграф в левой части -->
+        <div class="container position-relative h-100">
+            <div class="row align-items-end h-100" style="padding-bottom: 100px;">
+                <div class="col-lg-5 col-md-7 col-10">
+                    <div class="epigraph-block bg-dark bg-opacity-50 p-3 p-md-4 rounded text-white">
+                        <h3 class="fst-italic mb-2 mb-md-3" style="font-size: clamp(1rem, 1.5vw, 1.3rem);">Я б основателей музеев</h3>
+                        <h3 class="fst-italic mb-2 mb-md-3" style="font-size: clamp(1rem, 1.5vw, 1.3rem);">Поставил в бронзе всех разделов,</h3>
+                        <h3 class="fst-italic mb-2 mb-md-3" style="font-size: clamp(1rem, 1.5vw, 1.3rem);">За кропотливый, нужный труд</h3>
+                        <h3 class="fst-italic" style="font-size: clamp(1rem, 1.5vw, 1.3rem);">За всё, рассказанное тут …</h3>
+                    </div>
                 </div>
             </div>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffffff" fill-opacity="1" d="M0,224L34.3,192C68.6,160,137,96,206,90.7C274.3,85,343,139,411,144C480,149,549,107,617,122.7C685.7,139,754,213,823,240C891.4,267,960,245,1029,224C1097.1,203,1166,181,1234,160C1302.9,139,1371,117,1406,106.7L1440,96L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>
-    </section>    
 
-    <div>
-        <h3>Справочная информация:</h3>
-        <ul>
-            <li>Юридический адрес: Забайкальский край, Кыринский район, с. Верхний Ульхун, ул. Школьная 1, МБОУ «Верхне-Ульхунская СОШ».</li>
-            <li>Год образования: 1962 (старейший школьный музей на территории Забайкальского края).</li>
-            <li>Номер в реестре школьных музеев Российской Федерации: 5286</li>
-            <li>Площадь: 84 кв.м.: два помещения 48 и 36 кв.м.</li>
-            <li>Координирующий орган: Совет музея – 6 человек.</li>
-            <li>Количество экспонатов: около 9000 (материальных – 5500, документальных – 3500).</li>
-            <li>Количество постоянных экспозиций: 10</li>
-        </ul>
+        <!-- Декоративная волна -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="position-absolute bottom-0 w-100">
+            <path fill="#ffffff" fill-opacity="1" d="M0,224L34.3,192C68.6,160,137,96,206,90.7C274.3,85,343,139,411,144C480,149,549,107,617,122.7C685.7,139,754,213,823,240C891.4,267,960,245,1029,224C1097.1,203,1166,181,1234,160C1302.9,139,1371,117,1406,106.7L1440,96L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path>
+        </svg>
+    </section>
+
+    <!-- Карусель -->
+    <div class="container py-5">
+        <!-- Ваша существующая карусель -->
     </div>
 
-        <div class="container">
-        <div class="carousel">
-            <input type="radio" name="slides" checked="checked" id="slide-1">
-            <input type="radio" name="slides" id="slide-2">
-            <input type="radio" name="slides" id="slide-3">
-            <input type="radio" name="slides" id="slide-4">
-            <input type="radio" name="slides" id="slide-5">
-            <input type="radio" name="slides" id="slide-6">
-            
-            <ul class="carousel__slides">
-                <li class="carousel__slide">
-                    <figure>
-                        <img src="{{ asset('storage/images/banner1.jfif') }}" alt="">
-                    </figure>
-                </li>
-                <li class="carousel__slide">
-                    <figure>
-                        <img src="{{ asset('storage/images/banner2.png') }}" alt="">
-                    </figure>
-                </li>
-                <li class="carousel__slide">
-                    <figure>
-                        <img src="{{ asset('storage/images/banner3.jfif') }}" alt="">
-                    </figure>
-                </li>
-                <li class="carousel__slide">
-                    <figure>
-                        <img src="https://picsum.photos/id/1045/800/450" alt="">    
-                    </figure>
-                </li>
-                <li class="carousel__slide">
-                    <figure>
-                        <img src="https://picsum.photos/id/1049/800/450" alt="">
-                    </figure>
-                </li>
-                <li class="carousel__slide">
-                    <figure>
-                        <img src="https://picsum.photos/id/1052/800/450" alt="">
-                    </figure>
-                </li>
-            </ul>    
-            <ul class="carousel__thumbnails">
-                <li>
-                    <label for="slide-1" onclick="event.preventDefault(); document.getElementById('slide-1').checked = true;">
-                        <img src="{{ asset('storage/images/banner1.jfif') }}" alt="">
-                    </label>
-                </li>
-                <li>
-                    <label for="slide-2" onclick="event.preventDefault(); document.getElementById('slide-2').checked = true;">
-                        <img src="{{ asset('storage/images/banner2.png') }}" alt="">
-                    </label>
-                </li>
-                <li>
-                    <label for="slide-3" onclick="event.preventDefault(); document.getElementById('slide-3').checked = true;">
-                        <img src="{{ asset('storage/images/banner3.jfif') }}" alt="">
-                    </label>
-                </li>
-                <li>
-                    <label for="slide-4" onclick="event.preventDefault(); document.getElementById('slide-4').checked = true;">
-                        <img src="https://picsum.photos/id/1045/150/150" alt="">
-                    </label>
-                </li>
-                <li>
-                    <label for="slide-5" onclick="event.preventDefault(); document.getElementById('slide-5').checked = true;">
-                        <img src="https://picsum.photos/id/1049/150/150" alt="">
-                    </label>
-                </li>
-                <li>
-                    <label for="slide-6" onclick="event.preventDefault(); document.getElementById('slide-6').checked = true;">
-                        <img src="https://picsum.photos/id/1052/150/150" alt="">
-                    </label>
-                </li>
-            </ul>
-
+    <!-- Основной контент -->
+    <div>
+        <div>
+            <div>
+                <p class="lead">Музей был образован в 1962 году и является старейшим музеем на территории Забайкальского края. На площади 84 кв. м в двух помещениях находится около 9 тысяч экспонатов, из которых материальных – 5500, документальных – 3500. Имеется 10 постоянных экспозиций, повествующих об истории пограничного казачества, гражданской войны в Забайкалье, об истории колхоза «Путь Ильича», русско-монгольской дружбы и многом другом.</p>
+                <p>В музее регулярно проводятся встречи и экскурсии. Школьники, обучающиеся в МБОУ «Верхне-Ульхунская СОШ», принимают участие в научно-практических конференциях и конкурсах районного, краевого и всероссийского масштаба.</p>
+            </div>
         </div>
     </div>
-
 </main>
 
-<script>               
-
-</script>
-
 <style>
+    /* Основные стили */
     .app-main {
+        overflow-x: hidden;
     }
 
-    section {
-        background: #F4F4F4;
-        padding: 50px 0;
-    }
-
-    .container {
-        max-width: 1044px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .carousel {
-        display: block;
-        text-align: left;
-        position: relative;
-        margin-bottom: 22px;
-    }
-
-    .carousel__slides {
-        position: relative;
-        z-index: 1;
+    .hero-section {
         padding: 0;
-        margin: 0;
-        overflow: hidden;
-        white-space: nowrap;
+        color: white;
+    }
+
+    .epigraph-block {
+        max-width: 400px;
+        width: 100%;
         box-sizing: border-box;
-        display: flex;
+        backdrop-filter: blur(5px);
+        border-left: 3px solid var(--primary-color);
+        transition: all 0.3s ease;
     }
 
-    .carousel__slide {
-        position: relative;
-        display: block;
-        flex: 1 0 100%;
-        width: 450px;
-        height: auto; /* Fixed height for uniformity */
-        overflow: hidden;
+    .epigraph-block:hover {
+        background-color: rgba(0,0,0,0.7) !important;
     }
 
-    .carousel__slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Ensures images are not cropped */
+    /* Стили для иконок */
+    .social-icons a {
+        transition: all 0.3s ease;
+        opacity: 0.8;
     }
 
-    .carousel__thumbnails {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        margin-top: 20px;
+    .social-icons a:hover {
+        opacity: 1;
+        transform: scale(1.1);
+        color: var(--primary-color) !important;
     }
 
-    .carousel__thumbnails li {
-        flex: 1;
-        max-width: calc((100% / 6) - 20px);
-        margin: 0 10px;
+    /* Дополнительные стили для текста */
+    .lead {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
     }
 
-    .carousel__thumbnails img {
-        width: 100%;
-        height: auto; /* Maintain aspect ratio for thumbnails */
-        object-fit: cover;
+    /* Адаптивные стили */
+    @media (max-width: 992px) {
+        .hero-section {
+            min-height: 80vh;
+        }
+        
+        .social-icons {
+            top: 100px !important;
+            left: 15px !important;
+        }
+        
+        .social-icons img {
+            width: 40px !important;
+            height: 40px !important;
+        }
     }
 
-    /* Additional styles from the second block */
-    .carousel > input {
-        clip: rect(1px, 1px, 1px, 1px);
-        clip-path: inset(50%);
-        height: 1px;
-        width: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
+    @media (max-width: 768px) {
+        .hero-section {
+            min-height: 70vh;
+        }
+        
+        .epigraph-block {
+            max-width: 350px !important;
+            padding: 1rem !important;
+        }
+        .social-icons {
+            top: 100px !important; /* Увеличено */
+        }
+        
+        .row.align-items-end {
+            padding-bottom: 80px !important;
+        }
     }
 
-    .carousel > input:nth-of-type(6):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -500%; }
-    .carousel > input:nth-of-type(5):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -400%; }
-    .carousel > input:nth-of-type(4):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -300%; }
-    .carousel > input:nth-of-type(3):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -200%; }
-    .carousel > input:nth-of-type(2):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -100%; }
-    .carousel > input:nth-of-type(1):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: 0%; }
-
-    .carousel > input:nth-of-type(1):checked ~ .carousel__thumbnails li:nth-of-type(1) { box-shadow: 0px 0px 0px 5px rgba(0,0,255,0.5); }
-    .carousel > input:nth-of-type(2):checked ~ .carousel__thumbnails li:nth-of-type(2) { box-shadow: 0px 0px 0px 5px rgba(0,0,255,0.5); }
-    .carousel > input:nth-of-type(3):checked ~ .carousel__thumbnails li:nth-of-type(3) { box-shadow: 0px 0px 0px 5px rgba(0,0,255,0.5); }
-    .carousel > input:nth-of-type(4):checked ~ .carousel__thumbnails li:nth-of-type(4) { box-shadow: 0px 0px 0px 5px rgba(0,0,255,0.5); }
-    .carousel > input:nth-of-type(5):checked ~ .carousel__thumbnails li:nth-of-type(5) { box-shadow: 0px 0px 0px 5px rgba(0,0,255,0.5); }
-    .carousel > input:nth-of-type(6):checked ~ .carousel__thumbnails li:nth-of-type(6) { box-shadow: 0px 0px 0px 5px rgba(0,0,255,0.5); }
-
-/*---------------------------------------
-  TYPOGRAPHY               
------------------------------------------*/
-
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--dark-color);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: var(--font-weight-medium);
-  letter-spacing: -1px;
-}
-
-h1 {
-  font-size: var(--h1-font-size);
-  font-weight: var(--font-weight-bold);
-}
-
-h2 {
-  font-size: var(--h2-font-size);
-  font-weight: var(--font-weight-bold);
-}
-
-h3 {
-  font-size: var(--h3-font-size);
-}
-
-h4 {
-  font-size: var(--h4-font-size);
-}
-
-h5 {
-  font-size: var(--h5-font-size);
-}
-
-h6 {
-  font-size: var(--h6-font-size);
-}
-
-p {
-  color: var(--p-color);
-  font-size: var(--p-font-size);
-  font-weight: var(--font-weight-normal);
-}
-
-ul li {
-  color: var(--p-color);
-  font-size: var(--p-font-size);
-  font-weight: var(--font-weight-normal);
-}
-
-a, 
-button {
-  touch-action: manipulation;
-  transition: all 0.3s;
-}
-
-a {
-  display: inline-block;
-  color: var(--secondary-color);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--link-hover-color);
-}
-
-b,
-strong {
-  font-weight: var(--font-weight-bold);
-}
-
+    @media (max-width: 576px) {
+        .hero-section {
+            min-height: 60vh;
+        }
+        
+        .social-icons {
+            top: 100px !important; /* Увеличено с 70px до 160px */
+        }
+        
+        .social-icons img {
+            width: 35px !important;
+            height: 35px !important;
+        }
+        
+        .epigraph-block {
+            max-width: 300px !important;
+            padding: 0.8rem !important;
+        }
+        
+        .row.align-items-end {
+            padding-bottom: 60px !important;
+        }
+    }
+        /* Дополнительно для очень маленьких экранов */
+    @media (max-width: 400px) {
+        .social-icons {
+            top: 100px !important; /* Еще больше для совсем маленьких экранов */
+        }
+    }
 </style>
 
+<!-- Подключение иконок Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 
 @endsection
