@@ -1,187 +1,332 @@
 @extends('layouts.app')
 @section('content')
 
-@include('layouts.header') <!-- Include the sidebar template -->
+@include('layouts.header')
 
 <div class="app-wrapper">
-    
-    <!--begin::App Main-->
     <main class="app-main">
-        <section class="featured-posts-section d-flex flex-column align-items-center"> <!-- Центрируем ленту постов -->
+        <section class="featured-posts-section d-flex flex-column align-items-center" style="margin-top: 110px;">
 
-            <div style="max-width: 60%;"> 
-                <div class="featured-post blog-post" data-aos="fade-up" style="margin-bottom: 20px; width: 100%; max-width: 90%;"> 
-                    <a href="" style="text-decoration: none; color: inherit; max-width: 90%"> <!-- Ссылка на полный просмотр поста -->
-                    
-                    <h2 class="blog-post-title">{{ $post->title }}</h2> <!-- Заголовок поста -->
-                        <p class="post-date">{{ $post->created_at->format('d.m.Y') }}</p> <!-- Дата публикации -->
+            <div style="max-width: 60%;">
+                <div class="featured-post blog-post" data-aos="fade-up" style="margin-bottom: 20px; width: 100%; max-width: 90%;">
+                   
+
+                <a href="" style="text-decoration: none; color: inherit; max-width: 90%">
+                        <h2 class="blog-post-title">{{ $post->title }}</h2>
+                        <p class="post-date">{{ $post->created_at->format('d.m.Y') }}</p>
 
                         <div class="blog-post-thumbnail-wrapper text-center">
-                            <img src="{{ asset('storage/' . $post->preview_image) }}" alt="Изображение поста" class="img-fluid mx-auto" style="width: 90%; height: auto;"> <!-- Изображение поста -->
+                            <img src="{{ asset('storage/' . $post->preview_image) }}" alt="Изображение поста" class="img-fluid mx-auto" style="width: 90%; height: auto;">
                         </div>
                         
                         <div class="post-actions">
                             @if($post->tags->count() > 0)
                                 <div class="post-tags">
                                     @foreach($post->tags as $tag)
-                                        <span class="tag">{{ $tag->title }}</span> <!-- Tag Name -->
+                                        <span class="tag">{{ $tag->title }}</span>
                                     @endforeach
                                 </div>
                             @endif
                         </div>
+                        
                         <p class="blog-post-description" style="margin-top: 20px;">
-                            {!! $post->content !!} <!-- Выводим полный текст поста с HTML-тегами -->
+                            {!! $post->content !!}
                         </p>
 
+                        <!-- Обновленный блок лайков и комментариев -->
+                        <div style="margin-top: 20px; display: flex; align-items: center;">
+                            <div class="d-flex align-items-center" style="gap: 25px; margin-right: auto;">
+                                <!-- Лайки -->
+                                <form action="{{ route('posts.like.store', $post->id) }}" method="POST" class="like-form">
+                                    @csrf    
+                                    <button type="button" class="border-0 bg-transparent like-button p-0" data-post-id="{{ $post->id }}" style="font-size: 30px; line-height: 1;">
+                                        @auth
+                                            <i class="{{ auth()->user()->likedPosts->contains($post->id) ? 'fas fa-heart text-danger' : 'far fa-heart' }}"></i>
+                                        @endauth
+                                        <span class="like-count" style="font-size: 20px; vertical-align: middle;">{{ $post->likes()->count() }}</span>
+                                    </button>
+                                </form>
 
-
-                        <p style="margin-top: 20px;">
-                            <a href="#" class="text" style="text-decoration: none; color: inherit; font-size: 20px;">
-                                <i class="fa-regular fa-heart icon-large"></i> {{ $post->comments()->count() }}
-                            </a>
-                            <a href="#" class="text" style="text-decoration: none; color: inherit; font-size: 20px; margin-left:20px;">
-                                <i class="far fa-comments mr-1 icon-large"></i> {{ $post->comments()->count() }}
-                            </a>
-
-                        </p>
-                    </a>
-                    <hr> <!-- Разделитель между постами -->
-
-                    @foreach($comments as $comment)
-                        <!-- вывод всех комментариев к посту -->
-                        <div class="post" style="margin-top: 30px;">
-                            <div class="user-block">
-                                <img class="img-circle img-bordered-sm"src="{{ $comment->user->user_image ? asset('storage/' . $comment->user->user_image) : asset('default-avatar.png') }}" alt="user image">
-                                <span class="username">
-                                    <a href="#">{{ $comment->user->username }}</a> <!-- Имя пользователя -->
-                                    <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                                </span>
-                                <span class="description">Оставлено {{ $comment->created_at->diffForHumans() }}</span> 
+                                <!-- Комментарии -->
+                                <a href="#comments" class="text" style="text-decoration: none; color: inherit; display: flex; align-items: center; font-size: 30px; line-height: 1;">
+                                    <i class="far fa-comments"></i>
+                                    <span style="font-size: 20px; margin-left: 10px; vertical-align: middle;">{{ $post->comments()->count() }}</span>
+                                </a>
                             </div>
-
-                            <p>
-                                {{ $comment->message }} <!-- Содержимое комментария -->
-                            </p>
-
-                            <p>
-                                <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Ответить</a>
-                            </p>
-
                         </div>
-                    @endforeach
+                    </a>
 
-
-                    <div class="row">
-                        @if(auth()->check())
-                            <div class="direct-chat-msg" style="margin: top 50px;">
-                                <div class="direct-chat-infos clearfix">
-                                    <span class="direct-chat-name float-left">{{ auth()->user()->username }}</span>
-                                    <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
-                                </div>
-
-                                <form action="{{ route('personal.comment.store', $post->id) }}" method="POST">
-                                    @csrf
-                                    <div class="input-group">
-                                        <img class="direct-chat-img" src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('default-avatar.png') }}" alt="message user image">
-                                        <input type="text" name="message" placeholder="Оставить комментарий ..." class="form-control" style="margin-left: 20px;">
-                                        <span class="input-group-append">
-                                            <button type="submit" class="btn btn-custom">Отправить</button>
-                                        </span>
-                                    </div>
-                                </form> 
-
+                    <!-- Комментарии -->
+                    <div id="comments" class="mt-4">
+                        <h4 class="mb-4">Комментарии</h4>
+                        
+                        @if($comments->isEmpty())
+                            <div class="alert alert-info">
+                                Пока нет комментариев. Будьте первым, кто оставит комментарий!
                             </div>
                         @else
-                            <div class="alert alert-warning" style="margin-top: 30px;">
-                                Пожалуйста, <a href="{{ route('login') }}">войдите</a> или <a href="{{ route('register') }}">зарегистрируйтесь</a>, чтобы оставить комментарий.
-                            </div>
+                            @foreach($comments as $comment)
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <img class="rounded-circle me-3" src="{{ $comment->user->user_image ? asset('storage/' . $comment->user->user_image) : asset('default-avatar.png') }}" width="50" height="50" alt="user image">
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div>
+                                                        <h5 class="mb-1">{{ $comment->user->username }}</h5>
+                                                        <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <p class="mt-2">{{ $comment->message }}</p>
+                                                
+                                                <button class="btn btn-sm btn-outline-secondary reply-btn" data-comment-id="{{ $comment->id }}">
+                                                    Ответить
+                                                </button>
+                                                
+                                                <!-- Форма ответа (скрыта по умолчанию) -->
+                                                <div class="reply-form mt-2" id="reply-form-{{ $comment->id }}" style="display: none;">
+                                                    <form action="{{ route('personal.comment.reply', $comment->id) }}" method="POST">
+                                                        @csrf
+                                                        <div class="input-group">
+                                                            <input type="text" name="message" class="form-control" placeholder="Ваш ответ..." required>
+                                                            <button type="submit" class="btn btn-primary">Отправить</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                
+                                                <!-- Ответы на комментарий -->
+                                                @if($comment->replies->isNotEmpty())
+                                                    <div class="replies mt-3 ms-4">
+                                                        @foreach($comment->replies as $reply)
+                                                            <div class="card mb-2">
+                                                                <div class="card-body">
+                                                                    <div class="d-flex">
+                                                                        <img class="rounded-circle me-3" src="{{ $reply->user->user_image ? asset('storage/' . $reply->user->user_image) : asset('default-avatar.png') }}" width="40" height="40" alt="user image">
+                                                                        <div class="flex-grow-1">
+                                                                            <div class="d-flex justify-content-between align-items-start">
+                                                                                <div>
+                                                                                    <h6 class="mb-1">{{ $reply->user->username }}</h6>
+                                                                                    <small class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
+                                                                                </div>
+                                                                                @if(auth()->id() === $reply->user_id)
+                                                                                    <form action="{{ route('replies.destroy', $reply->id) }}" method="POST">
+                                                                                        @csrf
+                                                                                        @method('DELETE')
+                                                                                        <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                                                                onclick="return confirm('Удалить этот ответ?')">
+                                                                                            <i class="fas fa-trash"></i>
+                                                                                        </button>
+                                                                                    </form>
+                                                                                @endif
+                                                                            </div>
+                                                                            <p class="mt-2">{{ $reply->message }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         @endif
                     </div>
 
+                    <!-- Форма добавления комментария -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Оставить комментарий</h5>
+                            @if(auth()->check())
+                                <form action="{{ route('personal.comment.store', $post->id) }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <textarea name="message" class="form-control" rows="3" placeholder="Ваш комментарий..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Отправить</button>
+                                </form>
+                            @else
+                                <div class="alert alert-warning">
+                                    Пожалуйста, <a href="{{ route('login') }}">войдите</a> или <a href="{{ route('register') }}">зарегистрируйтесь</a>, чтобы оставить комментарий.
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
-
-        
-
         </section>
     </main>
-
-    <footer class="app-footer">
-        <!-- Footer content here -->
-    </footer>
 </div>
 
 <style>
-    
-        header{
-            position: fixed;
-        }
-        .btn-custom{
-            background-color: rgb(55, 40, 99);
-            color: rgb(247, 247, 247);
-        }
-        .post-actions {
-            display: flex; /* Используем Flexbox для выравнивания элементов в строку */
-            align-items: center; /*Центрируем элементы по вертикали */
-            justify-content: space-between; /* Распределяем пространство между элементами */
-            margin-top: 10px; /* Отступ сверху */
-        }
-
-        .action-item {
-            margin-right: 15px; /* Отступ между элементами */
-        }
-
-        .action-icon {
-            width: 20px; /* Ширина иконки */
-            height: 20px; /* Высота иконки */
-            margin-right: 5px; /* Отступ между иконкой и текстом */
-        }
-        .icon-large {
-            font-size: 30px; /* Set the desired icon size */
-            color: rgb(20, 3, 131);
-        }
-
-
-        .custom-button {
-            background-color:rgb(54, 112, 55); /* Зеленый цвет фона */
-            color: white; /* Цвет текста */
-            border: none; /* Убираем границу */
-            padding: 8px 15px; /* Отступы */
-            text-align: center; /* Выравнивание текста */
-            text-decoration: none; /* Убираем подчеркивание */
-            border-radius: 5px; /* Закругленные углы */
-            transition: background-color 0.3s; /* Плавный переход */
-        }
-
-        .blog-post-description{
-            
-            font-size: 20px; /* Увеличьте размер шрифта для лучшей читаемости */
-        }
-
-        .custom-button:hover {
-            background-color: #45a049; /* Темнее при наведении */
-        }
-
-        .post-category {
-            font-weight: bold; /* Make the category bold */
-            margin-right: 10px; /* Space between category and tags */
-        }
-
-        .post-tags {
-            display: inline-flex; /* Align tags in a row */
-            margin-right: 10px; /* Space between tags and other elements */
-        }
-
-        .tag {
-            background-color: #e0e0e0; /* Light gray background for tags */
-            border-radius: 5px; /* Rounded corners */
-            padding: 5px 10px; /* Padding for tags */
-            margin-right: 5px; /* Space between tags */
-        }
-
-        </style>
+    /* Обновленные стили для комментариев */
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .replies .card {
+        background-color: #f8f9fa;
+    }
+    .reply-btn {
+        transition: all 0.3s;
+    }
+    .reply-btn:hover {
+        transform: translateY(-2px);
+    }
+        .comment-avatar {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+    .reply-avatar {
+        width: 40px;
+        height: 40px;
+    }
+    .replies {
+        border-left: 3px solid #eee;
+        padding-left: 20px;
+    }
+    .comment-card {
+        transition: transform 0.2s;
+    }
+    .comment-card:hover {
+        transform: translateY(-2px);
+    }
+    .comment-actions {
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    .comment-card:hover .comment-actions {
+        opacity: 1;
+    }
+    /* Остальные стили остаются без изменений */
+</style>
 
 <script>
-    // Ваши скрипты
+    document.addEventListener('DOMContentLoaded', function() {
+        // Лайки
+        const likeButtons = document.querySelectorAll('.like-button');
+                likeButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const postId = this.getAttribute('data-post-id');
+                const form = this.closest('form');
+                const icon = this.querySelector('i');
+                const likeCount = this.querySelector('.like-count');
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ post_id: postId })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        likeCount.textContent = data.likes_count;
+                        icon.classList.toggle('fas');
+                        icon.classList.toggle('far');
+                        icon.classList.toggle('text-danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+
+        // Ответы на комментарии
+        document.querySelectorAll('.reply-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const formId = 'reply-form-' + this.dataset.commentId;
+                const form = document.getElementById(formId);
+                form.style.display = form.style.display === 'block' ? 'none' : 'block';
+                
+                if (form.style.display === 'block') {
+                    form.querySelector('textarea').focus();
+                }
+            });
+        });
+
+        // AJAX отправка комментариев
+        document.querySelectorAll('.comment-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+    // Обработка удаления комментариев через AJAX
+document.querySelectorAll('.delete-comment-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!confirm('Удалить комментарий?')) return;
+        
+        fetch(this.action, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                this.closest('.comment-card').remove();
+                // Можно добавить уведомление об успешном удалении
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+
+// Аналогично для ответов
+document.querySelectorAll('.delete-reply-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!confirm('Удалить ответ?')) return;
+        
+        fetch(this.action, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                this.closest('.reply-card').remove();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
 </script>
 @endsection

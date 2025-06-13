@@ -5,7 +5,7 @@
 
 <div class="app-wrapper">
     <main class="app-main">
-        <section class="featured-posts-section d-flex flex-column align-items-center">
+        <section class="featured-posts-section d-flex flex-column align-items-center" style="margin-top: 110px;">
 
             @foreach($posts as $post)
             <div style="max-width: 60%;">
@@ -32,31 +32,30 @@
                             @endif
                         </div>
 
-                        <p style="margin-top: 20px;">
-                            <span class="d-flex align-items-center">
-                                <form action="{{ route('posts.like.store', $post->id) }}" method="POST" style="margin-right: 20px;">
+                        <div style="margin-top: 20px; display: flex; align-items: center;">
+                            <!-- Лайки и комментарии -->
+                            <div class="d-flex align-items-center" style="gap: 25px; margin-right: auto;">
+                                <!-- Лайки -->
+                                <form action="{{ route('posts.like.store', $post->id) }}" method="POST" class="like-form">
                                     @csrf    
-                                    <button type="submit" class="border-0 bg-transparent">
+                                    <button type="button" class="border-0 bg-transparent like-button p-0" data-post-id="{{ $post->id }}" style="font-size: 30px; line-height: 1;">
                                         @auth
-                                            @if(auth()->user()->likedPosts->contains($post->id))
-                                                <i class="fas fa-heart"></i>
-                                            @else
-                                                <i class="far fa-heart"></i>
-                                            @endif
+                                            <i class="{{ auth()->user()->likedPosts->contains($post->id) ? 'fas fa-heart text-danger' : 'far fa-heart' }}"></i>
                                         @endauth
-                                        {{ $post->likes()->count() }}
+                                        <span class="like-count" style="font-size: 20px; vertical-align: middle;">{{ $post->likes()->count() }}</span>
                                     </button>
                                 </form>
-                                
-                                <a href="#" class="text" style="text-decoration: none; color: inherit; font-size: 20px;">
-                                    <i class="far fa-comments mr-1 icon-large"></i> {{ $post->comments()->count() }}
-                                </a>
-                            </span>
 
-                            <span class="float-right">
-                                <a href="{{ route('post.show', $post) }}" class="custom-button">Подробнее</a>
-                            </span>
-                        </p>
+                                <!-- Комментарии -->
+                                <a href="{{ route('post.show', $post) }}#comments" class="text" style="text-decoration: none; color: inherit; display: flex; align-items: center; font-size: 30px; line-height: 1;">
+                                    <i class="far fa-comments"></i>
+                                    <span style="font-size: 20px; margin-left: 10px; vertical-align: middle;">{{ $post->comments()->count() }}</span>
+                                </a>
+                            </div>
+
+                            <!-- Кнопка "Подробнее" -->
+                            <a href="{{ route('post.show', $post) }}" class="custom-button">Подробнее</a>
+                        </div>
                     </a>
                     <hr>
                 </div>
@@ -80,7 +79,49 @@
 </style>
 
 <script>
-    
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButtons = document.querySelectorAll('.like-button');
+
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const postId = this.getAttribute('data-post-id');
+                const form = this.closest('form');
+                const icon = this.querySelector('i');
+                const likeCount = this.querySelector('.like-count');
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ post_id: postId })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        likeCount.textContent = data.likes_count;
+                        
+                        // Переключаем классы иконки
+                        icon.classList.toggle('fas');
+                        icon.classList.toggle('far');
+                        icon.classList.toggle('text-danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Можно добавить уведомление пользователю об ошибке
+                });
+            });
+        });
+    });
 </script>
 
 @endsection

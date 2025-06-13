@@ -172,7 +172,16 @@
         .search-form {
             display: flex;
             margin-left: auto;
-            margin: 0 20px;
+            margin-right: 15px; /* Добавляем отступ справа */
+        }
+
+        /* Для мобильных устройств (меню раскрыто) */
+        @media (max-width: 900px) {
+            .search-form {
+                margin: 20px 0;
+                width: 100%;
+                margin-right: 0; /* На мобильных убираем отступ */
+            }
         }
 
         .search-form input {
@@ -342,7 +351,7 @@
                 width: 100%;
                 box-shadow: none;
                 border-radius: 0;
-                background-color: rgba(0, 0, 0, 0.2);
+                background-color: rgba(0, 0, 0, 0.02);
                 animation: none;
             }
             
@@ -383,12 +392,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        
 </head>
 <body>
 <header class="header">
     <div class="container-fluid">
         <a href="{{ route('welcome') }}" class="logo">
-            <img alt="avatar" src="{{ asset('storage/images/logo.jpg') }}"/>
+            <img alt="avatar" src="{{ asset('storage/images/logo.png') }}"/>
             <h4 style="margin-left: 10px; color: #ffffff;" class="museum-title"></h4>
         </a>
         

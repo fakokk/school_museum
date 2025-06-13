@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\ShowpieceController;
 use App\Http\Controllers\Personal\PersonalController;
 use App\Http\Controllers\Post\Comment\CommentsController;
 use App\Http\Controllers\Post\Likes\LikesController;
+use App\Http\Controllers\CommentReplyController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +42,6 @@ Route::group(['namespace' => 'Main'], function(){
 
     Route::get('/search', [SearchController::class, 'index']);
 
-    // Route::get('{post}/comment', [IndexController::class, 'show_comments'])->name('posts.comment.store'); //просмотр комментариев поста
-
 });
 
 
@@ -65,13 +65,23 @@ Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' =>
         Route::group(['namespace' => 'Comments', 'prefix' => 'comments'], function(){
             Route::get('/comments', [PersonalController::class, 'comments'])->name('personal.comments');//комментарии данного пользователя
             Route::post('/{post}', [PersonalController::class, 'comment'])->name('personal.comment.store'); //просмотр конкретного поста
-    
+            // Ответ на комментарий
+            Route::post('/comments/{comment}/reply', [CommentReplyController::class, 'store'])->name('personal.comment.reply');
         });
 
     });
 
 });
 
+// Удаление основного комментария
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
+    ->name('comments.destroy')
+    ->middleware('auth');
+
+// Удаление ответа на комментарий
+Route::delete('/comment-replies/{reply}', [CommentReplyController::class, 'destroy'])
+    ->name('replies.destroy')
+    ->middleware('auth');
 
 
 // мартруты администратора

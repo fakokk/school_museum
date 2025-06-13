@@ -12,13 +12,13 @@ use App\Models\PostUserLike;
 
 class LikesController extends Controller
 {
-
-
     public function likePost(Post $post)
     {
         auth()->user()->likedPosts()->toggle($post->id);
-        return redirect()->route('excursions');
+        return response()->json([
+            'success' => true,
+            'likes_count' => $post->likes()->count(),
+        ]);
     }
-
 
 }

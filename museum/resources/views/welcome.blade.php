@@ -40,10 +40,10 @@
             <div class="row align-items-end h-100" style="padding-bottom: 100px;">
                 <div class="col-lg-5 col-md-7 col-10">
                     <div class="epigraph-block bg-dark bg-opacity-50 p-3 p-md-4 rounded text-white">
-                        <h3 class="fst-italic mb-2 mb-md-3" style="font-size: clamp(1rem, 1.5vw, 1.3rem);">Я б основателей музеев</h3>
-                        <h3 class="fst-italic mb-2 mb-md-3" style="font-size: clamp(1rem, 1.5vw, 1.3rem);">Поставил в бронзе всех разделов,</h3>
-                        <h3 class="fst-italic mb-2 mb-md-3" style="font-size: clamp(1rem, 1.5vw, 1.3rem);">За кропотливый, нужный труд</h3>
-                        <h3 class="fst-italic" style="font-size: clamp(1rem, 1.5vw, 1.3rem);">За всё, рассказанное тут …</h3>
+                        <h3 class="mytext mb-2 mb-md-3">Я б основателей музеев</h3>
+                        <h3 class="mytext mb-2 mb-md-3">Поставил в бронзе всех разделов,</h3>
+                        <h3 class="mytext mb-2 mb-md-3">За кропотливый, нужный труд</h3>
+                        <h3 class="mytext">За всё, рассказанное тут …</h3>
                     </div>
                 </div>
             </div>
@@ -178,9 +178,19 @@
             top: 100px !important; /* Еще больше для совсем маленьких экранов */
         }
     }
+
+    .mytext {
+        font-family: "Great Vibes";
+        font-size: 33px;
+        font-style: normal;
+        }
+
 </style>
 
 <!-- Подключение иконок Bootstrap -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Pacifico&family=WDXL+Lubrifont+TC&display=swap" rel="stylesheet">
 
 @endsection

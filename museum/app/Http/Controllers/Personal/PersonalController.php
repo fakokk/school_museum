@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\UpdateRequest;
 use App\Http\Requests\Post\Comment\StoreRequest;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth; // Добавьте этот use
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
@@ -14,7 +15,15 @@ class PersonalController extends Controller
 {
     public function personal()
     {
-        return view('personal.main.index');
+        $user = Auth::user();
+        
+        // Получаем лайкнутые посты пользователя
+        $likedPosts = $user->likedPosts()->with('category')->get();
+        
+        // Получаем комментарии пользователя с информацией о посте
+        $comments = $user->comments()->with('post')->latest()->get();
+
+        return view('personal.main.index', compact('user', 'likedPosts', 'comments'));
     }
 
     // Лайки пользователя 

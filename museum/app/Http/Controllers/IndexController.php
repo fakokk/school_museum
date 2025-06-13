@@ -66,7 +66,11 @@ class IndexController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         // Получаем комментарии для данного поста
-        $comments = Comment::where('post_id', $post->id)->with('user')->get();
+        // $comments = Comment::where('post_id', $post->id)->with('user')->get();
+        $comments = $post->comments()
+        ->with(['user', 'replies.user'])
+        ->latest()
+        ->get();
 
         return view('post', compact('post', 'categories', 'tags', 'comments'));
     }
