@@ -130,7 +130,7 @@ class ShowpieceController extends BaseController
         return view('admin.main.edit_showpiece', compact('showpiece', 'categories', 'tags'));
     }
 
-    //изменение поста
+    //изменение экспоната
     public function update(ShowpieceUpdate $request, $id)
     {
         // Находим пост по ID

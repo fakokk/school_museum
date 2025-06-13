@@ -34,6 +34,7 @@ Route::group(['namespace' => 'Main'], function(){
      Route::get('/showpiece', [IndexController::class, 'showpiece'])->name('showpiece');
      
     Route::get('/showpiece/{id}', [IndexController::class, 'show_piece'])->name('showpiece.show');
+    Route::get('/showpiece/{id}', [IndexController::class, 'modal'])->name('showpiece.modal');
     
     Route::get('/filter', [IndexController::class, 'filter']);
 
@@ -41,6 +42,8 @@ Route::group(['namespace' => 'Main'], function(){
     Route::get('/register', [IndexController::class, 'welcome'])->name('register');
 
     Route::get('/search', [SearchController::class, 'index']);
+
+    Route::get('/profile/{user}', [IndexController::class, 'show_profile'])->name('profile');
 
 });
 
@@ -74,14 +77,10 @@ Route::group(['namespace' => 'Personal', 'prefix' => 'personal', 'middleware' =>
 });
 
 // Удаление основного комментария
-Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
-    ->name('comments.destroy')
-    ->middleware('auth');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy')->middleware('auth');
 
 // Удаление ответа на комментарий
-Route::delete('/comment-replies/{reply}', [CommentReplyController::class, 'destroy'])
-    ->name('replies.destroy')
-    ->middleware('auth');
+Route::delete('/comment-replies/{reply}', [CommentReplyController::class, 'destroy'])->name('replies.destroy')->middleware('auth');
 
 
 // мартруты администратора
@@ -135,7 +134,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     });
 
     Route::group(['namespace' => 'User', 'prefix' => 'user'], function(){
-        Route::get('/', [UserController::class, 'post'])->name('admin.user.index');
+        Route::get('/', [UserController::class, 'users'])->name('admin.user.index');
         Route::get('/create', [UserController::class, 'create'])->name('admin.user.create');
         Route::post('/', [UserController::class, 'store'])->name('admin.user.store');
         Route::get('/', [UserController::class, 'get_user'])->name('admin.user.index');
@@ -143,6 +142,13 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('admin.user.edit');
         Route::patch('/{user}', [UserController::class, 'update'])->name('admin.user.update');//
         Route::delete('/{user}', [UserController::class, 'delete'])->name('admin.user.delete');
+        // Профиль пользователя
+        // Route::get('/admin/users/{id}/profile', [UserController::class, 'profile'])->name('admin.user.profile');
+
+        // Блокировка/разблокировка
+        Route::patch('/{id}/toggle-ban', [UserController::class, 'toggleBan'])->name('admin.user.toggle-ban');
+
+// Остальные существующие маршруты...
     });
 
     Route::group(['namespace' => 'Components', 'prefix' => 'components'], function(){

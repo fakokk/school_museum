@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Comment;
+use App\Models\User;
 use App\Models\Showpiece;
 
 use Illuminate\Support\Facades\Storage; // Добавьте этот импорт 
@@ -30,12 +31,43 @@ class IndexController extends Controller
         return view('excursions', compact('posts')); // Возвращает представление spa.blade.php
     }
     
+    //метод позволяет просмотреть страницу со всеми экспонатами
     public function showpiece()
     {
-        $showpieces = Showpiece::orderBy('created_at', 'desc')->paginate(20);
-        return view('showpiece', compact('showpieces')); // Возвращает представление spa.blade.php
+        $categories = Category::all(); // Получаем все категории
+        $tags = Tag::all(); // Получаем все теги
+        $showpieces = Showpiece::query()
+        ->when(request('tags'), function($query) {
+            $query->whereHas('tags', function($q) {
+                $q->whereIn('tags.id', request('tags')); // Явно указываем таблицу
+            });
+        })
+        ->paginate(12);
+
+        return view('showpiece', compact('showpieces', 'categories', 'tags'));
     }
 
+    //для показа модального окна
+    public function modal($id)
+    {
+        $showpiece = Showpiece::with(['photos', 'category', 'tags'])->findOrFail($id);
+        
+        // Формируем массив с данными, включая полный URL для фотографий
+        $showpieceData = [
+            'id' => $showpiece->id,
+            'title' => $showpiece->title,
+            'content' => $showpiece->content,
+            'category' => $showpiece->category,
+            'tags' => $showpiece->tags,
+            'photos' => $showpiece->photos->map(function($photo) {
+                return [
+                    'url' => Storage::url($photo->url)
+                ];
+            }),
+        ];
+
+        return response()->json($showpieceData);
+    }
     public function login()
     {
         return view('auth.login'); // Возвращает представление spa.blade.php
@@ -76,6 +108,7 @@ class IndexController extends Controller
     }
 
 
+    //для экспонатов
     public function show_piece($id)
     {
         $showpiece = Showpiece::with(['photos', 'category', 'tags'])->findOrFail($id);
@@ -96,6 +129,18 @@ class IndexController extends Controller
 
         return response()->json($showpieceData);
     }
+
+    public function show_profile(User $user)
+    {
+        // Получаем лайкнутые посты пользователя
+        $likedPosts = $user->likedPosts()->with('category')->get();
+        
+        // Получаем комментарии пользователя с информацией о посте
+        $comments = $user->comments()->with('post')->latest()->get();
+
+        return view('profile', compact('user', 'likedPosts', 'comments'));
+    }
+
 
     
 }

@@ -10,6 +10,8 @@ class Post extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    protected $dates = ['deleted_at'];//Поле для мягкого удаления
+
 
     protected $table = 'posts';
     //для того чтобы можно было изменять данные в таблице
@@ -47,4 +49,5 @@ class Post extends Model
     {
         return $this->hasMany(PostUserLike::class);
     }
+
 }

@@ -55,35 +55,38 @@ class PersonalController extends Controller
         return view('personal.main.editaccount', compact('user'));
     }
 
-    // Метод для обновления профиля
     public function updateaccount(UpdateRequest $request)
     {
-        $user = auth()->user(); // Получаем текущего авторизованного пользователя
+        $user = auth()->user();
 
-        // Обновляем данные пользователя
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
+        // Обновляем основные данные
+        $user->username = $request->validated()['username'];
+        $user->email = $request->validated()['email'];
+        $user->profile_description = $request->validated()['profile_description'] ?? null;
 
-        // Обновление пароля, если он был введен
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->input('password'));
+        // Обновление пароля
+        if ($request->filled('current_password') && $request->filled('password')) {
+            if (!Hash::check($request->input('current_password'), $user->password)) {
+                return back()->withErrors(['current_password' => 'Неверный текущий пароль']);
+            }
+            $user->password = bcrypt($request->validated()['password']);
         }
 
-        // Обновление изображения пользователя, если оно было загружено
+        // Обновление аватарки
         if ($request->hasFile('user_image')) {
-            // Удаляем старое изображение, если оно существует
+            // Удаляем старое изображение
             if ($user->user_image) {
-                File::delete(public_path($user->user_image));
+                Storage::disk('public')->delete($user->user_image);
             }
-
-            // Сохраняем новое изображение
+            
+            // Сохраняем новое
             $path = $request->file('user_image')->store('user_images', 'public');
             $user->user_image = $path;
         }
 
-        $user->save(); // Сохраняем изменения в базе данных
+        $user->save();
 
-        return redirect()->route('personal')->with('success', 'Данные профиля успешно обновлены.');
+        return redirect()->route('personal')->with('success', 'Профиль успешно обновлен');
     }
 
     public function comment(Post $post, StoreRequest $request)

@@ -13,7 +13,13 @@
 
                 <a href="" style="text-decoration: none; color: inherit; max-width: 90%">
                         <h2 class="blog-post-title">{{ $post->title }}</h2>
-                        <p class="post-date">{{ $post->created_at->format('d.m.Y') }}</p>
+                        <p class="post-date">
+                            @isset($post->created_at)
+                                {{ $post->created_at->format('d.m.Y') }}
+                            @else
+                                Дата не указана
+                            @endisset
+                        </p>
 
                         <div class="blog-post-thumbnail-wrapper text-center">
                             <img src="{{ asset('storage/' . $post->preview_image) }}" alt="Изображение поста" class="img-fluid mx-auto" style="width: 90%; height: auto;">
@@ -53,6 +59,14 @@
                                     <span style="font-size: 20px; margin-left: 10px; vertical-align: middle;">{{ $post->comments()->count() }}</span>
                                 </a>
                             </div>
+                            <!-- Условный вывод для администраторов -->
+                        @if(auth()->user() && auth()->user()->isAdmin())
+                        <div class="nav-item">
+                            <a href="{{ route('admin.post.edit', $post->id) }}" class="nav-link" style="font-size: 25px;">
+                                <i class="fa-solid fa-pen-fancy"></i>
+                            </a>
+                        </div>
+                        @endif
                         </div>
                     </a>
 
@@ -73,24 +87,78 @@
                                             <div class="flex-grow-1">
                                                 <div class="d-flex justify-content-between align-items-start">
                                                     <div>
-                                                        <h5 class="mb-1">{{ $comment->user->username }}</h5>
+                                                        <a href="{{ route('profile', $comment->user->id) }}" class="text-decoration-none text-dark">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="fw-semibold me-1" style="font-size: 20px;"> {{ $comment->user->username }}</span>
+                                                            </div>
+                                                        </a>
                                                         <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
                                                     </div>
                                                     
                                                 </div>
                                                 <p class="mt-2">{{ $comment->message }}</p>
                                                 
-                                                <button class="btn btn-sm btn-outline-secondary reply-btn" data-comment-id="{{ $comment->id }}">
-                                                    Ответить
-                                                </button>
+                                                <button class="reply-btn position-relative overflow-hidden" 
+                                                    data-comment-id="{{ $comment->id }}"
+                                                    style="
+                                                        background: transparent;
+                                                        border: none;
+                                                        color: #3b82f6;
+                                                        padding: 6px 12px;
+                                                        border-radius: 18px;
+                                                        font-size: 0.875rem;
+                                                        font-weight: 500;
+                                                        transition: all 0.3s ease;
+                                                        cursor: pointer;
+                                                    ">
+                                                <span class="d-flex align-items-center gap-2">
+                                                    <i class="fas fa-reply" style="font-size: 0.8rem;"></i>
+                                                    <span>Ответить</span>
+                                                </span>
                                                 
-                                                <!-- Форма ответа (скрыта по умолчанию) -->
-                                                <div class="reply-form mt-2" id="reply-form-{{ $comment->id }}" style="display: none;">
-                                                    <form action="{{ route('personal.comment.reply', $comment->id) }}" method="POST">
+                                                <!-- Эффект при наведении -->
+                                                <span class="position-absolute top-0 left-0 w-100 h-100 bg-blue-100 opacity-0" 
+                                                    style="
+                                                        z-index: -1;
+                                                        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                                                        transform: scaleX(0);
+                                                        transform-origin: left;
+                                                        border-radius: 18px;
+                                                    "></span>
+                                            </button>
+                                                
+                                                <!-- Форма ответа (скрыта по умолчанию, появляется при клике на "Ответить") -->
+                                                <div class="reply-form mt-3 ps-4 border-start border-2 border-light" id="reply-form-{{ $comment->id }}" style="display: none;">
+                                                    <form action="{{ route('personal.comment.reply', $comment->id) }}" method="POST" class="needs-validation" novalidate>
                                                         @csrf
-                                                        <div class="input-group">
-                                                            <input type="text" name="message" class="form-control" placeholder="Ваш ответ..." required>
-                                                            <button type="submit" class="btn btn-primary">Отправить</button>
+                                                        <div class="mb-2 position-relative">
+                                                            <!-- Авторасширяющееся текстовое поле -->
+                                                            <textarea 
+                                                                name="message" 
+                                                                class="form-control auto-expand rounded-3 shadow-sm" 
+                                                                rows="1"
+                                                                placeholder="Напишите ответ..."
+                                                                style="resize: none; min-height: 42px; padding-right: 50px;"
+                                                                required
+                                                            ></textarea>
+                                                            
+                                                            <!-- Кнопка отправки с иконкой -->
+                                                            <button type="submit" 
+                                                                    class="btn btn-sm position-absolute end-0 bottom-0 m-1 rounded-circle" 
+                                                                    style="width: 36px; height: 36px;"
+                                                                    title="Отправить ответ">
+                                                                <i class="fa-solid fa-paper-plane"></i>
+                                                            </button>
+                                                        </div>
+                                                        
+                                                        <!-- Вспомогательные элементы -->
+                                                        <div class="d-flex justify-content-between align-items-center mt-1">
+                                                            <small class="text-muted">Нажмите Enter для отправки</small>
+                                                            <button type="button" 
+                                                                    class="btn btn-sm btn-link text-danger p-0" 
+                                                                    onclick="document.getElementById('reply-form-{{ $comment->id }}').style.display='none'">
+                                                                Отмена
+                                                            </button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -99,32 +167,40 @@
                                                 @if($comment->replies->isNotEmpty())
                                                     <div class="replies mt-3 ms-4">
                                                         @foreach($comment->replies as $reply)
-                                                            <div class="card mb-2">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex">
-                                                                        <img class="rounded-circle me-3" src="{{ $reply->user->user_image ? asset('storage/' . $reply->user->user_image) : asset('default-avatar.png') }}" width="40" height="40" alt="user image">
-                                                                        <div class="flex-grow-1">
-                                                                            <div class="d-flex justify-content-between align-items-start">
-                                                                                <div>
-                                                                                    <h6 class="mb-1">{{ $reply->user->username }}</h6>
-                                                                                    <small class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
-                                                                                </div>
-                                                                                @if(auth()->id() === $reply->user_id)
-                                                                                    <form action="{{ route('replies.destroy', $reply->id) }}" method="POST">
-                                                                                        @csrf
-                                                                                        @method('DELETE')
-                                                                                        <button type="submit" class="btn btn-sm btn-outline-danger" 
-                                                                                                onclick="return confirm('Удалить этот ответ?')">
-                                                                                            <i class="fas fa-trash"></i>
-                                                                                        </button>
-                                                                                    </form>
-                                                                                @endif
+                                                        <div class="card mb-2 position-relative">
+                                                            <!-- Кнопка удаления в правом верхнем углу -->
+                                                            @auth
+                                                                @if(auth()->user()->id === $reply->user->id)
+                                                                <form action="{{ route('replies.destroy', $reply->id) }}" method="POST" class="position-absolute top-0 end-0 mt-2 me-2">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" 
+                                                                            class="btn btn-sm btn-link text-danger p-0"
+                                                                            onclick="return confirm('Вы уверены, что хотите удалить этот ответ?')"
+                                                                            title="Удалить ответ">
+                                                                        <i class="fas fa-trash-alt opacity-75 hover-opacity-100"></i>
+                                                                    </button>
+                                                                </form>
+                                                                @endif
+                                                            @endauth
+                                                            
+                                                            <div class="card-body">
+                                                                <div class="d-flex">
+                                                                    <img class="rounded-circle me-3" 
+                                                                        src="{{ $reply->user->user_image ? asset('storage/' . $reply->user->user_image) : asset('default-avatar.png') }}" 
+                                                                        width="40" height="40" alt="user image">
+                                                                    <div class="flex-grow-1">
+                                                                        <div class="d-flex justify-content-between align-items-start">
+                                                                            <div>
+                                                                                <h6 class="mb-1">{{ $reply->user->username }}</h6>
+                                                                                <small class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
                                                                             </div>
-                                                                            <p class="mt-2">{{ $reply->message }}</p>
                                                                         </div>
+                                                                        <p class="mt-2 mb-0">{{ $reply->message }}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
                                                         @endforeach
                                                     </div>
                                                 @endif
@@ -202,7 +278,27 @@
     .comment-card:hover .comment-actions {
         opacity: 1;
     }
-    /* Остальные стили остаются без изменений */
+    /* Анимация при наведении */
+    .reply-btn:hover {
+        color: #2563eb;
+        transform: translateY(-1px);
+    }
+    
+    .reply-btn:hover span.bg-blue-100 {
+        opacity: 0.3;
+        transform: scaleX(1);
+    }
+    
+    /* Анимация при клике */
+    .reply-btn:active {
+        transform: translateY(1px) scale(0.98);
+    }
+    
+    /* Анимация при фокусе (для доступности) */
+    .reply-btn:focus-visible {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+    }
 </style>
 
 <script>
@@ -326,6 +422,37 @@ document.querySelectorAll('.delete-reply-form').forEach(form => {
             }
         })
         .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+<!-- JavaScript для улучшения UX -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Авторасширение textarea
+    document.querySelectorAll('.auto-expand').forEach(el => {
+        el.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    });
+    
+    // Отправка по Enter (с проверкой Shift+Enter)
+    document.querySelectorAll('.reply-form textarea').forEach(el => {
+        el.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.closest('form').requestSubmit();
+            }
+        });
+    });
+});
+</script>
+<script>
+// нажатие на кнопку ответить на комментарий
+document.querySelectorAll('.reply-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        this.classList.add('active');
+        setTimeout(() => this.classList.remove('active'), 300);
     });
 });
 </script>

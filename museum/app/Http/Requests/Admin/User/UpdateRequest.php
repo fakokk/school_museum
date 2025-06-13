@@ -3,13 +3,12 @@
 namespace App\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize()
     {
@@ -18,29 +17,26 @@ class UpdateRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules()
     {
+        $userId = Auth::id(); // Получаем ID текущего пользователя
+
         return [
-            // 
-            'username' => 'required|string',
-            //добавить возможность перерегистрировать аккаунт на другую почту
-            // 'email' => 'required|string|unique:users, . $this->user_id
-            //возможность изменять картинку пользователя
-            'user_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp'
+            'username' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$userId,
+            'profile_description' => 'nullable|string|max:1000',
+            'current_password' => 'nullable|required_with:password',
+            'password' => 'nullable|min:8|confirmed',
+            'user_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
+
     public function messages()
     {
         return [
-            'name.required' => 'Это поле необходимо для заполнения',
-            'name.string' => 'Это поле должно иметь строковый тип',
-            'email.required' => 'Это поле необходимо для заполнения',
-            'email.string' => 'Это поле должно иметь строковый тип',
-            'email.email' => 'Это поле должно соответствовать формату адреса электронной почты',
-            'name.unique' => 'Пользователь с таким e-mail уже существует',
+            'current_password.required_with' => 'Для смены пароля необходимо ввести текущий пароль',
+            'password.confirmed' => 'Пароли не совпадают',
         ];
     }
 }

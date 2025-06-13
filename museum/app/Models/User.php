@@ -37,7 +37,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'username',
         'email',
         'password',
-        'role'
+        'role',
+        'last_seen_at'
+    ];
+    protected $casts = [
+        'last_seen_at' => 'datetime', 
     ];
 
     /**
@@ -55,14 +59,12 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
     public function SendEmailVerificationNotification()
     {
         $this->notify(new SendVerifyWithQueueNotification);
     }
+    
 
     public function likedPosts()
     {
@@ -74,6 +76,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Comment::class, 'user_id', 'id');
     }
 
-
+    public function isOnline()
+    {
+        return $this->last_seen_at && $this->last_seen_at->gt(now()->subMinutes(5));
+    }
 
 }

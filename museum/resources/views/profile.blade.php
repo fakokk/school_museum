@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет | {{ Auth::user()->username }}</title>
+    <title>Профиль | {{ $user->username }}</title>
     <style>
         :root {
-        --primary: rgb(53, 73, 106); /* Основной синий цвет */
-        --primary-light: rgba(53, 73, 106, 0.1); /* Светлый вариант основного */
-        --secondary: rgb(81, 113, 165); /* Более светлый синий */
-        --dark: rgb(34, 47, 68); /* Темный вариант основного */
-        --light: rgb(240, 243, 248); /* Очень светлый фон */
-        --gray: rgb(117, 117, 117); /* Серый без изменений */
-        --danger: rgb(198, 40, 40); /* Красный без изменений */
-        --background: rgb(245, 247, 250); /* Светлый фоновый цвет */
-    }
-        
+            --primary: rgb(53, 73, 106);
+            --primary-light: rgba(53, 73, 106, 0.1);
+            --secondary: rgb(81, 113, 165);
+            --dark: rgb(34, 47, 68);
+            --light: rgb(240, 243, 248);
+            --gray: rgb(117, 117, 117);
+            --danger: rgb(198, 40, 40);
+            --background: rgb(245, 247, 250);
+        }
         body {
             font-family: 'Arial', sans-serif;
             background-color: var(--background);
@@ -322,10 +321,10 @@
     
     <div class="profile-header" style="margin-top: 110px;">
         <div class="profile-container">
-            <img src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('storage/images/default-avatar.png') }}" 
+            <img src="{{ $user->user_image ? asset('storage/' . $user->user_image) : asset('storage/images/default-avatar.png') }}" 
                  class="myavatar" alt="Аватар">
             <div class="profile-info">
-                <h1 class="profile-name">{{ Auth::user()->username }}</h1>
+                <h1 class="profile-name">{{ $user->username }}</h1>
 
                 <div class="profile-status" style="margin-bottom: 1rem;">
                     @if($user->isOnline())
@@ -344,24 +343,23 @@
                     <div class="card-body">
                         <h5 class="card-title">О себе</h5>
                         <p class="card-text">
-                            @if(Auth::user()->profile_description)
-                                {{ Auth::user()->profile_description }}
+                            @if($user->profile_description)
+                                {{ $user->profile_description }}
                             @else
-                                Вы пока не добавили информацию о себе. Это можно сделать, 
-                                <a href="{{ route('personal.edit') }}"> в редактировании</a>
-                                профиля.
+                                Пользователь пока не добавил информацию о себе.
                             @endif
                         </p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
     
     <div class="container">
         <aside class="sidebar">
-            <h2 class="sidebar-title">Меню</h2>
+            @auth
+                @if(auth()->id() === $user->id)
+                    <h2 class="sidebar-title">Меню</h2>
             <ul class="sidebar-menu">
                 <li><a href="#" class="active"><i class="fas fa-user"></i> Профиль</a></li>
                 <li><a href="#"><i class="fas fa-heart"></i> Лайки</a></li>
@@ -372,8 +370,10 @@
                     <button type="submit" class="btn btn-outline">Выйти</button>
                 </form>
             </ul>
+                @endif
+            @endauth
             
-            <h2 class="sidebar-title" style="margin-top: 2rem;">Статистика</h2>
+            <h2 class="sidebar-title">Информация</h2>
             <div class="stats">
                 <div class="stat-card">
                     <div class="stat-number">{{ $likedPosts->count() }}</div>
@@ -388,12 +388,11 @@
         
         <main class="main-content">
             <div class="card">
-                <h2 class="card-title"><i class="fas fa-heart"></i> Лайки</h2>
-                
+                <h2 class="card-title"><i class="fas fa-newspaper"></i> Понравилось</h2>
                 @if($likedPosts->isEmpty())
                     <div class="empty-state">
                         <i class="fas fa-heart-broken"></i>
-                        <p>Вы пока не лайкнули ни одного поста</p>
+                        <p>Нет постов в избранном.</p>
                     </div>
                 @else
                     @foreach($likedPosts as $post)
@@ -412,20 +411,12 @@
                                     <a href="{{ route('post.show', $post->id) }}" class="action-btn">
                                         <i class="fas fa-eye"></i> Читать
                                     </a>
-                                    <form action="{{ route('personal.likes.delete', $post->id) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn danger" style="background: none; border: none; cursor: pointer;">
-                                            <i class="fas fa-times"></i> Убрать лайк
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
                         </div>
                     @endforeach
-            @endif
+                @endif
             </div>
-            
             <div class="card">
                 <h2 class="card-title"><i class="fas fa-comment"></i> Комментарии</h2>
                 
@@ -451,6 +442,10 @@
                                 <a href="{{ route('post.show', $comment->post_id) }}" class="action-btn">
                                     <i class="fas fa-external-link-alt"></i> Перейти
                                 </a>
+                                @auth
+                                @if(auth()->id() === $user->id)
+                    
+                
                                 <a href="#" class="action-btn">
                                     <i class="fas fa-edit"></i> Редактировать
                                 </a>
@@ -461,13 +456,14 @@
                                         <i class="fas fa-trash"></i> Удалить
                                     </button>
                                 </form>
+                                @endif
+                                @endauth
                             </div>
                         </div>
                     </div>
                 @endforeach
                 @endif
             </div>
-
         </main>
     </div>
 </body>

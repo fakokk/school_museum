@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Reply;
 use App\Models\CommentReply;
 use Illuminate\Http\Request;
 
@@ -25,18 +26,10 @@ class CommentReplyController extends Controller
         return back()->with('success', 'Ответ добавлен!');
     }
         // CommentReplyController.php
-    public function destroy($id)
+    public function destroy(CommentReply $reply)
     {
-        $reply = CommentReply::findOrFail($id);
-        
-        // Проверка прав
-        if (auth()->id() !== $reply->user_id) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        // Стандартный метод delete()
         $reply->delete();
-        
-        return back()->with('success', 'Ответ удален!');
+
+        return back()->with('success', 'Ответ удалён');
     }
 }

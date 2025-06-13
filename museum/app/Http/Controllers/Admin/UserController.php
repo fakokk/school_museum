@@ -19,10 +19,10 @@ use App\Models\User;
 //контроллер, который выполняет переход просто по страницам, которые доступны всем пользователям
 class UserController extends Controller
 {
-    public function user()
+    public function users()
     {
-        //переход на страницу отображения всех пользовытелей
-        return view('admin.main.user');
+        $users = User::orderBy('id', 'desc')->paginate(10); // Получаем пользователей с пагинацией
+        return view('admin.main.user', compact('users'));
     }
     //страница добавления нового пользователя
     public function create()
@@ -75,6 +75,23 @@ public function store(StoreRequest $request)
         return redirect()->route('admin.user.index');
     }
     //бан пользователя
+    public function profile($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.users.profile', compact('user'));
+    }
+
+    public function toggleBan($id)
+    {
+        $user = User::findOrFail($id);
+        $user->is_banned = !$user->is_banned;
+        $user->banned_at = $user->is_banned ? now() : null;
+        $user->save();
+
+        return back()->with('success', $user->is_banned 
+            ? 'Пользователь заблокирован' 
+            : 'Пользователь разблокирован');
+    }
 
 
 }

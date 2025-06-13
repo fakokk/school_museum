@@ -1,11 +1,11 @@
 @extends('layouts.app')
+
 @section('content')
 <div>
     @include('layouts.header')
 </div>
 
 <main class="app-main">
-    <!-- Герой-секция с фоновым изображением -->
     <section class="hero-section position-relative" id="section_1" 
              style="background: url('{{ asset('storage/images/timofeev.webp') }}') no-repeat center center; background-size: cover; min-height: 100vh;">
         
@@ -55,24 +55,158 @@
         </svg>
     </section>
 
-    <!-- Карусель -->
-    <div class="container py-5">
-        <!-- Ваша существующая карусель -->
-    </div>
-
-    <!-- Основной контент -->
-    <div>
-        <div>
-            <div>
-                <p class="lead">Музей был образован в 1962 году и является старейшим музеем на территории Забайкальского края. На площади 84 кв. м в двух помещениях находится около 9 тысяч экспонатов, из которых материальных – 5500, документальных – 3500. Имеется 10 постоянных экспозиций, повествующих об истории пограничного казачества, гражданской войны в Забайкалье, об истории колхоза «Путь Ильича», русско-монгольской дружбы и многом другом.</p>
-                <p>В музее регулярно проводятся встречи и экскурсии. Школьники, обучающиеся в МБОУ «Верхне-Ульхунская СОШ», принимают участие в научно-практических конференциях и конкурсах районного, краевого и всероссийского масштаба.</p>
+    <!-- Секция с основной информацией о музее -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h2 class="text-center mb-5 fw-bold">Историко-краеведческий музей имени Тимофеева Ю.П.</h2>
+                    
+                    <div class="museum-info mb-5">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h3 class="card-title">Основные сведения</h3>
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><strong>Адрес:</strong> Забайкальский край, Кыринский район, с. Верхний Ульхун, ул. Школьная 1</li>
+                                            <li class="mb-2"><strong>Год основания:</strong> 1962</li>
+                                            <li class="mb-2"><strong>Площадь:</strong> 84 кв.м (два помещения)</li>
+                                            <li class="mb-2"><strong>Экспонатов:</strong> ~9000 (5500 материальных, 3500 документальных)</li>
+                                            <li><strong>Экспозиций:</strong> 10 постоянных</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h3 class="card-title">Деятельность</h3>
+                                        <ul>
+                                            <li>Уроки и внеклассные занятия</li>
+                                            <li>Поисковая и исследовательская работа</li>
+                                            <li>Экскурсии для школ и гостей</li>
+                                            <li>Участие в краеведческих конкурсах</li>
+                                            <li>Создание документальных фильмов</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Секция с уникальными экспонатами -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold">Уникальные экспонаты музея</h2>
+            
+            <div class="row g-4">
+                <!-- Экспонат 1 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-top" style="height: 250px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                            <img src="{{ asset('storage/images/exhibit1.jpg') }}" class="img-fluid p-3" style="max-height: 100%; object-fit: contain;" alt="Льячка">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Льячка</h4>
+                            <p class="card-text">Каменный ковш для расплавления свинца (XIX век)</p>
+                            <a href="{{ route('showpiece', ['id' => 1]) }}" class="btn btn-outline-primary">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Экспонат 2 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-top" style="height: 250px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                            <img src="{{ asset('storage/images/exhibit2.jpg') }}" class="img-fluid p-3" style="max-height: 100%; object-fit: contain;" alt="Фисгармония">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Фисгармония</h4>
+                            <p class="card-text">Год изготовления 1883 (в процессе реставрации)</p>
+                            <a href="{{ route('showpiece', ['id' => 2]) }}" class="btn btn-outline-primary">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Экспонат 3 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-top" style="height: 250px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                            <img src="{{ asset('storage/images/exhibit3.jpg') }}" class="img-fluid p-3" style="max-height: 100%; object-fit: contain;" alt="Деревянная цепь">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Деревянная цепь</h4>
+                            <p class="card-text">296 звеньев - символ нерушимости границы (2023)</p>
+                            <a href="{{ route('showpiece', ['id' => 3]) }}" class="btn btn-outline-primary">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция экспозиций -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold">Постоянные экспозиции</h2>
+            
+            <div class="row g-4">
+                @foreach([
+                    'Зал боевой славы',
+                    'Тимофеев Юрий Петрович',
+                    'История древнего мира',
+                    'Казачьему роду нет переводу',
+                    'Гражданская война в Забайкалье',
+                    'История колхоза "Путь Ильича"',
+                    'Казачий быт',
+                    'История Верхнеульхунской школы',
+                    'Техника и время',
+                    'Российско-Монгольская дружба'
+                ] as $exposition)
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 bg-white shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ $exposition }}</h4>
+                            <p class="card-text text-muted">Подробнее о коллекции...</p>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">Посмотреть экспонаты</a>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция достижений -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold">Наши достижения</h2>
+            
+            <div class="timeline">
+                @foreach([
+                    '2024' => 'Создание Районного историко-краеведческого объединения',
+                    '2023' => 'Деревянная цепь включена в Книгу рекордов Забайкалья',
+                    '2022' => '3 место в Региональном этапе конкурса школьных музеев',
+                    '2021' => 'Создание цикла фильмов "Ульхунский бессмертный батальон"',
+                    '2020' => 'Восстановление имен 200+ фронтовиков'
+                ] as $year => $achievement)
+                <div class="timeline-item">
+                    <div class="timeline-year">{{ $year }}</div>
+                    <div class="timeline-content">{{ $achievement }}</div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 </main>
 
 <style>
-    /* Основные стили */
+        /* Основные стили */
     .app-main {
         overflow-x: hidden;
     }
@@ -184,9 +318,91 @@
         font-size: 33px;
         font-style: normal;
         }
-
+    /* Стили для карточек экспонатов */
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Стили для таймлайна */
+    .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #e9ecef;
+        transform: translateX(-50%);
+    }
+    
+    .timeline-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .timeline-year {
+        width: 100px;
+        text-align: center;
+        font-weight: bold;
+        color: #35496a;
+    }
+    
+    .timeline-content {
+        width: calc(50% - 60px);
+        padding: 15px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-content {
+        margin-left: auto;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-content {
+        margin-right: auto;
+        text-align: right;
+    }
+    
+    /* Адаптивные стили */
+    @media (max-width: 768px) {
+        .timeline::before {
+            left: 30px;
+        }
+        
+        .timeline-item {
+            flex-direction: column;
+        }
+        
+        .timeline-year, 
+        .timeline-content {
+            width: auto;
+            text-align: left !important;
+        }
+        
+        .timeline-year {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .timeline-content {
+            margin-left: 60px !important;
+        }
+    }
 </style>
-
 <!-- Подключение иконок Bootstrap -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
