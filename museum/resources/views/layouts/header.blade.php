@@ -19,7 +19,7 @@
             --secondary-color: rgb(63, 86, 123);
             --text-color: white;
             --hover-color: rgba(255, 255, 255, 0.1);
-            --dropdown-bg: rgba(63, 86, 123, 0.95);
+            --dropdown-bg: rgba(63, 86, 123, 0.9); /* Полупрозрачный фон */
             --transition: all 0.3s ease;
         }
 
@@ -121,7 +121,8 @@
             background-color: var(--hover-color);
         }
 
-        .dropdown {
+        /* Кастомные стили ТОЛЬКО для выпадающего меню */
+        .custom-dropdown {
             display: none;
             position: absolute;
             background-color: var(--dropdown-bg);
@@ -132,11 +133,11 @@
             border-radius: 0 0 8px 8px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
-        .menu li:hover .dropdown {
+        .menu li:hover .custom-dropdown {
             display: block;
             animation: fadeIn 0.3s ease;
         }
@@ -146,16 +147,17 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .dropdown li {
+        .custom-dropdown li {
             padding: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            list-style: none; /* Убираем точки */
         }
 
-        .dropdown li:last-child {
+        .custom-dropdown li:last-child {
             border-bottom: none;
         }
 
-        .dropdown li a {
+        .custom-dropdown li a {
             color: var(--text-color);
             text-decoration: none;
             font-size: 16px;
@@ -164,7 +166,7 @@
             transition: var(--transition);
         }
 
-        .dropdown li a:hover {
+        .custom-dropdown li a:hover {
             background-color: var(--hover-color);
             padding-left: 25px;
         }
@@ -172,16 +174,7 @@
         .search-form {
             display: flex;
             margin-left: auto;
-            margin-right: 15px; /* Добавляем отступ справа */
-        }
-
-        /* Для мобильных устройств (меню раскрыто) */
-        @media (max-width: 900px) {
-            .search-form {
-                margin: 20px 0;
-                width: 100%;
-                margin-right: 0; /* На мобильных убираем отступ */
-            }
+            margin-right: 15px;
         }
 
         .search-form input {
@@ -345,17 +338,17 @@
                 width: 100%;
             }
             
-            .dropdown {
+            .custom-dropdown {
                 position: static;
                 display: none;
                 width: 100%;
                 box-shadow: none;
                 border-radius: 0;
-                background-color: rgba(0, 0, 0, 0.02);
+                background-color: rgba(0, 0, 0, 0.1);
                 animation: none;
             }
             
-            .dropdown.active {
+            .custom-dropdown.active {
                 display: block;
             }
             
@@ -392,7 +385,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        
 </head>
 <body>
 <header class="header">
@@ -409,7 +401,7 @@
                     <li><a href="{{ route('excursions') }}">Новости</a></li>
                     <li>
                         <a href="#">Музей</a>
-                        <ul class="dropdown">
+                        <ul class="custom-dropdown">
                             <li><a href="{{ route('showpiece') }}">Экспонаты</a></li>
                             <li><a href="#">Экскурсии</a></li>
                             <li><a href="#">Фотоархив</a></li>
@@ -419,7 +411,7 @@
                     </li>
                     <li>
                         <a href="#">Контакты</a>
-                        <ul class="dropdown">
+                        <ul class="custom-dropdown">
                             <li><a href="#">Обратная связь</a></li>
                             <li><a href="#">Социальные сети</a></li>
                         </ul>
@@ -462,14 +454,14 @@
         });
         
         // Обработка выпадающих меню на мобильных устройствах
-        const dropdownParents = document.querySelectorAll('.menu > li:has(.dropdown)');
+        const dropdownParents = document.querySelectorAll('.menu > li:has(.custom-dropdown)');
         
         dropdownParents.forEach(parent => {
             const link = parent.querySelector('a:first-child');
-            const dropdown = parent.querySelector('.dropdown');
+            const dropdown = parent.querySelector('.custom-dropdown');
             
             link.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 900) {
                     e.preventDefault();
                     dropdown.classList.toggle('active');
                 }

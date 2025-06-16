@@ -313,6 +313,65 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .custom-alert {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-family: sans-serif;
+            position: relative;
+            border-left: 4px solid;
+            }
+
+            .custom-alert-danger {
+            background-color: #fef2f2;
+            border-color: #dc2626;
+            color: #991b1b;
+            }
+
+            .custom-alert-icon {
+            font-size: 24px;
+            margin-right: 12px;
+            line-height: 1;
+            }
+
+            .custom-alert-content {
+            flex: 1;
+            }
+
+            .custom-alert-title {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 600;
+            }
+
+            .custom-alert-text {
+            margin: 0;
+            font-size: 15px;
+            }
+
+            .custom-alert-time {
+            display: block;
+            margin-top: 8px;
+            opacity: 0.8;
+            font-size: 13px;
+            }
+
+            .custom-alert-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0.7;
+            margin-left: 10px;
+            line-height: 1;
+            padding: 0;
+            }
+
+            .custom-alert-close:hover {
+            opacity: 1;
+            }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -338,25 +397,64 @@
                         </span>
                     @endif
                 </div>
+                
 
-                <div class="card mt-4" style="margin-bottom: 20px;">
+                @if($user->is_banned)
+                <div class="custom-alert custom-alert-danger" role="alert">
+                    <div class="custom-alert-icon">⚠️</div>
+                        <div class="custom-alert-content">
+                            <h4 class="custom-alert-title">Пользователь заблокирован</h4>
+                            <p class="custom-alert-text">Этот аккаунт был заблокирован за нарушение правил платформы.</p>
+                            <small class="custom-alert-time">Дата блокировки: 14.06.2024</small>
+                        </div>
+                    <button class="custom-alert-close">&times;</button>
+                </div>    
+                @else
+                                <div class="card mt-4" style="margin-bottom: 20px;">
                     <div class="card-body">
                         <h5 class="card-title">О себе</h5>
                         <p class="card-text">
-                            @if($user->profile_description)
-                                {{ $user->profile_description }}
+                            @if(auth()->id() === $user->id)
+                                @if(Auth::user()->profile_description)
+                                    {{ Auth::user()->profile_description }}
+                                @else
+                                    Вы пока не добавили информацию о себе. Это можно сделать в
+                                    <a href="{{ route('personal.edit') }}">редактировании</a>
+                                    профиля.
+                                @endif
+
+                                
                             @else
-                                Пользователь пока не добавил информацию о себе.
+                            @if($user->profile_description)
+                                    {{ $user->profile_description }}
+                                @else
+                                    Пользователь пока не добавил информацию о себе.
+                                @endif
+
                             @endif
+
                         </p>
                     </div>
                 </div>
+                @endif
+
+
             </div>
         </div>
     </div>
     
     <div class="container">
+
+        @if($user->is_banned)
+            @if(auth()->id() === $user->id)
+            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" class="btn btn-outline">Выйти</button>
+            </form>
+            @endif
+        @else
         <aside class="sidebar">
+            
             @auth
                 @if(auth()->id() === $user->id)
                     <h2 class="sidebar-title">Меню</h2>
@@ -373,19 +471,24 @@
                 @endif
             @endauth
             
+            
             <h2 class="sidebar-title">Информация</h2>
             <div class="stats">
                 <div class="stat-card">
                     <div class="stat-number">{{ $likedPosts->count() }}</div>
-                    <div class="stat-label">Лайков</div>
+                    <div class="stat-label">В избранном</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number">{{ $comments->count() }}</div>
                     <div class="stat-label">Комментариев</div>
                 </div>
             </div>
+            
         </aside>
+        @endif
         
+        @if($user->is_banned)
+        @else
         <main class="main-content">
             <div class="card">
                 <h2 class="card-title"><i class="fas fa-newspaper"></i> Понравилось</h2>
@@ -423,7 +526,7 @@
                 @if($comments->isEmpty())
                     <div class="empty-state">
                         <i class="fas fa-comment-slash"></i>
-                        <p>Вы еще не оставляли комментариев</p>
+                        <p>Пользователь еще не оставлял комментариев</p>
                     </div>
                 @else
                 @foreach($comments as $comment)
@@ -465,6 +568,7 @@
                 @endif
             </div>
         </main>
+        @endif
     </div>
 </body>
 </html>

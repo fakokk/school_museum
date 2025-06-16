@@ -114,7 +114,7 @@
                         <div class="card-body">
                             <h4 class="card-title">Льячка</h4>
                             <p class="card-text">Каменный ковш для расплавления свинца (XIX век)</p>
-                            <a href="{{ route('showpiece', ['id' => 1]) }}" class="btn btn-outline-primary">Подробнее</a>
+                            <a href="{{ route('showpiece', ['id' => 44]) }}" class="btn btn-outline-primary">Подробнее</a>
                         </div>
                     </div>
                 </div>

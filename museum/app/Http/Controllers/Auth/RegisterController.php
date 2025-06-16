@@ -24,7 +24,10 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected function redirectTo()
+    {
+        return route('personal'); // Возвращает URL именованного маршрута
+    }
 
     public function __construct()
     {

@@ -34,25 +34,25 @@ class UserController extends Controller
     }
 
     //добавление нового пользователя
-public function store(StoreRequest $request)
-{
-    $data = $request->validated();
+    public function store(StoreRequest $request)
+    {
+        $data = $request->validated();
 
-    // Генерация случайного пароля
-    $password = Str::random(10);
-    $data['password'] = Hash::make($password); // Используем сгенерированный пароль
+        // Генерация случайного пароля
+        $password = Str::random(10);
+        $data['password'] = Hash::make($password); // Используем сгенерированный пароль
 
-    // Отправка письма с паролем
-    Mail::to($data['email'])->send(new PasswordMail($password));
+        // Отправка письма с паролем
+        Mail::to($data['email'])->send(new PasswordMail($password));
 
-    // Создание нового пользователя
-    $user = User::firstOrCreate(['email' => $data['email']], $data);
+        // Создание нового пользователя
+        $user = User::firstOrCreate(['email' => $data['email']], $data);
 
-    // Генерация события регистрации
-    event(new Registered($user));
+        // Генерация события регистрации
+        event(new Registered($user));
 
-    return redirect()->route('admin.user.index');
-}
+        return redirect()->route('admin.user.index');
+    }
 
     //вывод пользователей
     public function get_user()
@@ -74,13 +74,14 @@ public function store(StoreRequest $request)
         $user->delete();
         return redirect()->route('admin.user.index');
     }
-    //бан пользователя
+
     public function profile($id)
     {
         $user = User::findOrFail($id);
         return view('admin.users.profile', compact('user'));
     }
 
+    //бан пользователя
     public function toggleBan($id)
     {
         $user = User::findOrFail($id);

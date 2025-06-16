@@ -24,6 +24,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('login')->with('success', 'Регистрация прошла успешно!');
+        return redirect()->route('personal');
     }
 }

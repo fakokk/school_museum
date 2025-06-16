@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Showpiece extends Model
 {
     use HasFactory;
-        protected $table = 'showpiece'; // Ensure this matches your migration
-           // Для того чтобы можно было изменять данные в таблице
-       protected $guarded = []; // Используйте $guarded для указания полей, которые нельзя массово заполнять
+        protected $table = 'showpiece';
+        // Для того чтобы можно было изменять данные в таблице
+        // $guarded для указания полей, которые нельзя массово заполнять
+       protected $guarded = []; 
 
-       protected $fillable = ['title', 'content', 'category_id']; // Убедитесь, что это соответствует вашим полям миграции
+       protected $fillable = ['title', 'content', 'category_id']; 
 
-       // Определите отношения с другими моделями
+       // Определение отношения с другими моделями
        public function category()
        {
            return $this->belongsTo(Category::class);
